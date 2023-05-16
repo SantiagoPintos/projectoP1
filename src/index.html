@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación - censo</title>
+    <script src="js/main.js"></script>
+</head>
+<body>
+    <div id="seleccionUsuario">
+        <p>
+            <h2>Iniciar sesión</h2>
+            <label>Seleccione el tipo de usuario</label><br>
+            
+            <input type="button" value="Persona" id="btnUsuarioPersona">
+            <input type="button" value="Censista" id="btnUsuarioCensista">
+        </p>
+    </div><!-- seleccionUsuario -->
+    <div id="aplicacionCensista">
+        <h2>Aplicación para censistas</h2>
+        <div id="censistaEstaRegistrado">
+            <label for="usuarioCensista">Usuario: </label>
+            <input type="text" id="usuarioCensista"><br>
+            <label for="contraseñaCensista">Contraseña: </label>
+            <input type="password" id="contraseñaCensista"><br>
+            <input type="button" value="Iniciar Sesión" id="btnIniciarSesionCensista">
+        </div><!-- aplicacionCensista -->
+        <!--separacion de divs para ocultar campo de inicio de sesión desde js en caso de que no esté registrado-->
+        <div id="censistaNoEstaRegistrado">
+            <div id="promptRegistrarCensista">
+                <p>
+                    <label for="btnRegistrarCensista">¿No está registrado?</label>
+                    <input type="button" value="Registrarse" id="btnRegistrarCensista">
+                </p>
+            </div>
+            <div id="formularioRegistroCensista">
+                <h2>Registrar nuevo censista</h2>
+                <label for="nuevoNombreCensista">Ingrese su nombre y apellido</label><br>
+                <input type="text" id="nuevoNombreCensista" placeholder="Nombre completo" required><br>
+                <label for="nuevoUsuarioCensista">Ingrese nombre de usuario</label><br>
+                <input type="text" id="nuevoUsuarioCensista" placeholder="Nombre de usuario" required><br>
+                <label for="nuevoContraseñaCensista">Contraseña (Mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número)</label><br>
+                <input type="password" id="nuevoContraseñaCensista" placeholder="Contraseña" required><br>
+                <input type="checkbox" id="nuevoMostrarConseñaCensista">Mostrar contraseña <br>
+                <button id="btnRegistrarCensista">Registrarse</button>
+                <p></p>
+            </div>
+        </div><!-- censistaNoEstaRegistrado -->
+
+        <div id="realizarNuevoCenso">
+            <h2>Realizar nuevo censo</h2>
+            <p>
+                <label for="nombreNuevoCenso">Nobre y apellido</label><br>
+                <input type="text" id="nombreNuevoCenso" placeholder="Nombre"><br>
+                <label for="edadNuevoCenso">Edad</label><br>
+                <input type="number" id="edadNuevoCenso" placeholder="Edad"><br>
+                <label for="cedulaNuevoCenso">Cédula de identidad</label><br>
+                <input type="text" id="cedulaNuevoCenso" placeholder="CI"><br>
+                <label for="departamentoNuevoCenso">Departamento</label><br>
+                <select id="departamentoNuevoCenso"></select><br>
+                <label for="ocupacionNuevoCenso">Ocupación</label><br>
+                <select id="ocupacionNuevoCenso"></select><br>
+                <input type="button" value="Terminar censo" id="btnTerminarCenso">
+            </p>
+        </div>
+    </div> <!--aplicacionCensista-->
+    <div id="aplicacionPersona"></div>
+</body>
+</html>
