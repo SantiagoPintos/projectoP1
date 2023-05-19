@@ -23,9 +23,8 @@ function usuarioEsCensista(){
     console.log("censista");
 }
 
-//TODO: validar mayus con acentos
-function comprobarContraseña(clave){
-    //min 5 caracteres, 1 mayus, 1 num
+//TODO: validar mayus con acentos?
+function validarContraseña(clave){
     let esValida = false;
     let tieneMayus = false;
     let tieneNumero = false;
