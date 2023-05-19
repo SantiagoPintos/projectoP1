@@ -18,22 +18,22 @@
         </p>
     </div><!-- seleccionUsuario -->
     <div id="aplicacionCensista">
-        <h2>Aplicación para censistas</h2>
-        <div id="censistaEstaRegistrado">
+        <div id="loginCensista">
+            <h2>Aplicación para censistas</h2>
             <label for="usuarioCensista">Usuario: </label>
             <input type="text" id="usuarioCensista"><br>
             <label for="contraseñaCensista">Contraseña: </label>
             <input type="password" id="contraseñaCensista"><br>
             <input type="button" value="Iniciar Sesión" id="btnIniciarSesionCensista">
-        </div><!-- aplicacionCensista -->
-        <!--separacion de divs para ocultar campo de inicio de sesión desde js en caso de que no esté registrado-->
-        <div id="censistaNoEstaRegistrado">
             <div id="promptRegistrarCensista">
                 <p>
                     <label for="btnRegistrarCensista">¿No está registrado?</label>
                     <input type="button" value="Registrarse" id="btnRegistrarCensista">
                 </p>
             </div>
+        </div><!-- aplicacionCensista -->
+        <!--separacion de divs para ocultar campo de inicio de sesión desde js en caso de que no esté registrado-->
+        <div id="censistaNoEstaRegistrado">
             <div id="formularioRegistroCensista">
                 <h2>Registro de nuevo censista</h2>
                 <p>                    
@@ -79,19 +79,27 @@
 
         <div id="validarCenso">
             <h2>Validar Censo</h2>
-            <!-- TODO: reutilizar formulario anterior para evitar duplicación de código -->
+            <p id="formBusquedaCiValidarCenso">
+                <label for="ciValidarCenso">Ingrese cédula de indentidad de la persona</label><br>
+                <input type="text" id="ciValidarCenso"><br>
+                <input type="button" value="Buscar">
+            </p>
             <p id="formValidarCenso">
-                <label for="nombreValidarCenso">Nobre y apellido</label><br>
-                <input type="text" id="nombreValidarCenso" placeholder="Nombre"><br>
-                <label for="edadValidarCenso">Edad</label><br>
-                <input type="number" id="edadValidarCenso" placeholder="Edad"><br>
-                <label for="cedulaValidarCenso">Cédula de identidad</label><br>
-                <input type="text" id="cedulaValidarCenso" placeholder="CI"><br>
-                <label for="departamentoValidarCenso">Departamento</label><br>
-                <select id="departamentoValidarCenso"></select><br>
-                <label for="ocupacionValidarCenso">Ocupación</label><br>
-                <select id="ocupacionValidarCenso"></select><br>
-                <input type="button" value="Validar censo" id="Validar censo">
+                <label for="formValidarCensoNombrePersona">Nombre y apellido</label><br>
+                <input type="text" id="formValidarCensoNombrePersona"><br>
+                <label for="formValidarCensoEdadPersona">Edad</label><br>
+                <input type="number" id="formValidarCensoEdadPersona"><br>
+                <label for="formValidarCensoCiPersona">Cédula de indentidad</label><br>
+                <!-- no se debería editar la CI de un censo pendiente de validacioón  -->
+                <input type="text" id="formValidarCensoCiPersona" readonly><br>
+                <label for="formValidarCensoDepartamentoPersona">Departamento</label><br>
+                <select id="formValidarCensoDepartamentoPersona"></select><br>
+                <label for="formValidarCensoOcupacionPesrona">Ocupación</label><br>
+                <select id="formValidarCensoOcupacionPesrona"></select><br>
+                <input type="button" id="btnFormValidarCensoPersona" value="Validar">
+            </p>
+            <p id="mjsFormValidarCenso">
+
             </p>
         </div>
 
