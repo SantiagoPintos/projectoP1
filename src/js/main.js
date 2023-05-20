@@ -104,4 +104,3 @@ function validarDigitoVerificadorCI(cedula){
     
     return esValida;
 }
-validarDigitoVerificadorCI("49915228");
