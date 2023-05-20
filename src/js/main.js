@@ -104,3 +104,18 @@ function validarDigitoVerificadorCI(cedula){
     
     return esValida;
 }
+
+//recibe por parámetro id de <select> y le agrega departamentos
+function cargarSelectDeDepartamentos(id){
+    const arrayDepartamentos = ["Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", 
+    "Flores", "Florida", "Lavalleja","Maldonado", "Montevideo", "Paysandú", "Río Negro", 
+    "Rivera", "Rocha", "Salto", "San José", "Soriano", "Tacuarembó", "Treinta y Trés"];
+    
+    let cargar = `<option value="-1">Seleccione...</option>`;
+
+    for (let i = 0; i < arrayDepartamentos.length; i++) {
+        const departamento = arrayDepartamentos[i];
+        cargar += `<option value="${i}">${departamento}</option>`;
+    }
+    //falta instrucción para popular select
+}
