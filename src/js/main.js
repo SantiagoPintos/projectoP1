@@ -14,12 +14,30 @@ function usuarioEsPersona(){
 }
 function usuarioEsCensista(){
     ocultarMenuInicial();
+    capturarEventosMenuInicioSesionCensista();
     document.querySelector("#censistaNoEstaRegistrado").style.display = "none";
     document.querySelector("#menuCensista").style.display = "none";
     document.querySelector("#realizarNuevoCenso").style.display = "none";
     document.querySelector("#validarCenso").style.display = "none";
     document.querySelector("#CensosPendientesDeValidacion").style.display = "none";
     document.querySelector("#visualizarEstadisticasCensista").style.display = "none";
+}
+function registrarCensista(){
+    console.log("registrarcensista")
+    document.querySelector("#aplicacionCensista").style.display = "none";
+    document.querySelector("#censistaNoEstaRegistrado").style.display = "block";
+    
+}
+function capturarEventosMenuRegistroCensista(){
+    document.querySelector("#btnRegistroCensista").addEventListener("click", registrarCensista);
+}
+function capturarEventosMenuInicioSesionCensista(){
+    document.querySelector("#btnRegistrarCensista").addEventListener("click", mostrarMenuPrincipalCensistas);
+}
+function mostrarMenuPrincipalCensistas(){
+    document.querySelector("#formularioRegistroCensista").style.display = "none";
+    document.querySelector("#menuCensista").style.display = "block";
+    
 }
 
 //TODO: validar mayus con acentos?
@@ -49,3 +67,41 @@ function validarContraseña(clave){
     }
     return esValida;
 }
+
+// Comprueba longitud de número de cédula y quita cualquier cosa que no sea un nro
+function limpiarNroCI(cedula){
+    let nroCedulaEnLimpio = "";
+    cedula=cedula.trim();
+    if (cedula.length<7) {
+        return -1;
+    } else {
+        for (let i = 0; i < cedula.length; i++) {
+            const numero = cedula.charAt(i);
+            if (numero.charCodeAt(0) >= 48 && numero.charCodeAt(0) <= 57) {
+                nroCedulaEnLimpio+=numero;
+            }
+        }
+        return nroCedulaEnLimpio;
+    }
+}
+
+//valida digito verificador
+function validarDigitoVerificadorCI(cedula){
+    const multiplos = [8,1,2,3,4,7,6];
+    //nro "mágico" obtenido de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number
+    const digitoVerificador = cedula.charAt(cedula.length-1);
+    let acumulador = 0;
+    let esValida = false;
+
+    for (let i = 0; i<=(cedula.length-2); i++) {
+        const nro = cedula.charAt(i);
+        acumulador+=nro*multiplos[i];
+    }
+    acumulador=acumulador%10;
+    if (acumulador==digitoVerificador) {
+        esValida=true;
+    }
+    
+    return esValida;
+}
+validarDigitoVerificadorCI("49915228");
