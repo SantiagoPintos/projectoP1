@@ -87,13 +87,26 @@ function limpiarNroCI(cedula){
 
 //valida digito verificador
 function validarDigitoVerificadorCI(cedula){
-    const multiplos = [8,1,2,3,4,7,6];
-    //nro "mágico" obtenido de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number
+    /*
+        Referencia obtenida de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number ,
+        diferente al mostrado en clase pero pasa todos los casos proporcionados en práctico 5 ejercicio 16
+    */
+    let multiplos = [8,1,2,3,4,7,6];
     const digitoVerificador = cedula.charAt(cedula.length-1);
     let acumulador = 0;
     let esValida = false;
 
-    for (let i = 0; i<=(cedula.length-2); i++) {
+    if (cedula.length<8) {
+        /* 
+            Si CI<1.000.000 no se debe multiplicar por multiplos[0] (8) 
+            
+            .slice() retorna array con posiciones a elección, por lo tanto se usa
+            1-array.length para "descartar" la primera posición            
+         */
+        multiplos=multiplos.slice(1,multiplos.length);
+    }
+
+    for (let i = 0; i<(cedula.length-1); i++) {
         const nro = cedula.charAt(i);
         acumulador+=nro*multiplos[i];
     }
