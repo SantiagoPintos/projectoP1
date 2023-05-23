@@ -1,46 +1,15 @@
 window.addEventListener("load", main);
 function main(){
-    capturarEventosDeBotonesMenuInicial();
+    capturarClicks();
 }
-function capturarEventosDeBotonesMenuInicial(){
-    document.querySelector("#btnUsuarioPersona").addEventListener("click", usuarioEsPersona);
-    document.querySelector("#btnUsuarioCensista").addEventListener("click", usuarioEsCensista);
-}
-function ocultarMenuInicial(){
-    document.querySelector("#seleccionUsuario").style.display = "none";
-}
-function usuarioEsPersona(){
-    ocultarMenuInicial();
-}
-function usuarioEsCensista(){
-    ocultarMenuInicial();
-    capturarEventosMenuInicioSesionCensista();
-    document.querySelector("#censistaNoEstaRegistrado").style.display = "none";
-    document.querySelector("#menuCensista").style.display = "none";
-    document.querySelector("#realizarNuevoCenso").style.display = "none";
-    document.querySelector("#validarCenso").style.display = "none";
-    document.querySelector("#CensosPendientesDeValidacion").style.display = "none";
-    document.querySelector("#visualizarEstadisticasCensista").style.display = "none";
-}
-function registrarCensista(){
-    console.log("registrarcensista")
-    document.querySelector("#aplicacionCensista").style.display = "none";
-    document.querySelector("#censistaNoEstaRegistrado").style.display = "block";
-    
-}
-function capturarEventosMenuRegistroCensista(){
-    document.querySelector("#btnRegistroCensista").addEventListener("click", registrarCensista);
-}
-function capturarEventosMenuInicioSesionCensista(){
-    document.querySelector("#btnRegistrarCensista").addEventListener("click", mostrarMenuPrincipalCensistas);
-}
-function mostrarMenuPrincipalCensistas(){
-    document.querySelector("#formularioRegistroCensista").style.display = "none";
-    document.querySelector("#menuCensista").style.display = "block";
-    
+function capturarClicks(){
+    document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
 }
 
-//TODO: validar mayus con acentos?
+let baseDeDatosCensistas = new Array();
+let baseDeDatosPersona = new Array();
+
+
 function validarContraseña(clave){
     let esValida = false;
     let tieneMayus = false;
@@ -131,4 +100,72 @@ function cargarSelectDeDepartamentos(id){
         cargar += `<option value="${i}">${departamento}</option>`;
     }
     //falta instrucción para popular select
+}
+
+//función que controla el inicio de sesión del censista
+function iniciarSesionCensista(){
+    const usuario = document.querySelector("#usuarioCensista").value;
+    const clave = document.querySelector("#usuarioCensista").value;
+    const perfil = verificarCredenciales(usuario, clave);
+
+    if (perfil) {
+        //Parsear objeto y mostrar datos
+    } else {
+        document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
+    }
+}
+
+
+/* 
+    verifica si usuario y contraseña de censista son correctos, es llamada desde iniciarSesionCensista,
+    retorna false si no coinciden usuario y contraseña, -1 si no coincide contraseña y objeto con
+    el usuario en caso de que ambos coincidan
+*/
+function verificarCredenciales(usuario, contraseña){
+    /* 
+        PRUEBA: popular array con 1 usuario para verificar funcionamiento
+    */
+   let arrayTest = new Array();
+   let usuarioRandom = {
+    nombre: "Usuario de prueba",
+    usuario: "UsuarioTest",
+    contraseña: "12345A",
+    id: "00001",
+   };
+   arrayTest.push(usuarioRandom);
+
+   /* 
+        usuario y contraseña se deben verificar ante array "baseDeDatosCensistas"
+        cada elemento es un objeto con usuario y contraseña como propiedades
+        por lo tanto: usuario == (recorrer array)baseDeDatosCensistas.usuario 
+    */
+    let usuarioEncontrado = false;
+    let posicionUsuarioEnArray = 0;
+
+    for (let i = 0; i < arrayTest.length && !usuarioEncontrado; i++) {
+        const usuarioAlmacenado = arrayTest[i].usuario;
+        if (usuarioAlmacenado==usuario) {
+            usuarioEncontrado = true;
+            posicionUsuarioEnArray = i;
+        }
+    }
+
+    //Solo se debe comprobar la contraseña si el usuario existe
+    if (usuarioEncontrado) {
+        if (contraseña==arrayTest[posicionUsuarioEnArray].contraseña) {
+            /* 
+                Si contraseña coincide se retorna el objeto con los datos a parsear en ui.
+
+                Se retorna nuevo objeto con propiedades necesarias para la interfaz, ej:
+                no tiene sentido enviar contraseña si no se va a mostrar en ninguna parte 
+             */
+            const censista = {
+                nombre: arrayTest[posicionUsuarioEnArray].nombre,
+                id: arrayTest[posicionUsuarioEnArray].id,
+            }
+            return censista;
+        }
+    }
+
+    return false;
 }

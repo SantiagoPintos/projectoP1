@@ -18,7 +18,7 @@ class Censista {
             nombre: new String,
             usuario: new String,
             contraseña: new String,
-            idCensista: new Number,
+            id: new Number,
         }
     }
 }
