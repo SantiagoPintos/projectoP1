@@ -118,8 +118,7 @@ function iniciarSesionCensista(){
 
 /* 
     verifica si usuario y contraseña de censista son correctos, es llamada desde iniciarSesionCensista,
-    retorna false si no coinciden usuario y contraseña, -1 si no coincide contraseña y objeto con
-    el usuario en caso de que ambos coincidan
+    retorna objeto con datos o false
 */
 function verificarCredenciales(usuario, contraseña){
     /* 
