@@ -146,11 +146,10 @@ function verificarCredenciales(usuario, contraseña){
                 Se retorna nuevo objeto con propiedades necesarias para la interfaz, ej:
                 no tiene sentido enviar contraseña si no se va a mostrar en ninguna parte 
              */
-            const censista = {
+            return {
                 nombre: baseDeDatosCensistas[posicionUsuarioEnArray].nombre,
                 id: baseDeDatosCensistas[posicionUsuarioEnArray].id,
-            }
-            return censista;
+            };
         }
     }
 
