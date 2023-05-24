@@ -121,18 +121,6 @@ function iniciarSesionCensista(){
     retorna objeto con datos o false
 */
 function verificarCredenciales(usuario, contraseña){
-    /* 
-        PRUEBA: popular array con 1 usuario para verificar funcionamiento
-    */
-   let arrayTest = new Array();
-   let usuarioRandom = {
-    nombre: "Usuario de prueba",
-    usuario: "UsuarioTest",
-    contraseña: "12345A",
-    id: "00001",
-   };
-   arrayTest.push(usuarioRandom);
-
    /* 
         usuario y contraseña se deben verificar ante array "baseDeDatosCensistas"
         cada elemento es un objeto con usuario y contraseña como propiedades
