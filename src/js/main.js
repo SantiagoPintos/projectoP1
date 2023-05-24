@@ -113,6 +113,13 @@ function iniciarSesionCensista(){
     } else {
         document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
     }
+    /* 
+        Limpiar campos de texto incluso después de iniciar sesión 
+        en caso de que usuario intente ir hacia atrás
+     */
+
+    document.querySelector("#usuarioCensista").value = "";
+    document.querySelector("#contraseñaCensista").value = "";
 }
 
 
