@@ -37,16 +37,18 @@
         <!--separacion de divs para ocultar campo de inicio de sesión desde js en caso de que no esté registrado-->
             <div id="formularioRegistroCensista">
                 <h2>Registro de nuevo censista</h2>
-                <p>                    
-                    <label for="nuevoNombreCensista">Ingrese su nombre y apellido</label><br>
-                    <input type="text" id="nuevoNombreCensista" placeholder="Nombre completo" required><br>
-                    <label for="nuevoUsuarioCensista">Ingrese nombre de usuario</label><br>
-                    <input type="text" id="nuevoUsuarioCensista" placeholder="Nombre de usuario" required><br>
-                    <label for="nuevoContraseñaCensista">Contraseña (Mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número)</label><br>
-                    <input type="password" id="nuevoContraseñaCensista" placeholder="Contraseña" required><br>
-                    <input type="checkbox" id="nuevoMostrarConseñaCensista">Mostrar contraseña <br>
-                    <button id="btnRegistrarCensista">Registrarse</button>
-                </p>
+                <p>     
+                    <form action="#">
+                        <label for="nuevoNombreCensista">Ingrese su nombre y apellido</label><br>
+                        <input type="text" id="nuevoNombreCensista" placeholder="Nombre completo" required><br>
+                        <label for="nuevoUsuarioCensista">Ingrese nombre de usuario</label><br>
+                        <input type="text" id="nuevoUsuarioCensista" placeholder="Nombre de usuario" required><br>
+                        <label for="nuevoContraseñaCensista">Contraseña (Mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número)</label><br>
+                        <input type="password" id="nuevoContraseñaCensista" placeholder="Contraseña" required><br>
+                        <input type="checkbox" id="nuevoMostrarConseñaCensista">Mostrar contraseña <br>
+                        <button id="btnRegistrarCensista">Registrarse</button>
+                    </form>               
+                    </p>
                 <p id="msjRegistroCensista"></p>
             </div>
 

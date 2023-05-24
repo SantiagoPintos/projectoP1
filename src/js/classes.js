@@ -21,4 +21,11 @@ class Censista {
             id: new Number,
         }
     }
+
+    cargarDatos(nombre, usuario, contraseña, id){
+            this.nombre = nombre,
+            this.usuario = usuario,
+            this.contraseña = contraseña,
+            this.id = id
+    }
 }

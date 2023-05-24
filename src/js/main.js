@@ -4,32 +4,149 @@ function main(){
 }
 function capturarClicks(){
     document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
+
+    //función que extrae datos de formulario, falta forma de invocar la aparición de dicho formulario y ocultar el resto
+    document.querySelector("#btnRegistrarCensista").addEventListener("click", iniciarRegistroCensista);
 }
 
 let baseDeDatosCensistas = new Array();
 let baseDeDatosPersona = new Array();
+let censistaRandom = {
+    nombre: "pedro",
+    usuario: "pedrito75",
+    contraseña: "123452",
+    id: 0,
+}
+baseDeDatosCensistas.push(censistaRandom);
 
 
+
+//función que controla el inicio de sesión del censista
+function iniciarSesionCensista(){
+    const usuario = document.querySelector("#usuarioCensista").value;
+    const clave = document.querySelector("#contraseñaCensista").value;
+    const perfil = verificarCredenciales(usuario, clave);
+
+    if (perfil) {
+        //Parsear objeto y mostrar datos
+        document.querySelector("#parrafoNombreCensista").value = `Bienvenido ${perfil.nombre}`;
+    } else {
+        document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
+    }
+    /* 
+        Limpiar campos de texto incluso después de iniciar sesión 
+        en caso de que usuario intente ir hacia atrás
+     */
+
+    document.querySelector("#usuarioCensista").value = "";
+    document.querySelector("#contraseñaCensista").value = "";
+}
+
+/* 
+    Funcion que extrae datos de formulario para registrar censista
+*/
+function iniciarRegistroCensista(){
+    const nombre = document.querySelector("#nuevoNombreCensista").value;
+    const nombreDeUsuario = (document.querySelector("#nuevoUsuarioCensista").value).toLowerCase();
+    const contraseña = document.querySelector("#nuevoContraseñaCensista").value;
+    let mensajeParaParrafo = "";
+    //Desde HTML se valida que no estén vacíos, pero ser verifica nuevamente por seguridad 
+    if (!nombre || !nombreDeUsuario || !contraseña) {
+        mensajeParaParrafo = "Todos los campos deben ser completados!"
+    } else {
+        /* 
+            Elegí esta de verificación en "cascada" para modularizar código y obtener
+            el punto de fallo específico y mostrar un error acorde
+        */
+        if(validarNombreUsuarioCensista(nombreDeUsuario)){
+            //si nombre de usuario es válido se llama a función que valida contraseña
+            if (validarContraseña(contraseña)) {
+                //se llama a función que registra usuario
+                registrarCensista(nombre, nombreDeUsuario, contraseña);
+            } else {
+                mensajeParaParrafo = "La contraseña debe tener al mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número";
+            }
+        } else {
+            mensajeParaParrafo="El nombre de usuario no está disponible!";
+        }
+    }
+
+    /* 
+        Flujo: extraer datos de form, validar que no estén vacíos, pasar contraseña y nombre de usuario
+        a funciones auxiliares que los validen, y luego hacer el registro de usuario
+    */
+
+    //mensaje de error/confirmación
+    document.querySelector("#msjRegistroCensista").innerHTML = mensajeParaParrafo;
+}
+
+function registrarCensista(nombre, usuario, contraseña){
+    let nuevaId = generarIdCensista();
+    let nuevoCensista = new Censista();
+    nuevoCensista.cargarDatos(nombre, usuario, contraseña, nuevaId);
+    baseDeDatosCensistas.push(nuevoCensista);
+    console.log("nuevo usuario registrado")
+    console.log(baseDeDatosCensistas[nuevaId]);
+}
+
+/* 
+    Función que se encarga de generar el id único de cada censista al momento de su registro
+    en la aplicación, retorna un número incremental basado en el valor previo 
+*/
+function generarIdCensista(){
+    let ultimoIdRegistrado = 0;
+    if (baseDeDatosCensistas[baseDeDatosCensistas.length-1].id >= 0) {
+        ultimoIdRegistrado = Number(baseDeDatosCensistas[baseDeDatosCensistas.length-1].id);
+    }
+    return ultimoIdRegistrado+1
+}
+
+/* 
+    Comprueba si el nombre de usuario elegido por el censista durante el proceso de registro está disponible
+    en array baseDeDatosCensistas, retorna true o false
+*/
+function validarNombreUsuarioCensista(usuario){
+    let disponible = true;
+    for (let i = 0; i < baseDeDatosCensistas.length && disponible; i++) {
+        const nombre = baseDeDatosCensistas[i].usuario;
+        if (nombre==usuario) {
+            disponible = false;
+        }
+    }
+    return disponible;
+}
+
+/* 
+    Verifica que la contraseña cumpla con los siguientes requisitos:
+    - Mínimo 5 caracteres
+    - Al menos 1 mayúscula
+    - Al menos 1 minúscula
+    - Al menos 1 número
+*/
 function validarContraseña(clave){
     let esValida = false;
-    let tieneMayus = false;
     let tieneNumero = false;
-    let tieneMayusYnumero = false;
+    let tieneMayus = false;
+    let tieneMinuscula = false;
+    let tieneMayusNumeroYMinuscula = false;
 
     if(clave.length>=5){
-        for (let i = 0; i < clave.length && !tieneMayusYnumero; i++) {
-            console.log(clave.charCodeAt(i));
+        for (let i = 0; i < clave.length && !tieneMayusNumeroYMinuscula; i++) {
             //65=`A`, 90=`Z`, 209=Ñ
             if (clave.charCodeAt(i)>=65 && clave.charCodeAt(i)<=90 || clave.charCodeAt(i)==209 ) {
                 tieneMayus=true;
+            }
+            if (clave.charCodeAt(i)>=97 && clave.charCodeAt(i)<=122 || clave.charCodeAt(i)==241) {
+            //97=`a`, 122=`z`, 241=`ñ`
+                tieneMinuscula=true;
             }
             //48=`0`, 57=`9`
             if (clave.charCodeAt(i)>=48 && clave.charCodeAt(i)<=57) {
                 tieneNumero=true;
             }
-            if (tieneMayus&&tieneNumero) {
+            if (tieneMayus&&tieneNumero&&tieneMinuscula) {
                 //detiene el loop si tiene mayus y num
-                tieneMayusYnumero=true;
+                tieneMayusNumeroYMinuscula=true;
                 esValida = true;
             }
         } 
@@ -101,28 +218,6 @@ function cargarSelectDeDepartamentos(id){
     }
     //falta instrucción para popular select
 }
-
-//función que controla el inicio de sesión del censista
-function iniciarSesionCensista(){
-    const usuario = document.querySelector("#usuarioCensista").value;
-    const clave = document.querySelector("#contraseñaCensista").value;
-    const perfil = verificarCredenciales(usuario, clave);
-
-    if (perfil) {
-        //Parsear objeto y mostrar datos
-        document.querySelector("#parrafoNombreCensista").value = `Bienvenido ${perfil.nombre}`;
-    } else {
-        document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
-    }
-    /* 
-        Limpiar campos de texto incluso después de iniciar sesión 
-        en caso de que usuario intente ir hacia atrás
-     */
-
-    document.querySelector("#usuarioCensista").value = "";
-    document.querySelector("#contraseñaCensista").value = "";
-}
-
 
 /* 
     verifica si usuario y contraseña de censista son correctos, es llamada desde iniciarSesionCensista,
