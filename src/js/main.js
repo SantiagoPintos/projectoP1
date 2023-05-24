@@ -110,6 +110,7 @@ function iniciarSesionCensista(){
 
     if (perfil) {
         //Parsear objeto y mostrar datos
+        document.querySelector("#parrafoNombreCensista").value = `Bienvenido ${perfil.nombre}`;
     } else {
         document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
     }
