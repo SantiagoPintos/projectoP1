@@ -105,7 +105,7 @@ function cargarSelectDeDepartamentos(id){
 //función que controla el inicio de sesión del censista
 function iniciarSesionCensista(){
     const usuario = document.querySelector("#usuarioCensista").value;
-    const clave = document.querySelector("#usuarioCensista").value;
+    const clave = document.querySelector("#contraseñaCensista").value;
     const perfil = verificarCredenciales(usuario, clave);
 
     if (perfil) {
