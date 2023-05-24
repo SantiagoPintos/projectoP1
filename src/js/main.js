@@ -129,8 +129,8 @@ function verificarCredenciales(usuario, contraseña){
     let usuarioEncontrado = false;
     let posicionUsuarioEnArray = 0;
 
-    for (let i = 0; i < arrayTest.length && !usuarioEncontrado; i++) {
-        const usuarioAlmacenado = arrayTest[i].usuario;
+    for (let i = 0; i < baseDeDatosCensistas.length && !usuarioEncontrado; i++) {
+        const usuarioAlmacenado = baseDeDatosCensistas[i].usuario;
         if (usuarioAlmacenado==usuario) {
             usuarioEncontrado = true;
             posicionUsuarioEnArray = i;
@@ -139,7 +139,7 @@ function verificarCredenciales(usuario, contraseña){
 
     //Solo se debe comprobar la contraseña si el usuario existe
     if (usuarioEncontrado) {
-        if (contraseña==arrayTest[posicionUsuarioEnArray].contraseña) {
+        if (contraseña==baseDeDatosCensistas[posicionUsuarioEnArray].contraseña) {
             /* 
                 Si contraseña coincide se retorna el objeto con los datos a parsear en ui.
 
@@ -147,8 +147,8 @@ function verificarCredenciales(usuario, contraseña){
                 no tiene sentido enviar contraseña si no se va a mostrar en ninguna parte 
              */
             const censista = {
-                nombre: arrayTest[posicionUsuarioEnArray].nombre,
-                id: arrayTest[posicionUsuarioEnArray].id,
+                nombre: baseDeDatosCensistas[posicionUsuarioEnArray].nombre,
+                id: baseDeDatosCensistas[posicionUsuarioEnArray].id,
             }
             return censista;
         }
