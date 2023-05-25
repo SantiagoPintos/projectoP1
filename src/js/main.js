@@ -50,31 +50,21 @@ function iniciarRegistroCensista(){
     const nombreDeUsuario = (document.querySelector("#nuevoUsuarioCensista").value).toLowerCase();
     const contraseña = document.querySelector("#nuevoContraseñaCensista").value;
     let mensajeParaParrafo = "";
-    //Desde HTML se valida que no estén vacíos, pero ser verifica nuevamente por seguridad 
-    if (!nombre || !nombreDeUsuario || !contraseña) {
-        mensajeParaParrafo = "Todos los campos deben ser completados!"
-    } else {
-        /* 
-            Elegí esta de verificación en "cascada" para modularizar código y obtener
-            el punto de fallo específico y mostrar un error acorde
-        */
-        if(validarNombreUsuarioCensista(nombreDeUsuario)){
-            //si nombre de usuario es válido se llama a función que valida contraseña
-            if (validarContraseña(contraseña)) {
-                //se llama a función que registra usuario
-                registrarCensista(nombre, nombreDeUsuario, contraseña);
-            } else {
-                mensajeParaParrafo = "La contraseña debe tener al mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número";
-            }
+    const validacionUsuario = validarNombreUsuarioCensista(nombreDeUsuario);
+    
+    if(validacionUsuario==true){
+        //si nombre de usuario es válido se llama a función que valida contraseña
+        if (validarContraseña(contraseña)) {
+            //se llama a función que registra usuario
+            registrarCensista(nombre, nombreDeUsuario, contraseña);
         } else {
-            mensajeParaParrafo="El nombre de usuario no está disponible!";
+            mensajeParaParrafo = "La contraseña debe tener al mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número";
         }
+    } else if (validacionUsuario == -1){
+        mensajeParaParrafo="El nombre de usuario no es válido";
+    } else {
+        mensajeParaParrafo="El nombre de usuario no está disponible";
     }
-
-    /* 
-        Flujo: extraer datos de form, validar que no estén vacíos, pasar contraseña y nombre de usuario
-        a funciones auxiliares que los validen, y luego hacer el registro de usuario
-    */
 
     //mensaje de error/confirmación
     document.querySelector("#msjRegistroCensista").innerHTML = mensajeParaParrafo;
@@ -103,17 +93,27 @@ function generarIdCensista(){
 
 /* 
     Comprueba si el nombre de usuario elegido por el censista durante el proceso de registro está disponible
-    en array baseDeDatosCensistas, retorna true o false
+    en array baseDeDatosCensistas, retorna true, false ó -1 en caso de ser inválido
 */
 function validarNombreUsuarioCensista(usuario){
     let disponible = true;
-    for (let i = 0; i < baseDeDatosCensistas.length && disponible; i++) {
-        const nombre = baseDeDatosCensistas[i].usuario;
-        if (nombre==usuario) {
-            disponible = false;
+    //Elimina posibles espacios al inicio/final
+    usuario=usuario.trim();
+    
+    //maneja caso en que usuario está compuesto SOLO por espacios y queda vacío después del trim
+    if (usuario) {
+        //no puede contener espacios en ninguna posición, ejemplo: "hola mundo" no es válido
+        if (!usuario.includes(" ")) {
+            for (let i = 0; i < baseDeDatosCensistas.length && disponible; i++) {
+                const nombre = baseDeDatosCensistas[i].usuario;
+                if (nombre==usuario) {
+                    disponible = false;
+                }
+            }
+            return disponible;
         }
-    }
-    return disponible;
+    } 
+    return -1;
 }
 
 /* 
