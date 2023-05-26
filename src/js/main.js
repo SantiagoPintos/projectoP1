@@ -219,14 +219,7 @@ function registrarCensista(nombre, usuario, contraseña){
     previamente
 */
 function generarIdCensista(){
-    let ultimoIdRegistrado = app.baseDeDatosCensistas.length - 1;
-
-    /* el valor de "ultimoIdRegistrado" será -1 la primera vez que se ejecute, y por decisión de 
-    diseño el id no puede ser negativo, por lo tanto se le asigna el valor 0 */
-    if (ultimoIdRegistrado<0) {
-        ultimoIdRegistrado = 0;
-    }
-    return ultimoIdRegistrado+1
+    return app.baseDeDatosCensistas.length;
 }
 
 /* 
