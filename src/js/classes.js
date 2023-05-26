@@ -24,6 +24,20 @@ class App {
     }
 
     /* 
+        Método que comprueba si existe censo y retorna true(existe)/false(no existe)
+    */
+    existeCenso(ci){
+        let existe = false;
+        for (let i = 0; i < this.baseDeDatosCensos.length && !existe; i++) {
+            const ciAcomparar = this.baseDeDatosCensos[i].ci;
+            if (ci==ciAcomparar) {
+                existe = true;
+            }
+        }
+        return existe;
+    }
+
+    /* 
         Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
         "censado" a "true" y da por finalizado el mismo.
         Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado desede main.js).

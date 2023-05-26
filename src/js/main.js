@@ -2,7 +2,7 @@ window.addEventListener("load", main);
 function main(){
     capturarClicks();
     precargarCensistas();
-    
+    precargarCensos()
 }
 function capturarClicks(){
     document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
@@ -29,6 +29,10 @@ function precargarCensistas(){
     app.crearCensista("Pedro Rodríguez", "pedror", "123aA", generarIdCensista());
     app.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21", generarIdCensista());
     app.crearCensista("Julián Pérez", "juliancitop", "Hola45", generarIdCensista());
+}
+function precargarCensos(){
+    app.nuevoCenso("Usuario Prueba", 20, 49915228, 1, 1, 2);
+    app.confirmarCenso(49915228);
 }
 
 
@@ -120,47 +124,63 @@ function iniciarCenso(){
     const ci = document.querySelector("#cedulaNuevoCenso").value;
     const departamento = Number(document.querySelector("#departamentoNuevoCenso").value);
     const ocupacion = Number(document.querySelector("#ocupacionNuevoCenso").value);
-    let mensajeParrafo = "";
 
+    let mensajeParrafo = realizarCenso(nombre,edad,ci,departamento,ocupacion);
+
+    document.querySelector("#msjRealizarNuevoCenso").innerHTML = mensajeParrafo;
+}
+
+                    /* Funciones de lógica */
+
+/* 
+    Función intermedia que hace todas las verificaciones llamando a funciones específicas para cada 
+    cada elemento y retorna string con mensaje de aprobación/error 
+*/
+function realizarCenso(nombre,edad,ci,departamento,ocupacion){
     //nro ci sin puntos ni guiones
     let nroCiLimpio = limpiarNroCI(ci);
+    let mensaje = "";
     
-    //[TODO]: Mover a función itermedia
     //validar datos
     if (validarNombre(nombre)) {
         //validar edad
         if(validarEdad(edad)){
             //validar ci
             if(validarDigitoVerificadorCI(nroCiLimpio)){
-                //validar que departamento y ocupación no tengan valores por defecto
-                if (departamento!=0) {
-                    if (ocupacion!=0) {
-                        //llamar a función que obtiene el id de censista logueado y genera el censo
-                        app.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, idCensistaLogueado);
-                        if (app.confirmarCenso(nroCiLimpio)) {
-                            mensajeParrafo = "Censo finalizado correctamente"
+                //valida que no exista censo con esa ci
+                if (!app.existeCenso(nroCiLimpio)) {
+                    //validar que departamento y ocupación no tengan valores por defecto
+                    if (departamento!=0) {
+                        if (ocupacion!=0) {
+                            //crea censo
+                            app.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, idCensistaLogueado);
+                            //confima censo cambiando la propiedad "censado" a "true"
+                            if (app.confirmarCenso(nroCiLimpio)) {
+                                mensaje = "Censo finalizado correctamente"
+                            } else {
+                                mensaje = "Algo salió mal";
+                            }
                         } else {
-                            mensajeParrafo = "Algo salió mal";
+                            mensaje = "La ocupación no es válida";
                         }
                     } else {
-                        mensajeParrafo = "La ocupación no es válida";
+                        mensaje = "El departamento no es válido";
                     }
                 } else {
-                    mensajeParrafo = "El departamento no es válido";
+                    mensaje = "Ya existe un censo asociado a la cédula de indentidad";
                 }
             } else {
-                mensajeParrafo = "El número de cédula ingresado no es correcto";
+                mensaje = "El número de cédula ingresado no es correcto";
             }
         } else {
-            mensajeParrafo = "La edad ingresada no es válida";
+            mensaje = "La edad ingresada no es válida";
         }
     } else {
-        mensajeParrafo = "El nombre ingresado no es válido";
+        mensaje = "El nombre ingresado no es válido";
     }
-    document.querySelector("#msjRealizarNuevoCenso").innerHTML = mensajeParrafo;
-}
 
-/* Funciones de lógica */
+    return mensaje
+}
 
 /* 
     Función que valida edad de personas, para el censo
