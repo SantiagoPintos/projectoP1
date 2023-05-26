@@ -2,6 +2,7 @@ window.addEventListener("load", main);
 function main(){
     capturarClicks();
     precargarCensistas();
+    
 }
 function capturarClicks(){
     document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
@@ -12,8 +13,11 @@ function capturarClicks(){
     //checkbox "mostrar contraseña" en registro de nuevo censista 
     document.querySelector("#nuevoMostrarConseñaCensista").addEventListener("click", mostrarContraseñaRegistroCensista);
 
+    //debe ser una función intermedia que muestra la interfaz del censo, y luego "terminar censo" debe generar el censo
+    document.querySelector("#btnRealizarCensoMenuCensista").addEventListener("click", mostrarInterfazCenso);
 
-    document.querySelector("#btnRealizarCensoMenuCensista").addEventListener("click", iniciarCenso);
+    //boton "terminar censo" que pushea datos de censo a bdd
+    document.querySelector("#btnTerminarCenso").addEventListener("click", iniciarCenso);
 }
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
@@ -31,7 +35,7 @@ function precargarCensistas(){
 /* Interfaz */
 
 
-let idCensistaLogueado = 0;
+let idCensistaLogueado = -1;
 //función que controla el inicio de sesión del censista
 function iniciarSesionCensista(){
     //usuario se pasa a minúscula porque en bddcensistas de guardan en minúscula
@@ -102,17 +106,17 @@ function mostrarContraseñaRegistroCensista(){
     }
 }
 
-
+function mostrarInterfazCenso(){
+    //popular el selectores de ocupación y departamento
+    cargarSelectDeDepartamentos("departamentoNuevoCenso");
+    cargarSelectDeOcupacion("ocupacionNuevoCenso");
+}
 /* 
     Función que extrae datos
 */
 function iniciarCenso(){
-    //popular el selectores de ocupación y departamento
-    cargarSelectDeDepartamentos("departamentoNuevoCenso");
-    cargarSelectDeOcupacion("ocupacionNuevoCenso");
-
     const nombre = document.querySelector("#nombreNuevoCenso").value;
-    const edad = Number(document.querySelector("#edadNuevoCenso").value);
+    const edad = document.querySelector("#edadNuevoCenso").value;
     const ci = document.querySelector("#cedulaNuevoCenso").value;
     const departamento = Number(document.querySelector("#departamentoNuevoCenso").value);
     const ocupacion = Number(document.querySelector("#ocupacionNuevoCenso").value);
@@ -121,6 +125,7 @@ function iniciarCenso(){
     //nro ci sin puntos ni guiones
     let nroCiLimpio = limpiarNroCI(ci);
     
+    //[TODO]: Mover a función itermedia
     //validar datos
     if (validarNombre(nombre)) {
         //validar edad
@@ -131,6 +136,12 @@ function iniciarCenso(){
                 if (departamento!=0) {
                     if (ocupacion!=0) {
                         //llamar a función que obtiene el id de censista logueado y genera el censo
+                        app.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, idCensistaLogueado);
+                        if (app.confirmarCenso(nroCiLimpio)) {
+                            mensajeParrafo = "Censo finalizado correctamente"
+                        } else {
+                            mensajeParrafo = "Algo salió mal";
+                        }
                     } else {
                         mensajeParrafo = "La ocupación no es válida";
                     }
@@ -141,7 +152,7 @@ function iniciarCenso(){
                 mensajeParrafo = "El número de cédula ingresado no es correcto";
             }
         } else {
-            mensajeParrafo = "La edad ingresada está fuera de los rangos permitidos";
+            mensajeParrafo = "La edad ingresada no es válida";
         }
     } else {
         mensajeParrafo = "El nombre ingresado no es válido";
@@ -155,16 +166,19 @@ function iniciarCenso(){
     Función que valida edad de personas, para el censo
 */
 function validarEdad(edad){
-    //por precaución controlar nuevamente que edad sea un número 
-    if(Number(edad)){
+    /* 
+        Cubre caso en que el usuario no ingrese nada en el campo "Edad" 
+        la variable edad tendrá un string vacío
+    */
+    if (edad != "" && !isNaN(edad)) {
+        //verificar si es entero?
         if (edad<=130 && edad>=0) {
             return true;
         } else {
             return false;
         }
-    } else {
-        return false;
     }
+    return false
 }
 
 function validarNombre(nombre){
@@ -301,28 +315,32 @@ function validarDigitoVerificadorCI(cedula){
         Referencia obtenida de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number ,
         diferente al mostrado en clase pero pasa todos los casos proporcionados en práctico 5 ejercicio 16
     */
-    let multiplos = [8,1,2,3,4,7,6];
-    const digitoVerificador = cedula.charAt(cedula.length-1);
-    let acumulador = 0;
-    let esValida = false;
+   let multiplos = [8,1,2,3,4,7,6];
+   let acumulador = 0;
+   let esValida = false;
+   
+   if(cedula.length>6 && cedula.length<10){
+        //variable declarada dentro de if para evitar fallo en caso de que ci sea un string vacío
+        const digitoVerificador = cedula.charAt(cedula.length-1);
 
-    if (cedula.length<8) {
-        /* 
-            Si CI<1.000.000 no se debe multiplicar por multiplos[0] (8) 
-            
-            .slice() retorna array con posiciones a elección, por lo tanto se usa
-            1-array.length para "descartar" la primera posición            
-         */
-        multiplos=multiplos.slice(1,multiplos.length);
-    }
-
-    for (let i = 0; i<(cedula.length-1); i++) {
-        const nro = cedula.charAt(i);
-        acumulador+=nro*multiplos[i];
-    }
-    acumulador=acumulador%10;
-    if (acumulador==digitoVerificador) {
-        esValida=true;
+        if (cedula.length<8) {
+            /* 
+                Si CI<1.000.000 no se debe multiplicar por multiplos[0] (8) 
+                
+                .slice() retorna array con posiciones a elección, por lo tanto se usa
+                1-array.length para "descartar" la primera posición            
+             */
+            multiplos=multiplos.slice(1,multiplos.length);
+        }
+    
+        for (let i = 0; i<(cedula.length-1); i++) {
+            const nro = cedula.charAt(i);
+            acumulador+=nro*multiplos[i];
+        }
+        acumulador=acumulador%10;
+        if (acumulador==digitoVerificador) {
+            esValida=true;
+        }
     }
     
     return esValida;

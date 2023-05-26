@@ -10,13 +10,14 @@ class App {
         ya que un censo puede quedar pendiente de validación y por lo tanto solo debe modificarse una vez que este haya 
         sido confirmado por un censista.
     */
-    nuevoCenso(nombre, edad, ci, departamento, ocupacion){
+    nuevoCenso(nombre, edad, ci, departamento, ocupacion, idCensista){
         let generarCenso = new Censo();
         generarCenso.nombre = nombre;
         generarCenso.edad = edad;
         generarCenso.ci = ci;
         generarCenso.departamento = departamento;
         generarCenso.ocupacion = ocupacion;
+        generarCenso.idCensista = idCensista;
 
 
         this.baseDeDatosCensos.push(generarCenso);
@@ -65,6 +66,7 @@ class Censo {
         this.departamento = "";
         this.ocupacion = "";
         this.censado = false;
+        this.idCensista = 0;
     }
 }
 
