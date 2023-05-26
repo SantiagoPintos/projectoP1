@@ -8,6 +8,12 @@ function capturarClicks(){
 
     //función que extrae datos de formulario, falta forma de invocar la aparición de dicho formulario y ocultar el resto
     document.querySelector("#btnRegistrarCensista").addEventListener("click", iniciarRegistroCensista);
+
+    //checkbox "mostrar contraseña" en registro de nuevo censista 
+    document.querySelector("#nuevoMostrarConseñaCensista").addEventListener("click", mostrarContraseñaRegistroCensista);
+
+
+    document.querySelector("#btnRealizarCensoMenuCensista").addEventListener("click", iniciarCenso);
 }
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
@@ -77,8 +83,111 @@ function iniciarRegistroCensista(){
 }
 
 
+/* 
+    Función que controla el checkbox "Mostrar contraseña" de registro de nuevo censista
+*/
+function mostrarContraseñaRegistroCensista(){
+    let estado=document.querySelector("#nuevoContraseñaCensista");
+
+    if (estado.type=="password") {
+        estado.type = "text";
+    } else {
+        estado.type = "password";
+    }
+}
+
+
+/* 
+    Función que extrae datos
+*/
+function iniciarCenso(){
+    //popular el selectores de ocupación y departamento
+    cargarSelectDeDepartamentos("departamentoNuevoCenso");
+    cargarSelectDeOcupacion("ocupacionNuevoCenso");
+
+    const nombre = document.querySelector("#nombreNuevoCenso").value;
+    const edad = Number(document.querySelector("#edadNuevoCenso").value);
+    const ci = document.querySelector("#cedulaNuevoCenso").value;
+    const departamento = Number(document.querySelector("#departamentoNuevoCenso").value);
+    const ocupacion = Number(document.querySelector("#ocupacionNuevoCenso").value);
+    let mensajeParrafo = "";
+
+    //nro ci sin puntos ni guiones
+    let nroCiLimpio = limpiarNroCI(ci);
+    
+    //validar datos
+    if (validarNombre(nombre)) {
+        //validar edad
+        if(validarEdad(edad)){
+            //validar ci
+            if(validarDigitoVerificadorCI(nroCiLimpio)){
+                //validar que departamento y ocupación no tengan valores por defecto
+                if (departamento!=0) {
+                    if (ocupacion!=0) {
+                        //llamar a función que obtiene el id de censista logueado y genera el censo
+                    } else {
+                        mensajeParrafo = "La ocupación no es válida";
+                    }
+                } else {
+                    mensajeParrafo = "El departamento no es válido";
+                }
+            } else {
+                mensajeParrafo = "El número de cédula ingresado no es correcto";
+            }
+        } else {
+            mensajeParrafo = "La edad ingresada está fuera de los rangos permitidos";
+        }
+    } else {
+        mensajeParrafo = "El nombre ingresado no es válido";
+    }
+    document.querySelector("#msjRealizarNuevoCenso").innerHTML = mensajeParrafo;
+}
+
 /* Funciones de lógica */
 
+/* 
+    Función que valida edad de personas, para el censo
+*/
+function validarEdad(edad){
+    //por precaución controlar nuevamente que edad sea un número 
+    if(Number(edad)){
+        if (edad<=130 && edad>=0) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function validarNombre(nombre){
+    let esValido = true;
+    nombre = nombre.trim();
+
+    //controla caso en que nombre sea un string de espacios y quede vacío después de trim
+    if (nombre) {
+        //validar si tiene números
+        for (let i = 0; i < nombre.length && esValido; i++) {
+            const caracter = nombre.charAt(i);
+            //si el caracter encontrado es un número se detiene el loop
+            if (Number(caracter)) {
+                esValido = false;
+            }
+            //TODO:controlar caracteres diferentes a letras (!.-+)
+        }
+    } else {
+        esValido = false;
+    }
+    
+    return esValido;
+}
+
+
+
+/* 
+    Función que adjunta id a los datos extraídos del formulario y llama a método que lo pushea a base de datos
+*/
 function registrarCensista(nombre, usuario, contraseña){
     let nuevaId = generarIdCensista();
     app.crearCensista(nombre, usuario, contraseña, nuevaId);
@@ -215,17 +324,27 @@ function validarDigitoVerificadorCI(cedula){
 
 //recibe por parámetro id de <select> y le agrega departamentos
 function cargarSelectDeDepartamentos(id){
-    const arrayDepartamentos = ["Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", 
+    const arrayDepartamentos = ["Seleccione...", "Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", 
     "Flores", "Florida", "Lavalleja","Maldonado", "Montevideo", "Paysandú", "Río Negro", 
     "Rivera", "Rocha", "Salto", "San José", "Soriano", "Tacuarembó", "Treinta y Trés"];
-    
-    let cargar = `<option value="-1">Seleccione...</option>`;
+    let cargar = ``;
 
     for (let i = 0; i < arrayDepartamentos.length; i++) {
         const departamento = arrayDepartamentos[i];
         cargar += `<option value="${i}">${departamento}</option>`;
     }
-    //falta instrucción para popular select
+    document.querySelector(`#${id}`).innerHTML = cargar;
+}
+
+function cargarSelectDeOcupacion(id){
+    const arrayOcupaciones = ["Seleccione...", "Dependiente", "Independiente", "Estudiante", "No trabaja"];
+    let cargar = ``;
+
+    for (let i = 0; i < arrayOcupaciones.length; i++) {
+        const ocupacion= arrayOcupaciones[i];
+        cargar +=`<option value="${i}">${ocupacion}</option>`;
+    }
+    document.querySelector(`#${id}`).innerHTML = cargar;
 }
 
 /* 

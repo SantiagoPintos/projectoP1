@@ -59,10 +59,10 @@
                 <h2 id="parrafoNombreCensista"></h2>
             </p>
             <p>
-                <input type="button" value="Realizar nuevo censo">
-                <input type="button" value="Validar censos pendientes">
-                <input type="button" value="Reasignar censo">
-                <input type="button" value="Mostrar información estadística">
+                <input type="button" id="btnRealizarCensoMenuCensista" value="Realizar nuevo censo">
+                <input type="button" id="btnValidarCensoMenuCensista" value="Validar censos pendientes">
+                <input type="button" id="btnReasignarCensoMenuCensista" value="Reasignar censo">
+                <input type="button" id="btnMostarInfoMenuCensista" value="Mostrar información estadística">
             </p>
         </div>
 
@@ -70,13 +70,13 @@
             <h2>Realizar nuevo censo</h2>
             <p>
                 <label for="nombreNuevoCenso">Nobre y apellido</label><br>
-                <input type="text" id="nombreNuevoCenso" placeholder="Nombre"><br>
+                <input type="text" id="nombreNuevoCenso" placeholder="Nombre" required><br>
                 <label for="edadNuevoCenso">Edad</label><br>
-                <input type="number" id="edadNuevoCenso" placeholder="Edad"><br>
+                <input type="number" id="cedulaNuevoCenso" placeholder="Edad" required><br>
                 <label for="cedulaNuevoCenso">Cédula de identidad</label><br>
-                <input type="text" id="cedulaNuevoCenso" placeholder="CI"><br>
+                <input type="text" id="cedulaNuevoCenso" placeholder="CI" required><br>
                 <label for="departamentoNuevoCenso">Departamento</label><br>
-                <select id="departamentoNuevoCenso"></select><br>
+                <select id="departamentoNuevoCenso"> </select><br>
                 <label for="ocupacionNuevoCenso">Ocupación</label><br>
                 <select id="ocupacionNuevoCenso"></select><br>
                 <input type="button" value="Terminar censo" id="btnTerminarCenso">
