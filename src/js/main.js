@@ -9,15 +9,8 @@ function capturarClicks(){
     document.querySelector("#btnRegistrarCensista").addEventListener("click", iniciarRegistroCensista);
 }
 
-let baseDeDatosCensistas = new Array();
-let baseDeDatosPersona = new Array();
-let censistaRandom = {
-    nombre: "pedro",
-    usuario: "pedrito75",
-    contraseña: "123452",
-    id: 0,
-}
-baseDeDatosCensistas.push(censistaRandom);
+//aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
+let app = new App();
 
 
 
@@ -72,21 +65,23 @@ function iniciarRegistroCensista(){
 
 function registrarCensista(nombre, usuario, contraseña){
     let nuevaId = generarIdCensista();
-    let nuevoCensista = new Censista();
-    nuevoCensista.cargarDatos(nombre, usuario, contraseña, nuevaId);
-    baseDeDatosCensistas.push(nuevoCensista);
-    console.log("nuevo usuario registrado")
-    console.log(baseDeDatosCensistas[nuevaId]);
+    app.crearCensista(nombre, usuario, contraseña, nuevaId);
+    console.log(`Nuevo censista guardado`);
 }
 
 /* 
     Función que se encarga de generar el id único de cada censista al momento de su registro
-    en la aplicación, retorna un número incremental basado en el valor previo 
+    en la aplicación, retorna un número incremental basado en la cantidad de ids registrados 
+    previamente
 */
 function generarIdCensista(){
-    let ultimoIdRegistrado = 0;
-    if (baseDeDatosCensistas[baseDeDatosCensistas.length-1].id >= 0) {
-        ultimoIdRegistrado = Number(baseDeDatosCensistas[baseDeDatosCensistas.length-1].id);
+    let ultimoIdRegistrado = app.baseDeDatosCensistas.length - 1;
+
+    console.log(app.baseDeDatosCensistas.length);
+    /* el valor de "ultimoIdRegistrado" será -1 la primera vez que se ejecute, y por decisión de 
+    diseño el id no puede ser negativo, por lo tanto se le asigna el valor 0 */
+    if (ultimoIdRegistrado<0) {
+        ultimoIdRegistrado = 0;
     }
     return ultimoIdRegistrado+1
 }
@@ -104,8 +99,8 @@ function validarNombreUsuarioCensista(usuario){
     if (usuario) {
         //no puede contener espacios en ninguna posición, ejemplo: "hola mundo" no es válido
         if (!usuario.includes(" ")) {
-            for (let i = 0; i < baseDeDatosCensistas.length && disponible; i++) {
-                const nombre = baseDeDatosCensistas[i].usuario;
+            for (let i = 0; i < app.baseDeDatosCensistas.length && disponible; i++) {
+                const nombre = app.baseDeDatosCensistas[i].usuario;
                 if (nombre==usuario) {
                     disponible = false;
                 }
@@ -225,15 +220,15 @@ function cargarSelectDeDepartamentos(id){
 */
 function verificarCredenciales(usuario, contraseña){
    /* 
-        usuario y contraseña se deben verificar ante array "baseDeDatosCensistas"
+        usuario y contraseña se deben verificar ante "baseDeDatosCensistas"
         cada elemento es un objeto con usuario y contraseña como propiedades
-        por lo tanto: usuario == (recorrer array)baseDeDatosCensistas.usuario 
+        por lo tanto: usuario == (recorrer array)app.baseDeDatosCensistas.usuario 
     */
     let usuarioEncontrado = false;
     let posicionUsuarioEnArray = 0;
 
-    for (let i = 0; i < baseDeDatosCensistas.length && !usuarioEncontrado; i++) {
-        const usuarioAlmacenado = baseDeDatosCensistas[i].usuario;
+    for (let i = 0; i < app.baseDeDatosCensistas.length && !usuarioEncontrado; i++) {
+        const usuarioAlmacenado = app.baseDeDatosCensistas[i].usuario;
         if (usuarioAlmacenado==usuario) {
             usuarioEncontrado = true;
             posicionUsuarioEnArray = i;
@@ -242,7 +237,7 @@ function verificarCredenciales(usuario, contraseña){
 
     //Solo se debe comprobar la contraseña si el usuario existe
     if (usuarioEncontrado) {
-        if (contraseña==baseDeDatosCensistas[posicionUsuarioEnArray].contraseña) {
+        if (contraseña==app.baseDeDatosCensistas[posicionUsuarioEnArray].contraseña) {
             /* 
                 Si contraseña coincide se retorna el objeto con los datos a parsear en ui.
 
@@ -250,8 +245,8 @@ function verificarCredenciales(usuario, contraseña){
                 no tiene sentido enviar contraseña si no se va a mostrar en ninguna parte 
              */
             return {
-                nombre: baseDeDatosCensistas[posicionUsuarioEnArray].nombre,
-                id: baseDeDatosCensistas[posicionUsuarioEnArray].id,
+                nombre: app.baseDeDatosCensistas[posicionUsuarioEnArray].nombre,
+                id: app.baseDeDatosCensistas[posicionUsuarioEnArray].id,
             };
         }
     }
