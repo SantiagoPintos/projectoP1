@@ -1,0 +1,13 @@
+Censistas precargados:
+1- 
+    Nombre: Pedro Rodríguez 
+    usuario: pedror 
+    contraseña: 123aA
+2- 
+    Nombre: Enzo Hernández
+    usuario: hernandeze 
+    contraseña: Hernandez21
+3-
+    Nombre: Julián Pérez
+    usuario: juliancitop
+    contraseña: Hola45

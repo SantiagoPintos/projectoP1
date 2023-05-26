@@ -1,6 +1,7 @@
 window.addEventListener("load", main);
 function main(){
     capturarClicks();
+    precargarCensistas();
 }
 function capturarClicks(){
     document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
@@ -11,6 +12,14 @@ function capturarClicks(){
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
 let app = new App();
+/* 
+    Función que precarga censistas al inicar la aplicación
+*/
+function precargarCensistas(){
+    app.crearCensista("Pedro Rodríguez", "pedror", "123aA", generarIdCensista());
+    app.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21", generarIdCensista());
+    app.crearCensista("Julián Pérez", "juliancitop", "Hola45", generarIdCensista());
+}
 
 
 /* Interfaz */
@@ -26,7 +35,7 @@ function iniciarSesionCensista(){
 
     if (perfil) {
         //Parsear objeto y mostrar datos
-        document.querySelector("#parrafoNombreCensista").value = `Bienvenido ${perfil.nombre}`;
+        document.querySelector("#parrafoNombreCensista").innerHTML = `Bienvenido ${perfil.nombre}`;
     } else {
         document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
     }
