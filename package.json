@@ -12,9 +12,6 @@
   "author": "spintos@outlook.es",
   "license": "ISC",
   "devDependencies": {
-    "standard": "^17.0.0"
-  },
-  "eslintConfig": {
-    "extends" : "./node_modules/standard/eslintrc.json"
+    "eslint": "^8.41.0"
   }
 }
