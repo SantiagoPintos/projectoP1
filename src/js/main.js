@@ -31,17 +31,23 @@ function precargarCensistas(){
 /* Interfaz */
 
 
-
+let idCensistaLogueado = 0;
 //función que controla el inicio de sesión del censista
 function iniciarSesionCensista(){
     //usuario se pasa a minúscula porque en bddcensistas de guardan en minúscula
     const usuario = document.querySelector("#usuarioCensista").value.toLowerCase();
     const clave = document.querySelector("#contraseñaCensista").value;
+    /* 
+        Perfil puede almacenar un objeto (contiene el nombre del censista y su id,
+        este último es usado al momento de terminar/validar un censo) o "false"
+    */
     const perfil = verificarCredenciales(usuario, clave);
 
     if (perfil) {
         //Parsear objeto y mostrar datos
         document.querySelector("#parrafoNombreCensista").innerHTML = `Bienvenido ${perfil.nombre}`;
+        //TODO: buscar mejor forma de almacenar id de censista fuera de la función
+        idCensistaLogueado = perfil.id;
     } else {
         document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
     }
