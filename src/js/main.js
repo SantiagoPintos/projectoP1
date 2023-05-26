@@ -13,10 +13,14 @@ function capturarClicks(){
 let app = new App();
 
 
+/* Interfaz */
+
+
 
 //función que controla el inicio de sesión del censista
 function iniciarSesionCensista(){
-    const usuario = document.querySelector("#usuarioCensista").value;
+    //usuario se pasa a minúscula porque en bddcensistas de guardan en minúscula
+    const usuario = document.querySelector("#usuarioCensista").value.toLowerCase();
     const clave = document.querySelector("#contraseñaCensista").value;
     const perfil = verificarCredenciales(usuario, clave);
 
@@ -62,6 +66,9 @@ function iniciarRegistroCensista(){
     //mensaje de error/confirmación
     document.querySelector("#msjRegistroCensista").innerHTML = mensajeParaParrafo;
 }
+
+
+/* Funciones de lógica */
 
 function registrarCensista(nombre, usuario, contraseña){
     let nuevaId = generarIdCensista();
