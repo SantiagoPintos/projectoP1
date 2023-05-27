@@ -38,6 +38,23 @@ class App {
     }
 
     /* 
+        Método que recibe la ci de un censo y devuelve su indice en bdd,
+        asume que este ya existe
+    */
+    obtenerIndiceCenso(ci){
+        let indice = 0;
+        let encontrado = false;
+        for (let i = 0; i < this.baseDeDatosCensos.length && !encontrado; i++) {
+            const elemento = this.baseDeDatosCensos[i].ci;
+            if (elemento==ci) {
+                indice=i;
+                encontrado=true;
+            }
+        }
+        return indice;
+    }
+
+    /* 
         Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
         "censado" a "true" y da por finalizado el mismo.
         Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado desede main.js).

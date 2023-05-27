@@ -18,6 +18,9 @@ function capturarClicks(){
 
     //boton "terminar censo" que pushea datos de censo a bdd
     document.querySelector("#btnTerminarCenso").addEventListener("click", iniciarCenso);
+    
+    //botón para buscar cédula en sección "validación de censo"
+    document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", validacionDeCenso);
 }
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
@@ -110,11 +113,16 @@ function mostrarContraseñaRegistroCensista(){
     }
 }
 
+/* 
+    Llama a funciones que cargan los valores de <select> departamento y ocupación
+*/
 function mostrarInterfazCenso(){
     //popular el selectores de ocupación y departamento
     cargarSelectDeDepartamentos("departamentoNuevoCenso");
     cargarSelectDeOcupacion("ocupacionNuevoCenso");
 }
+
+
 /* 
     Función que extrae datos
 */
@@ -129,6 +137,36 @@ function iniciarCenso(){
 
     document.querySelector("#msjRealizarNuevoCenso").innerHTML = mensajeParrafo;
 }
+
+/*  
+    funcion que extrae ci de sección "validar censo"
+*/
+function validacionDeCenso(){
+    const ci = document.querySelector("#ciValidarCenso").value;
+    const ciLimpia = limpiarNroCI(ci);
+    let mensaje = "";
+    if (validarDigitoVerificadorCI(ciLimpia)) {
+        //si ci es válida se procede a buscar su existencia en bdd
+        if (app.existeCenso(ciLimpia)) {
+            //Se obtiene índice de censo en bdd y se verifica estado de prop "censado"
+            let indice = app.obtenerIndiceCenso(ciLimpia)
+            if (app.baseDeDatosCensos[indice].censado == false) {
+                //aún no está validado
+                //mostrar UI y completar campos
+                console.log("no verificado");
+            } else {
+                mensaje = "El censo ya fue validado";
+            }
+        } else {
+            mensaje = "No existe un censo asociado esa cédula";
+        }
+    } else {
+        mensaje = "El número de cédula no es válido";
+    }
+    document.querySelector("#msjBusquedaValidarCenso").innerHTML = mensaje;
+}
+
+
 
                     /* Funciones de lógica */
 
@@ -201,6 +239,12 @@ function validarEdad(edad){
     return false
 }
 
+
+/* 
+    Función que valida nombre ingresado
+    verifica que no tenga números 
+    TODO: verificar otros caracteres no-letras
+*/
 function validarNombre(nombre){
     let esValido = true;
     nombre = nombre.trim();
@@ -222,6 +266,8 @@ function validarNombre(nombre){
     
     return esValido;
 }
+
+
 
 
 
@@ -322,7 +368,7 @@ function limpiarNroCI(cedula){
     }
 }
 
-//valida digito verificador
+//valida digito verificador y retorna true o false
 function validarDigitoVerificadorCI(cedula){
     /*
         Referencia obtenida de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number ,
