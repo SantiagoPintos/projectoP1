@@ -167,10 +167,18 @@ function iniciarValidacionDeCenso(){
             //referencia: https://www.w3schools.com/jsref/prop_select_selectedindex.asp
             document.querySelector("#formValidarCensoDepartamentoPersona").selectedIndex = censo.departamento;
             
-            cargarSelectDeOcupacion("formValidarCensoOcupacionPesrona");
-            document.querySelector("#formValidarCensoOcupacionPesrona").selectedIndex = censo.ocupacion;
+            cargarSelectDeOcupacion("formValidarCensoOcupacionPersona");
+            document.querySelector("#formValidarCensoOcupacionPersona").selectedIndex = censo.ocupacion;
 
-            //llamar a función que verifica si se cambiaron datos y los guarda en bb
+            //llamada a función que verifica si hubo modificaciones, valida y guarda en bdd
+            if (censoFueModificado({
+                nombre: document.querySelector("#formValidarCensoNombrePersona").value,
+                edad: document.querySelector("#formValidarCensoEdadPersona").value,
+                departamento: document.querySelector("#formValidarCensoDepartamentoPersona").value,
+                ocupacion: document.querySelector("#formValidarCensoOcupacionPersona").value,
+            }, indiceCenso)) {
+                //censo fue modificado
+            }
         } else if (censoEstaValidado(ciLimpia) == true){
             //censo ya fue validado
             mensaje = "El censo asociado a esta cédula de indentidad ya fue validado";
@@ -187,6 +195,25 @@ function iniciarValidacionDeCenso(){
 
 
                     /* Funciones de lógica */
+
+/* 
+    Función que comprueba si hubo modificaciones en datos de censo, es llamada desde iniciarValidacionDeCenso()
+    recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios) false (no hubo cambios)
+*/
+
+function censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
+    const datos = {
+        nombre: nombre,
+        edad: edad,
+        departamento: departamento,
+        ocupacion: ocupacion,
+    }
+    //datosOriginales es objeto
+    const datosOriginales = app.baseDeDatosCensos[indice];
+
+    //comparar datos con datosOriginales y si todo es igual retornar false
+    //falta crear método para modificar censos
+}
 
 
 /* 
