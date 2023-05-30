@@ -34,7 +34,7 @@ function precargarCensistas(){
     app.crearCensista("Julián Pérez", "juliancitop", "Hola45", generarIdCensista());
 }
 function precargarCensos(){
-    app.nuevoCenso("Usuario Prueba", 20, 49915228, 1, 1, 2);
+    app.nuevoCenso("Usuario Prueba", 20, 49915228, 2, 3, 2);
     //app.confirmarCenso(49915228);
 }
 
@@ -152,7 +152,25 @@ function iniciarValidacionDeCenso(){
             //se tiene que llamar a función que muestre formulario, otra que traiga los datos asociados a c/u de los campos
             //y se agregue el eventlistener del botón para validar
             console.log("censo no está validado, cargando datos a formulario");
-            //traer datos de censo y mostrar en formulario
+            //obtener y mostrar en formulario datos de censo
+            const indiceCenso = app.obtenerIndiceCenso(ciLimpia);
+            const censo = app.baseDeDatosCensos[indiceCenso];
+
+            document.querySelector("#formValidarCensoNombrePersona").value += censo.nombre;
+            document.querySelector("#formValidarCensoEdadPersona").value += censo.edad;
+            document.querySelector("#formValidarCensoCiPersona").value += censo.ci;
+            //popular select departamento y edad
+
+            //carga select con departamentos y muestra opción por defecto
+            cargarSelectDeDepartamentos("formValidarCensoDepartamentoPersona");
+            //selectedIndex establece la opción por defecto en select
+            //referencia: https://www.w3schools.com/jsref/prop_select_selectedindex.asp
+            document.querySelector("#formValidarCensoDepartamentoPersona").selectedIndex = censo.departamento;
+            
+            cargarSelectDeOcupacion("formValidarCensoOcupacionPesrona");
+            document.querySelector("#formValidarCensoOcupacionPesrona").selectedIndex = censo.ocupacion;
+
+            //llamar a función que verifica si se cambiaron datos y los guarda en bb
         } else if (censoEstaValidado(ciLimpia) == true){
             //censo ya fue validado
             mensaje = "El censo asociado a esta cédula de indentidad ya fue validado";
