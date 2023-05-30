@@ -20,7 +20,7 @@ function capturarClicks(){
     document.querySelector("#btnTerminarCenso").addEventListener("click", iniciarCenso);
     
     //botón para buscar cédula en sección "validación de censo"
-    document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", validacionDeCenso);
+    document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", iniciarValidacionDeCenso);
 }
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
@@ -35,7 +35,7 @@ function precargarCensistas(){
 }
 function precargarCensos(){
     app.nuevoCenso("Usuario Prueba", 20, 49915228, 1, 1, 2);
-    app.confirmarCenso(49915228);
+    //app.confirmarCenso(49915228);
 }
 
 
@@ -139,26 +139,26 @@ function iniciarCenso(){
 }
 
 /*  
-    funcion que extrae ci de sección "validar censo"
+    funcion que extrae ci de sección "validar censo" y llama a función que la procesa 
 */
-function validacionDeCenso(){
+function iniciarValidacionDeCenso(){
     const ci = document.querySelector("#ciValidarCenso").value;
     const ciLimpia = limpiarNroCI(ci);
     let mensaje = "";
     if (validarDigitoVerificadorCI(ciLimpia)) {
         //si ci es válida se procede a buscar su existencia en bdd
-        if (app.existeCenso(ciLimpia)) {
-            //Se obtiene índice de censo en bdd y se verifica estado de prop "censado"
-            let indice = app.obtenerIndiceCenso(ciLimpia)
-            if (app.baseDeDatosCensos[indice].censado == false) {
-                //aún no está validado
-                //mostrar UI y completar campos
-                console.log("no verificado");
-            } else {
-                mensaje = "El censo ya fue validado";
-            }
+        if (censoEstaValidado(ciLimpia) == false) {
+            //censo aún no está validado
+            //se tiene que llamar a función que muestre formulario, otra que traiga los datos asociados a c/u de los campos
+            //y se agregue el eventlistener del botón para validar
+            console.log("censo no está validado, cargando datos a formulario");
+            //traer datos de censo y mostrar en formulario
+        } else if (censoEstaValidado(ciLimpia) == true){
+            //censo ya fue validado
+            mensaje = "El censo asociado a esta cédula de indentidad ya fue validado";
         } else {
-            mensaje = "No existe un censo asociado esa cédula";
+            //censo no existe 
+            mensaje = "No hay censo asociado a la cédula de indentidad";
         }
     } else {
         mensaje = "El número de cédula no es válido";
@@ -169,6 +169,30 @@ function validacionDeCenso(){
 
 
                     /* Funciones de lógica */
+
+
+/* 
+    Función que recibe ci de formulario de validación de censo y comprueba si el censo asociado está validado.
+    Si censo está validado retorna true, si está pendiente retorna false y si no hay censo
+    asociado a esa ci retorna -1
+*/
+function censoEstaValidado(ci){
+    if (app.existeCenso(ci)) {
+        //Se obtiene índice de censo en bdd y se verifica estado de prop "censado"
+        const indice = app.obtenerIndiceCenso(ci);
+        if (app.baseDeDatosCensos[indice].censado == false) {
+            //aún no está validado
+            //mostrar UI y completar campos
+            return false;
+        } else {
+            //censo ya fue validado
+            return true;
+        }
+    } else {
+        //no hay censo asociado a esa ci
+        return -1;
+    }
+}
 
 /* 
     Función intermedia que hace todas las verificaciones llamando a funciones específicas para cada 

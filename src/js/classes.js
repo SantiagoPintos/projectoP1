@@ -18,7 +18,7 @@ class App {
         generarCenso.departamento = departamento;
         generarCenso.ocupacion = ocupacion;
         generarCenso.idCensista = idCensista;
-
+        //no se incluye propiedad "censado" porque está declarada como falsa por defecto
 
         this.baseDeDatosCensos.push(generarCenso);
     }
