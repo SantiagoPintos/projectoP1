@@ -202,11 +202,12 @@ function iniciarValidacionDeCenso(){
 */
 
 function censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
-    const datos = {
-        nombre: nombre,
-        edad: edad,
-        departamento: departamento,
-        ocupacion: ocupacion,
+    const nuevosDatos = {
+        //es lo mismo que nombre: nombre,
+        nombre,
+        edad,
+        departamento,
+        ocupacion,
     }
     //datosOriginales es objeto
     const datosOriginales = app.baseDeDatosCensos[indice];
