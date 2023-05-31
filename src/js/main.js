@@ -21,6 +21,9 @@ function capturarClicks(){
     
     //botón para buscar cédula en sección "validación de censo"
     document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", iniciarValidacionDeCenso);
+
+    //botón "validar" en sección validar censo, funciones comprueban si hubo cambio en censo y lo validan
+    document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", finalizarValidacionDeCenso);
 }
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
@@ -170,6 +173,8 @@ function iniciarValidacionDeCenso(){
             cargarSelectDeOcupacion("formValidarCensoOcupacionPersona");
             document.querySelector("#formValidarCensoOcupacionPersona").selectedIndex = censo.ocupacion;
 
+            //TODO: Pasar a finalizarValidacionDeCenso() que se ejecuta al presionar boton validar, 
+            //buscar forma de pasarle indice y/o ciLimpia
             //llamada a función que verifica si hubo modificaciones, valida y guarda en bdd
             if (censoFueModificado({
                 nombre: document.querySelector("#formValidarCensoNombrePersona").value,
@@ -178,6 +183,10 @@ function iniciarValidacionDeCenso(){
                 ocupacion: document.querySelector("#formValidarCensoOcupacionPersona").value,
             }, indiceCenso)) {
                 //censo fue modificado
+                
+            } else {
+                //censo no fue modificado
+                console.log("Censo no fue modificado!")
             }
         } else if (censoEstaValidado(ciLimpia) == true){
             //censo ya fue validado
@@ -192,6 +201,13 @@ function iniciarValidacionDeCenso(){
     document.querySelector("#msjBusquedaValidarCenso").innerHTML = mensaje;
 }
 
+/* 
+    Función que se ejecuta al presionar botón "Validar" en sección "Validar Censo",
+    extrae datos desde campos de texto e invoca a censoFueModificado()
+*/
+function finalizarValidacionDeCenso(){
+
+}
 
 
                     /* Funciones de lógica */
@@ -212,8 +228,15 @@ function censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
     //datosOriginales es objeto
     const datosOriginales = app.baseDeDatosCensos[indice];
 
-    //comparar datos con datosOriginales y si todo es igual retornar false
-    //falta crear método para modificar censos
+    if(nuevosDatos.departamento == datosOriginales.nombre
+        && nuevosDatos.edad == datosOriginales.edad
+        && nuevosDatos.departamento == datosOriginales.departamento
+        && nuevosDatos.ocupacion == datosOriginales.ocupacion){
+            //no hay modificaciones en el censo
+            return false;
+    } else {
+        //hay modificaciones en el censo, crear método para agregarlas
+    }
 }
 
 
