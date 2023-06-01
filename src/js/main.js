@@ -60,6 +60,9 @@ function ocultarPendientesValidacion(){
 function ocultarEstadisticasCensista(){
     document.querySelector("#visualizarEstadisticasCensista").style.display = "none";
 }
+function ocultarLoginCensista(){
+    document.querySelector("#loginCensista").style.display = "none";
+}
 function mostrarAppCensista(){
     ocultarSeleccionUsuario();
     document.querySelector("#aplicacionCensista").style.display = "block";
@@ -73,6 +76,9 @@ function mostrarAppCensista(){
 }
 function mostrarLoginCensista(){
     document.querySelector("#loginCensista").style.display = "block";
+}
+function mostrarMenuOpcionesCensista(){
+    document.querySelector("#menuCensista").style.display = "block";
 }
 
 
@@ -96,7 +102,6 @@ function precargarCensos(){
 /* Interfaz */
 
 
-let idCensistaLogueado = -1;
 //función que controla el inicio de sesión del censista
 function iniciarSesionCensista(){
     //usuario se pasa a minúscula porque en bddcensistas de guardan en minúscula
@@ -107,12 +112,10 @@ function iniciarSesionCensista(){
         este último es usado al momento de terminar/validar un censo) o "false"
     */
     const perfil = app.verificarCredenciales(usuario, clave);
-
     if (perfil) {
-        //Parsear objeto y mostrar datos
-        document.querySelector("#parrafoNombreCensista").innerHTML = `Bienvenido ${perfil.nombre}`;
-        //TODO: buscar mejor forma de almacenar id de censista fuera de la función
-        idCensistaLogueado = perfil.id;
+        //Mostrar menú censista
+        ocultarLoginCensista();
+        mostrarMenuOpcionesCensista();
     } else {
         document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
     }

@@ -1,8 +1,9 @@
 class App {
     constructor(){
-        //array que almacena todos los censos realizados
         this.baseDeDatosCensos = [];
         this.baseDeDatosCensistas = [];
+
+        this.censistaLogueado = null;
     }
 
     /* 
@@ -88,37 +89,17 @@ class App {
     }
 
     verificarCredenciales(usuario, contraseña){
-        /* 
-             usuario y contraseña se deben verificar ante "baseDeDatosCensistas"
-             cada elemento es un objeto con usuario y contraseña como propiedades
-             por lo tanto: usuario == (recorrer array)app.baseDeDatosCensistas.usuario 
-         */
-         let usuarioEncontrado = false;
-         let posicionUsuarioEnArray = 0;
-     
-         for (let i = 0; i < this.baseDeDatosCensistas.length && !usuarioEncontrado; i++) {
-             const usuarioAlmacenado = this.baseDeDatosCensistas[i].usuario;
-             if (usuarioAlmacenado==usuario) {
-                 usuarioEncontrado = true;
-                 posicionUsuarioEnArray = i;
-             }
-         }
-     
-         //Solo se debe comprobar la contraseña si el usuario existe
-         if (usuarioEncontrado) {
-             if (contraseña==this.baseDeDatosCensistas[posicionUsuarioEnArray].contraseña) {
-                 /* 
-                     Si contraseña coincide se retorna el objeto con los datos a parsear en ui.
-     
-                     Se retorna nuevo objeto con propiedades necesarias para la interfaz, ej:
-                     no tiene sentido enviar contraseña si no se va a mostrar en ninguna parte 
-                  */
-                 return this.baseDeDatosCensistas[posicionUsuarioEnArray];
-             }
-         }
-     
-         return false;
-     }
+         let credencialesCorrectas = false;
+         for (let i = 0; i < this.baseDeDatosCensos.length && !credencialesCorrectas; i++) {
+            const censista = this.baseDeDatosCensistas[i];
+            if (censista.usuario==usuario && censista.contraseña == contraseña) {
+                credencialesCorrectas = true;
+                this.censistaLogueado = usuario;
+            }
+        }   
+
+        return credencialesCorrectas;
+    }
 
 }
 
