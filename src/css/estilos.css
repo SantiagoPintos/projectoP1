@@ -1,7 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz@8..144&display=swap');
-
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
 .clearfix {
-  display: block;
+  display: inline-block;
+}
+* html .clearfix {
+    height: 1%;
+}
+  
+.clearfix {
+    display: block;
 }
 
 body {
@@ -12,6 +26,15 @@ body {
     width: 800px;
     background-color: #6C66AC;
     margin: 0 auto;
+}
+#cabecera {
+    background-color: #303036;
+}
+#logo {
+    margin: 20px;
+    float: left;
+    width: 100px;
+    float: left;
 }
 input[type="button"] {
     background-color: #303036;
@@ -48,12 +71,6 @@ h6 {
 }
 #cabecera {
     background-color: #303036;
-}
-#logo {
-    margin: 20px;
-    float: left;
-    width: 100px;
-    float: left;
 }
 table, th, td{
     border-collapse:collapse;
