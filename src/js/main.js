@@ -106,7 +106,7 @@ function iniciarSesionCensista(){
         Perfil puede almacenar un objeto (contiene el nombre del censista y su id,
         este último es usado al momento de terminar/validar un censo) o "false"
     */
-    const perfil = verificarCredenciales(usuario, clave);
+    const perfil = app.verificarCredenciales(usuario, clave);
 
     if (perfil) {
         //Parsear objeto y mostrar datos
