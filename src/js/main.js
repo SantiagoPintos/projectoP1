@@ -1,10 +1,14 @@
 window.addEventListener("load", main);
 function main(){
+    ocultarAppCensista();    
+    ocultarAppUsuario();    
     capturarClicks();
     precargarCensistas();
     precargarCensos()
 }
 function capturarClicks(){
+    document.querySelector("#btnUsuarioCensista").addEventListener("click", mostrarAppCensista);
+
     document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
 
     //función que extrae datos de formulario, falta forma de invocar la aparición de dicho formulario y ocultar el resto
@@ -25,6 +29,53 @@ function capturarClicks(){
     //botón "validar" en sección validar censo, funciones comprueban si hubo cambio en censo y lo validan
     document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", finalizarValidacionDeCenso);
 }
+
+/* 
+    Funciones para mostrar/ocultar diferentes interfaces
+*/
+function ocultarSeleccionUsuario(){
+    document.querySelector("#seleccionUsuario").style.display = "none";
+}
+function ocultarAppUsuario(){
+    document.querySelector("#aplicacionPersona").style.display = "none";
+}
+function ocultarAppCensista(){
+    document.querySelector("#aplicacionCensista").style.display = "none";
+}
+function ocultarFormularioRegistroCensista(){
+    document.querySelector("#formularioRegistroCensista").style.display = "none";
+}
+function ocultarMenuOpcionesCensista(){
+    document.querySelector("#menuCensista").style.display = "none";
+}
+function ocultarNuevoCensoCensista(){
+    document.querySelector("#realizarNuevoCenso").style.display = "none";
+}
+function ocultarValidarCenso(){
+    document.querySelector("#validarCenso").style.display = "none";
+}
+function ocultarPendientesValidacion(){
+    document.querySelector("#CensosPendientesDeValidacion").style.display = "none";
+}
+function ocultarEstadisticasCensista(){
+    document.querySelector("#visualizarEstadisticasCensista").style.display = "none";
+}
+function mostrarAppCensista(){
+    ocultarSeleccionUsuario();
+    document.querySelector("#aplicacionCensista").style.display = "block";
+    mostrarLoginCensista();
+    ocultarFormularioRegistroCensista();
+    ocultarMenuOpcionesCensista();
+    ocultarNuevoCensoCensista();
+    ocultarValidarCenso();
+    ocultarPendientesValidacion();
+    ocultarEstadisticasCensista();
+}
+function mostrarLoginCensista(){
+    document.querySelector("#loginCensista").style.display = "block";
+}
+
+
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
 let app = new App();
