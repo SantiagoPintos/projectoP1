@@ -17,6 +17,8 @@ function capturarClicks(){
     //checkbox "mostrar contraseña" en registro de nuevo censista 
     document.querySelector("#nuevoMostrarConseñaCensista").addEventListener("click", mostrarContraseñaRegistroCensista);
 
+    document.querySelector("#btnCerrarSesionCensista").addEventListener("click", cerrarSesionCensista);
+
     //debe ser una función intermedia que muestra la interfaz del censo, y luego "terminar censo" debe generar el censo
     document.querySelector("#btnRealizarCensoMenuCensista").addEventListener("click", mostrarInterfazCenso);
 
@@ -28,6 +30,7 @@ function capturarClicks(){
 
     //botón "validar" en sección validar censo, funciones comprueban si hubo cambio en censo y lo validan
     document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", finalizarValidacionDeCenso);
+
 }
 
 /* 
@@ -73,6 +76,9 @@ function mostrarAppCensista(){
     ocultarValidarCenso();
     ocultarPendientesValidacion();
     ocultarEstadisticasCensista();
+}
+function mostrarSeleccionUsuario(){
+    document.querySelector("#seleccionUsuario").style.display = "block";
 }
 function mostrarLoginCensista(){
     document.querySelector("#loginCensista").style.display = "block";
@@ -127,6 +133,13 @@ function iniciarSesionCensista(){
 
     document.querySelector("#usuarioCensista").value = "";
     document.querySelector("#contraseñaCensista").value = "";
+}
+
+function cerrarSesionCensista(){
+    app.cerrarSesion();
+    ocultarAppCensista();
+    ocultarAppUsuario();
+    mostrarSeleccionUsuario();
 }
 
 /* 

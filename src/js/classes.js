@@ -101,6 +101,10 @@ class App {
         return credencialesCorrectas;
     }
 
+    cerrarSesion(){
+        this.censistaLogueado = null;
+    }
+
 }
 
 class Censo {
