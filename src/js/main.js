@@ -160,7 +160,8 @@ function iniciarRegistroCensista(){
     const nombreDeUsuario = (document.querySelector("#nuevoUsuarioCensista").value).toLowerCase();
     const contraseña = document.querySelector("#nuevoContraseñaCensista").value;
     let mensajeParaParrafo = "";
-    const validacionUsuario = validarNombreUsuarioCensista(nombreDeUsuario);
+    const validacionUsuario = app.validarNombreUsuario(nombreDeUsuario);
+    console.log(`validacionUsuario: ${validacionUsuario}`)
     
     if(validacionUsuario==true){
         //si nombre de usuario es válido se llama a función que valida contraseña
@@ -460,31 +461,6 @@ function generarIdCensista(){
 }
 
 /* 
-    Comprueba si el nombre de usuario elegido por el censista durante el proceso de registro está disponible
-    en array baseDeDatosCensistas, retorna true, false ó -1 en caso de ser inválido
-*/
-function validarNombreUsuarioCensista(usuario){
-    let disponible = true;
-    //Elimina posibles espacios al inicio/final
-    usuario=usuario.trim();
-    
-    //maneja caso en que usuario está compuesto SOLO por espacios y queda vacío después del trim
-    if (usuario) {
-        //no puede contener espacios en ninguna posición, ejemplo: "hola mundo" no es válido
-        if (!usuario.includes(" ")) {
-            for (let i = 0; i < app.baseDeDatosCensistas.length && disponible; i++) {
-                const nombre = app.baseDeDatosCensistas[i].usuario;
-                if (nombre==usuario) {
-                    disponible = false;
-                }
-            }
-            return disponible;
-        }
-    } 
-    return -1;
-}
-
-/* 
     Verifica que la contraseña cumpla con los siguientes requisitos:
     - Mínimo 5 caracteres
     - Al menos 1 mayúscula
@@ -599,44 +575,4 @@ function cargarSelectDeOcupacion(id){
         cargar +=`<option value="${i}">${ocupacion}</option>`;
     }
     document.querySelector(`#${id}`).innerHTML = cargar;
-}
-
-/* 
-    verifica si usuario y contraseña de censista son correctos, es llamada desde iniciarSesionCensista,
-    retorna objeto con datos o false
-*/
-function verificarCredenciales(usuario, contraseña){
-   /* 
-        usuario y contraseña se deben verificar ante "baseDeDatosCensistas"
-        cada elemento es un objeto con usuario y contraseña como propiedades
-        por lo tanto: usuario == (recorrer array)app.baseDeDatosCensistas.usuario 
-    */
-    let usuarioEncontrado = false;
-    let posicionUsuarioEnArray = 0;
-
-    for (let i = 0; i < app.baseDeDatosCensistas.length && !usuarioEncontrado; i++) {
-        const usuarioAlmacenado = app.baseDeDatosCensistas[i].usuario;
-        if (usuarioAlmacenado==usuario) {
-            usuarioEncontrado = true;
-            posicionUsuarioEnArray = i;
-        }
-    }
-
-    //Solo se debe comprobar la contraseña si el usuario existe
-    if (usuarioEncontrado) {
-        if (contraseña==app.baseDeDatosCensistas[posicionUsuarioEnArray].contraseña) {
-            /* 
-                Si contraseña coincide se retorna el objeto con los datos a parsear en ui.
-
-                Se retorna nuevo objeto con propiedades necesarias para la interfaz, ej:
-                no tiene sentido enviar contraseña si no se va a mostrar en ninguna parte 
-             */
-            return {
-                nombre: app.baseDeDatosCensistas[posicionUsuarioEnArray].nombre,
-                id: app.baseDeDatosCensistas[posicionUsuarioEnArray].id,
-            };
-        }
-    }
-
-    return false;
 }

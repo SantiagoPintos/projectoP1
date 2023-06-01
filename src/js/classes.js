@@ -105,6 +105,30 @@ class App {
         this.censistaLogueado = null;
     }
 
+    /* 
+        Comprueba si el nombre de usuario elegido por el censista durante el proceso de registro está disponible
+        en baseDeDatosCensistas, retorna true, false ó -1 en caso de ser inválido
+    */
+    validarNombreUsuario(usuario){
+        let disponible = true;
+        //Elimina posibles espacios al inicio/final
+        usuario=usuario.trim();
+        //maneja caso en que usuario está compuesto SOLO por espacios y queda vacío después del trim
+        if (usuario) {
+            //no puede contener espacios en ninguna posición, ejemplo: "hola mundo" no es válido
+            if (!usuario.includes(" ")) {
+                for (let i = 0; i < this.baseDeDatosCensistas.length && disponible; i++) {
+                    const nombre = this.baseDeDatosCensistas[i].usuario;
+                    if (nombre==usuario) {
+                        disponible = false;
+                    }
+                }
+                return disponible;
+            }
+        } 
+        return -1;
+    }
+
 }
 
 class Censo {
