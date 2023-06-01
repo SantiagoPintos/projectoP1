@@ -10,6 +10,8 @@ function capturarClicks(){
     document.querySelector("#btnUsuarioCensista").addEventListener("click", mostrarAppCensista);
 
     document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
+    document.querySelector("#btnRegistroCensista").addEventListener("click", registroCensista);
+    
 
     //función que extrae datos de formulario, falta forma de invocar la aparición de dicho formulario y ocultar el resto
     document.querySelector("#btnRegistrarCensista").addEventListener("click", iniciarRegistroCensista);
@@ -86,6 +88,9 @@ function mostrarLoginCensista(){
 function mostrarMenuOpcionesCensista(){
     document.querySelector("#menuCensista").style.display = "block";
 }
+function mostrarFormularioRegistroCensista(){
+    document.querySelector("#formularioRegistroCensista").style.display = "block";
+}
 
 
 
@@ -140,6 +145,11 @@ function cerrarSesionCensista(){
     ocultarAppCensista();
     ocultarAppUsuario();
     mostrarSeleccionUsuario();
+}
+
+function registroCensista(){
+    ocultarLoginCensista();
+    mostrarFormularioRegistroCensista();
 }
 
 /* 
