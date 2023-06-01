@@ -116,6 +116,7 @@ function iniciarSesionCensista(){
         //Mostrar menú censista
         ocultarLoginCensista();
         mostrarMenuOpcionesCensista();
+        document.querySelector("#parrafoNombreCensista").innerHTML = `Bienvenido ${app.censistaLogueado.nombre}`
     } else {
         document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
     }

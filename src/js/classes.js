@@ -94,7 +94,7 @@ class App {
             const censista = this.baseDeDatosCensistas[i];
             if (censista.usuario==usuario && censista.contraseña == contraseña) {
                 credencialesCorrectas = true;
-                this.censistaLogueado = usuario;
+                this.censistaLogueado = this.baseDeDatosCensistas[i];
             }
         }   
 
