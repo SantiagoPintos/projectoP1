@@ -5,314 +5,317 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplicación - censo</title>
+    <link rel="stylesheet" href="css/estilos.css">
     <script src="js/classes.js"></script>
     <script src="js/main.js"></script>
 </head>
 <body>
-    <div id="seleccionUsuario">
-        <p>
-            <h2>Iniciar sesión</h2>
-            <label>Seleccione el tipo de usuario</label><br>
-            
-            <input type="button" value="Persona" id="btnUsuarioPersona">
-            <input type="button" value="Censista" id="btnUsuarioCensista">
-        </p>
-    </div><!-- seleccionUsuario -->
-    <div id="aplicacionCensista">
-        <div id="loginCensista">
-            <h2>Aplicación para censistas</h2>
-            <label for="usuarioCensista">Usuario: </label>
-            <input type="text" id="usuarioCensista"><br>
-            <label for="contraseñaCensista">Contraseña: </label>
-            <input type="password" id="contraseñaCensista"><br>
-            <input type="button" value="Iniciar Sesión" id="btnIniciarSesionCensista">
-            <p id="msjLoginCensista"></p>
-            <div id="promptRegistrarCensista">
+    <div id="contenedor" class="clearfix">
+        <div id="seleccionUsuario">
+            <p>
+                <h2>Iniciar sesión</h2>
+                <label>Seleccione el tipo de usuario</label><br>
+                
+                <input type="button" value="Persona" id="btnUsuarioPersona">
+                <input type="button" value="Censista" id="btnUsuarioCensista">
+            </p>
+        </div><!-- seleccionUsuario -->
+        <div id="aplicacionCensista">
+            <div id="loginCensista">
+                <h2>Aplicación para censistas</h2>
+                <label for="usuarioCensista">Usuario: </label>
+                <input type="text" id="usuarioCensista"><br>
+                <label for="contraseñaCensista">Contraseña: </label>
+                <input type="password" id="contraseñaCensista"><br>
+                <input type="button" value="Iniciar Sesión" id="btnIniciarSesionCensista">
+                <p id="msjLoginCensista"></p>
+                <div id="promptRegistrarCensista">
+                    <p>
+                        <label for="btnRegistroCensista">¿No está registrado?</label>
+                        <input type="button" value="Registrarse" id="btnRegistroCensista">
+                    </p>
+                </div>
+            </div>
+            <!--separacion de divs para ocultar campo de inicio de sesión desde js en caso de que no esté registrado-->
+                <div id="formularioRegistroCensista">
+                    <h2>Registro de nuevo censista</h2>
+                    <p>     
+                        <form action="#">
+                            <label for="nuevoNombreCensista">Ingrese su nombre y apellido</label><br>
+                            <input type="text" id="nuevoNombreCensista" placeholder="Nombre completo" required><br>
+                            <label for="nuevoUsuarioCensista">Ingrese nombre de usuario</label><br>
+                            <input type="text" id="nuevoUsuarioCensista" placeholder="Nombre de usuario" required><br>
+                            <label for="nuevoContraseñaCensista">Contraseña (Mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número)</label><br>
+                            <input type="password" id="nuevoContraseñaCensista" placeholder="Contraseña" required><br>
+                            <input type="checkbox" id="nuevoMostrarConseñaCensista">Mostrar contraseña <br>
+                            <input type="button" id="btnRegistrarCensista" value="Registrarse">
+                        </form>               
+                        </p>
+                    <p id="msjRegistroCensista"></p>
+                </div>
+
+            <div id="menuCensista">
+                <p id="parrafoTituloAppCensista">
+                    <!-- "parrafoNombreCensista" se usa para dar la bienvenida
+                    al censista una vez inicia sesión, ej: Bienvenido Pedro -->
+                    <h2 id="parrafoNombreCensista"></h2>
+                </p>
                 <p>
-                    <label for="btnRegistrarCensista">¿No está registrado?</label>
-                    <input type="button" value="Registrarse" id="btnRegistroCensista">
+                    <input type="button" id="btnRealizarCensoMenuCensista" value="Realizar nuevo censo">
+                    <input type="button" id="btnValidarCensoMenuCensista" value="Validar censos pendientes">
+                    <input type="button" id="btnReasignarCensoMenuCensista" value="Reasignar censo">
+                    <input type="button" id="btnMostarInfoMenuCensista" value="Mostrar información estadística">
                 </p>
             </div>
-        </div>
-        <!--separacion de divs para ocultar campo de inicio de sesión desde js en caso de que no esté registrado-->
-            <div id="formularioRegistroCensista">
-                <h2>Registro de nuevo censista</h2>
-                <p>     
-                    <form action="#">
-                        <label for="nuevoNombreCensista">Ingrese su nombre y apellido</label><br>
-                        <input type="text" id="nuevoNombreCensista" placeholder="Nombre completo" required><br>
-                        <label for="nuevoUsuarioCensista">Ingrese nombre de usuario</label><br>
-                        <input type="text" id="nuevoUsuarioCensista" placeholder="Nombre de usuario" required><br>
-                        <label for="nuevoContraseñaCensista">Contraseña (Mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número)</label><br>
-                        <input type="password" id="nuevoContraseñaCensista" placeholder="Contraseña" required><br>
-                        <input type="checkbox" id="nuevoMostrarConseñaCensista">Mostrar contraseña <br>
-                        <button id="btnRegistrarCensista">Registrarse</button>
-                    </form>               
-                    </p>
-                <p id="msjRegistroCensista"></p>
+
+            <div id="realizarNuevoCenso">
+                <h2>Realizar nuevo censo</h2>
+                <p>
+                    <label for="nombreNuevoCenso">Nobre y apellido</label><br>
+                    <input type="text" id="nombreNuevoCenso" placeholder="Nombre" required><br>
+                    <label for="edadNuevoCenso">Edad</label><br>
+                    <input type="number" id="edadNuevoCenso" placeholder="Edad" required><br>
+                    <label for="cedulaNuevoCenso">Cédula de identidad</label><br>
+                    <input type="text" id="cedulaNuevoCenso" placeholder="CI" required><br>
+                    <label for="departamentoNuevoCenso">Departamento</label><br>
+                    <select id="departamentoNuevoCenso"> </select><br>
+                    <label for="ocupacionNuevoCenso">Ocupación</label><br>
+                    <select id="ocupacionNuevoCenso"></select><br>
+                    <input type="button" value="Terminar censo" id="btnTerminarCenso">
+                </p>
+                <p id="msjRealizarNuevoCenso"></p>
             </div>
 
-        <div id="menuCensista">
-            <p id="parrafoTituloAppCensista">
-                <!-- "parrafoNombreCensista" se usa para dar la bienvenida
-                al censista una vez inicia sesión, ej: Bienvenido Pedro -->
-                <h2 id="parrafoNombreCensista"></h2>
-            </p>
-            <p>
-                <input type="button" id="btnRealizarCensoMenuCensista" value="Realizar nuevo censo">
-                <input type="button" id="btnValidarCensoMenuCensista" value="Validar censos pendientes">
-                <input type="button" id="btnReasignarCensoMenuCensista" value="Reasignar censo">
-                <input type="button" id="btnMostarInfoMenuCensista" value="Mostrar información estadística">
-            </p>
-        </div>
+            <div id="validarCenso">
+                <h2>Validar Censo</h2>
+                <p id="formBusquedaCiValidarCenso">
+                    <label for="ciValidarCenso">Ingrese cédula de indentidad de la persona</label><br>
+                    <input type="text" id="ciValidarCenso"><br>
+                    <input type="button" id="btnBuscarCiValidarCenso" value="Buscar">
+                </p>
+                <p id="msjBusquedaValidarCenso"></p>
+                <p id="formValidarCenso">
+                    <label for="formValidarCensoNombrePersona">Nombre y apellido</label><br>
+                    <input type="text" id="formValidarCensoNombrePersona"><br>
+                    <label for="formValidarCensoEdadPersona">Edad</label><br>
+                    <input type="number" id="formValidarCensoEdadPersona"><br>
+                    <label for="formValidarCensoCiPersona">Cédula de indentidad</label><br>
+                    <!-- no se debería editar la CI de un censo pendiente de validacioón  -->
+                    <input type="text" id="formValidarCensoCiPersona" readonly><br>
+                    <label for="formValidarCensoDepartamentoPersona">Departamento</label><br>
+                    <select id="formValidarCensoDepartamentoPersona"></select><br>
+                    <label for="formValidarCensoOcupacionPersona">Ocupación</label><br>
+                    <select id="formValidarCensoOcupacionPersona"></select><br>
+                    <input type="button" id="btnFormValidarCensoPersona" value="Validar">
+                </p>
+                <p id="mjsFormValidarCenso"></p>
+            </div>
 
-        <div id="realizarNuevoCenso">
-            <h2>Realizar nuevo censo</h2>
-            <p>
-                <label for="nombreNuevoCenso">Nobre y apellido</label><br>
-                <input type="text" id="nombreNuevoCenso" placeholder="Nombre" required><br>
-                <label for="edadNuevoCenso">Edad</label><br>
-                <input type="number" id="edadNuevoCenso" placeholder="Edad" required><br>
-                <label for="cedulaNuevoCenso">Cédula de identidad</label><br>
-                <input type="text" id="cedulaNuevoCenso" placeholder="CI" required><br>
-                <label for="departamentoNuevoCenso">Departamento</label><br>
-                <select id="departamentoNuevoCenso"> </select><br>
-                <label for="ocupacionNuevoCenso">Ocupación</label><br>
-                <select id="ocupacionNuevoCenso"></select><br>
-                <input type="button" value="Terminar censo" id="btnTerminarCenso">
-            </p>
-            <p id="msjRealizarNuevoCenso"></p>
-        </div>
+            <div id="CensosPendientesDeValidacion">
+                <h2>Censos pendientes de validación</h2>
+                <p id="formPersonasPendientesDeValidacion">
+                    <!-- solo mostrar si hay usuarios pendientes de validación -->
+                    <label for="pendientesDeValidacion">Personas pendientes de validación</label><br>
+                    <select id="pendientesDeValidacion"></select><br>
+                    <label for="censistasDisponiblesParaValidacion">Censistas disponibles</label><br>
+                    <select id="censistasDisponiblesParaValidacion"></select><br>
+                    <input type="button" value="Reasignar" id="btnReasignarValidacion">
+                </p>
+                <p id="msjCensosPendientesDeValidacion"></p>
+            </div>
 
-        <div id="validarCenso">
-            <h2>Validar Censo</h2>
-            <p id="formBusquedaCiValidarCenso">
-                <label for="ciValidarCenso">Ingrese cédula de indentidad de la persona</label><br>
-                <input type="text" id="ciValidarCenso"><br>
-                <input type="button" id="btnBuscarCiValidarCenso" value="Buscar">
-            </p>
-            <p id="msjBusquedaValidarCenso"></p>
-            <p id="formValidarCenso">
-                <label for="formValidarCensoNombrePersona">Nombre y apellido</label><br>
-                <input type="text" id="formValidarCensoNombrePersona"><br>
-                <label for="formValidarCensoEdadPersona">Edad</label><br>
-                <input type="number" id="formValidarCensoEdadPersona"><br>
-                <label for="formValidarCensoCiPersona">Cédula de indentidad</label><br>
-                <!-- no se debería editar la CI de un censo pendiente de validacioón  -->
-                <input type="text" id="formValidarCensoCiPersona" readonly><br>
-                <label for="formValidarCensoDepartamentoPersona">Departamento</label><br>
-                <select id="formValidarCensoDepartamentoPersona"></select><br>
-                <label for="formValidarCensoOcupacionPersona">Ocupación</label><br>
-                <select id="formValidarCensoOcupacionPersona"></select><br>
-                <input type="button" id="btnFormValidarCensoPersona" value="Validar">
-            </p>
-            <p id="mjsFormValidarCenso"></p>
-        </div>
-
-        <div id="CensosPendientesDeValidacion">
-            <h2>Censos pendientes de validación</h2>
-            <p id="formPersonasPendientesDeValidacion">
-                <!-- solo mostrar si hay usuarios pendientes de validación -->
-                <label for="pendientesDeValidacion">Personas pendientes de validación</label><br>
-                <select id="pendientesDeValidacion"></select><br>
-                <label for="censistasDisponiblesParaValidacion">Censistas disponibles</label><br>
-                <select id="censistasDisponiblesParaValidacion"></select><br>
-                <input type="button" value="Reasignar" id="btnReasignarValidacion">
-            </p>
-            <p id="msjCensosPendientesDeValidacion"></p>
-        </div>
-
-        <div id="visualizarEstadisticasCensista">
-            <h2>Información estadística</h2>
-            <p>
-                <label for="totalPersonasCensadas">Total de personas censadas:</label><br> <!-- inyectar acá? -->
-                <p id="tablaDePersonasCensadasPorDepartamento">
-                    <label for="personasCensadasPorDepartamento">Personas censadas por departamento</label>
+            <div id="visualizarEstadisticasCensista">
+                <h2>Información estadística</h2>
+                <p>
+                    <label for="totalPersonasCensadas">Total de personas censadas:</label><br> <!-- inyectar acá? -->
+                    <p id="tablaDePersonasCensadasPorDepartamento">
+                        <label for="personasCensadasPorDepartamento">Personas censadas por departamento</label>
+                        <table border="1">
+                            <tr>
+                                <th>Departamento</th>
+                                <th>Cantidad</th>
+                            </tr>
+                            <tr>
+                                <td>Artigas</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Canelones</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Cerro Largo</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Colonia</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Durazno</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Flores</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Florida</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Lavalleja</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Maldonado</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Montevideo</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Paysandú</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Río Negro</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Rivera</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Rocha</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Salto</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>San José</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Soriano</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Tacuarembó</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>Treinta y trés</td>
+                                <td>0</td>
+                            </tr>
+                        </table>
+                    </p><!-- tablaDePersonasCensadasPorDepartamento -->
+                    <p id="mostrarPorcentajeCensosMenoresMayoresDeEdad">
+                        <h3>Personas menores y mayores de edad por departamento</h3>
+                        <label for="selectMenoresMayoresEdad">Seleccionar un departamento</label>
+                        <select id="selectoDepartamentos">
+                            <option value="Artigas">Artigas</option>
+                            <option value="Canelones">Canelones</option>
+                            <option value="Cerro Largo">Cerro Largo</option>
+                            <option value="Colonia">Colonia</option>
+                            <option value="Durazno">Durazno</option>
+                            <option value="Flores">Flores</option>
+                            <option value="Florida">Florida</option>
+                            <option value="Lavalleja">Lavalleja</option>
+                            <option value="Maldonado">Maldonado</option>
+                            <option value="Montevideo">Montevideo</option>
+                            <option value="Paysandú">Paysandú</option>
+                            <option value="Río Negro">Río Negro</option>
+                            <option value="Rivera">Rivera</option>
+                            <option value="Rocha">Rocha</option>
+                            <option value="Salto">Salto</option>
+                            <option value="San José">San José</option>
+                            <option value="Soriano">Soriano</option>
+                            <option value="Tacuarembó">Tacuarembó</option>
+                            <option value="Treinta y Tres">Treinta y Tres</option>
+                        </select><br>
+                        <input type="button" value="Mostrar" id="btnMostrarPorcentajesMenoresMayoresPorDepartamento">
+                        <p id="msjMostrarPorcentajesMenoresMayoresPorDepartamento"></p>
+                    </p>
+                </p>
+            </div>
+        </div> <!--aplicacionCensista-->
+        <div id="aplicacionPersona">
+            <div id="menuPersona">
+                <h2>Usuario</h2>
+                <input type="button" id="btnRealizarCensoMenuPersona" value="Censo">
+                <input type="button" id="btnMostrarEstadisticasMenuPersona" value="Mostrar estadísticas">
+            </div>
+            <div id="realizarCensoPersona">
+                    <p id="cuadroBusquedaCIPersona">
+                        <label for="busquedaNroCedulaCensoPersona">Cédula de identidad:</label><br>
+                        <input type="number" id="busquedaNroCIPersona"><br>
+                        <input type="button" id="btnBuscarCIPersona" value="Buscar">
+                        <p id="mensajesCuadroBusquedaCIPersona"></p>
+                    </p>
+                    <p id="CuadroCensoPersona">
+                        <!-- Título modificable desde JS -->
+                        <h2 id="tituloCuadroCensoPersona">Usuario invitado</h2>
+                        <p id="formCensoPersona">
+                            <label for="nombrePersonaCenso">Nombre completo</label><br>
+                            <input type="text" id="nombrePersonaCenso"><br>
+                            <label for="edadPersonaCenso">Edad</label><br>
+                            <input type="number" id="edadPersonaCenso"><br>
+                            <label for="ciPersonaCenso">Cédula de identidad</label><br>
+                            <input type="text" id="ciPersonaCenso"><br>
+                            <label for="departamentoPersonaCenso">Departamento</label><br>
+                            <select id="departamentoPersonaCenso">
+                                <option value="0">Seleccione...</option>
+                            </select><br>
+                            <label for="ocupacionPersonaCenso">Ocupación</label><br>
+                            <select id="ocupacionPersonaCenso">
+                                <option value="0">Seleccione...</option>
+                            </select><br>
+                            <p>
+                                <input type="button" value="Finalizar" id="btnFinalizarCensoPersona">
+                            </p>
+                            <p id="contenedorBtnEliminarCensoPersona">
+                                <!-- contenedor para el botón eliminar en caso de que sea posible usarlo -->
+                                <input type="button" value="Eliminar datos" id="btnEliminarCensoPersona">
+                            </p>
+                            <p id="msjFormCensoPersona"></p>
+                        </p>
+                    </p>
+            </div>
+            <div id="mostrarEstadisticasPersona">
+                <p>
+                    <h2>Datos estadísticos hasta la fecha:</h2>
+                </p>
+                <p>
                     <table border="1">
                         <tr>
                             <th>Departamento</th>
-                            <th>Cantidad</th>
+                            <th>Estudian</th>
+                            <th>Trabajan</th>
+                            <th>Dependientes o independientes</th>
+                            <th>Porcentaje del total de censados</th>
                         </tr>
                         <tr>
                             <td>Artigas</td>
-                            <td>0</td>
+                            <td>25</td>
+                            <td>40</td>
+                            <td>35</td>
+                            <td>10%</td>
                         </tr>
                         <tr>
                             <td>Canelones</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Cerro Largo</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Colonia</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Durazno</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Flores</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Florida</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Lavalleja</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Maldonado</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Montevideo</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Paysandú</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Río Negro</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Rivera</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Rocha</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Salto</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>San José</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Soriano</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Tacuarembó</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>Treinta y trés</td>
-                            <td>0</td>
+                            <td>35</td>
+                            <td>35</td>
+                            <td>130</td>
+                            <td>20%</td>
                         </tr>
                     </table>
-                </p><!-- tablaDePersonasCensadasPorDepartamento -->
-                <p id="mostrarPorcentajeCensosMenoresMayoresDeEdad">
-                    <h3>Personas menores y mayores de edad por departamento</h3>
-                    <label for="selectMenoresMayoresEdad">Seleccionar un departamento</label>
-                    <select id="selectoDepartamentos">
-                        <option value="Artigas">Artigas</option>
-                        <option value="Canelones">Canelones</option>
-                        <option value="Cerro Largo">Cerro Largo</option>
-                        <option value="Colonia">Colonia</option>
-                        <option value="Durazno">Durazno</option>
-                        <option value="Flores">Flores</option>
-                        <option value="Florida">Florida</option>
-                        <option value="Lavalleja">Lavalleja</option>
-                        <option value="Maldonado">Maldonado</option>
-                        <option value="Montevideo">Montevideo</option>
-                        <option value="Paysandú">Paysandú</option>
-                        <option value="Río Negro">Río Negro</option>
-                        <option value="Rivera">Rivera</option>
-                        <option value="Rocha">Rocha</option>
-                        <option value="Salto">Salto</option>
-                        <option value="San José">San José</option>
-                        <option value="Soriano">Soriano</option>
-                        <option value="Tacuarembó">Tacuarembó</option>
-                        <option value="Treinta y Tres">Treinta y Tres</option>
-                    </select><br>
-                    <input type="button" value="Mostrar" id="btnMostrarPorcentajesMenoresMayoresPorDepartamento">
-                    <p id="msjMostrarPorcentajesMenoresMayoresPorDepartamento"></p>
                 </p>
-            </p>
+            </div>
         </div>
-    </div> <!--aplicacionCensista-->
-    <div id="aplicacionPersona">
-        <div id="menuPersona">
-            <h2>Usuario</h2>
-            <input type="button" id="btnRealizarCensoMenuPersona" value="Censo">
-            <input type="button" id="btnMostrarEstadisticasMenuPersona" value="Mostrar estadísticas">
-        </div>
-        <div id="realizarCensoPersona">
-                <p id="cuadroBusquedaCIPersona">
-                    <label for="busquedaNroCedulaCensoPersona">Cédula de identidad:</label><br>
-                    <input type="number" id="busquedaNroCIPersona"><br>
-                    <input type="button" id="btnBuscarCIPersona" value="Buscar">
-                    <p id="mensajesCuadroBusquedaCIPersona"></p>
-                </p>
-                <p id="CuadroCensoPersona">
-                    <!-- Título modificable desde JS -->
-                    <h2 id="tituloCuadroCensoPersona">Usuario invitado</h2>
-                    <p id="formCensoPersona">
-                        <label for="nombrePersonaCenso">Nombre completo</label><br>
-                        <input type="text" id="nombrePersonaCenso"><br>
-                        <label for="edadPersonaCenso">Edad</label><br>
-                        <input type="number" id="edadPersonaCenso"><br>
-                        <label for="ciPersonaCenso">Cédula de identidad</label><br>
-                        <input type="text" id="ciPersonaCenso"><br>
-                        <label for="departamentoPersonaCenso">Departamento</label><br>
-                        <select id="departamentoPersonaCenso">
-                            <option value="0">Seleccione...</option>
-                        </select><br>
-                        <label for="ocupacionPersonaCenso">Ocupación</label><br>
-                        <select id="ocupacionPersonaCenso">
-                            <option value="0">Seleccione...</option>
-                        </select><br>
-                        <p>
-                            <input type="button" value="Finalizar" id="btnFinalizarCensoPersona">
-                        </p>
-                        <p id="contenedorBtnEliminarCensoPersona">
-                            <!-- contenedor para el botón eliminar en caso de que sea posible usarlo -->
-                            <input type="button" value="Eliminar datos" id="btnEliminarCensoPersona">
-                        </p>
-                        <p id="msjFormCensoPersona"></p>
-                    </p>
-                </p>
-        </div>
-        <div id="mostrarEstadisticasPersona">
-            <p>
-                <h2>Datos estadísticos hasta la fecha:</h2>
-            </p>
-            <p>
-                <table border="1">
-                    <tr>
-                        <th>Departamento</th>
-                        <th>Estudian</th>
-                        <th>Trabajan</th>
-                        <th>Dependientes o independientes</th>
-                        <th>Porcentaje del total de censados</th>
-                    </tr>
-                    <tr>
-                        <td>Artigas</td>
-                        <td>25</td>
-                        <td>40</td>
-                        <td>35</td>
-                        <td>10%</td>
-                    </tr>
-                    <tr>
-                        <td>Canelones</td>
-                        <td>35</td>
-                        <td>35</td>
-                        <td>130</td>
-                        <td>20%</td>
-                    </tr>
-                </table>
-            </p>
-        </div>
-    </div>
+    </div><!-- contenedor -->
 </body>
 </html>
