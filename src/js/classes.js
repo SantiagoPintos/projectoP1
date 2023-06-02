@@ -20,8 +20,21 @@ class App {
         generarCenso.ocupacion = ocupacion;
         generarCenso.idCensista = idCensista;
         //no se incluye propiedad "censado" porque está declarada como falsa por defecto
-
+        
         this.baseDeDatosCensos.push(generarCenso);
+    }
+
+    /* 
+    Función que precarga censistas al inicar la aplicación
+*/
+    precargarCensistas(){
+        this.crearCensista("Pedro Rodríguez", "pedror", "123aA", this.generarIdCensista());
+        this.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21", this.generarIdCensista());
+        this.crearCensista("Julián Pérez", "juliancitop", "Hola45", this.generarIdCensista());
+    }
+    precargarCensos(){
+        this.nuevoCenso("Usuario Prueba", 20, 11111111, 2, 3, 2);
+        this.confirmarCenso(11111111);
     }
 
     /* 

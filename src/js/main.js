@@ -3,8 +3,8 @@ function main(){
     ocultarAppCensista();    
     ocultarAppUsuario();    
     capturarClicks();
-    precargarCensistas();
-    precargarCensos()
+    app.precargarCensistas();
+    app.precargarCensos()
 }
 function capturarClicks(){
     document.querySelector("#btnUsuarioCensista").addEventListener("click", mostrarAppCensista);
@@ -25,7 +25,7 @@ function capturarClicks(){
     document.querySelector("#btnRealizarCensoMenuCensista").addEventListener("click", mostrarInterfazCenso);
 
     //boton "terminar censo" que pushea datos de censo a bdd
-    document.querySelector("#btnTerminarCenso").addEventListener("click", iniciarCenso);
+    document.querySelector("#btnTerminarCenso").addEventListener("click", terminarCenso);
     
     //botón para buscar cédula en sección "validación de censo"
     document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", iniciarValidacionDeCenso);
@@ -91,23 +91,14 @@ function mostrarMenuOpcionesCensista(){
 function mostrarFormularioRegistroCensista(){
     document.querySelector("#formularioRegistroCensista").style.display = "block";
 }
+function mostrarNuevoCensoCensista(){
+    document.querySelector("#realizarNuevoCenso").style.display = "block";
+}
 
 
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
 let app = new App();
-/* 
-    Función que precarga censistas al inicar la aplicación
-*/
-function precargarCensistas(){
-    app.crearCensista("Pedro Rodríguez", "pedror", "123aA", app.generarIdCensista());
-    app.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21", app.generarIdCensista());
-    app.crearCensista("Julián Pérez", "juliancitop", "Hola45", app.generarIdCensista());
-}
-function precargarCensos(){
-    app.nuevoCenso("Usuario Prueba", 20, 49915228, 2, 3, 2);
-    //app.confirmarCenso(49915228);
-}
 
 
 /* Interfaz */
@@ -211,9 +202,11 @@ function mostrarContraseñaRegistroCensista(){
 }
 
 /* 
-    Llama a funciones que cargan los valores de <select> departamento y ocupación
+    Función que se ejecuta al iniciar nuevo censo desde app censista
 */
 function mostrarInterfazCenso(){
+    ocultarMenuOpcionesCensista();
+    mostrarNuevoCensoCensista();
     //popular el selectores de ocupación y departamento
     cargarSelectDeDepartamentos("departamentoNuevoCenso");
     cargarSelectDeOcupacion("ocupacionNuevoCenso");
@@ -223,7 +216,7 @@ function mostrarInterfazCenso(){
 /* 
     Función que extrae datos
 */
-function iniciarCenso(){
+function terminarCenso(){
     const nombre = document.querySelector("#nombreNuevoCenso").value;
     const edad = document.querySelector("#edadNuevoCenso").value;
     const ci = document.querySelector("#cedulaNuevoCenso").value;
@@ -234,18 +227,24 @@ function iniciarCenso(){
     if (nombre != "") {
         if (edad>=0 && edad<=130) {
             if (app.validarDigitoVerificadorCI(app.limpiarNroCI(ci))) {
-                if (departamento!=0) {
-                    if (ocupacion!=0) {
-                        if(app.realizarCenso(nombre,edad,ci,departamento,ocupacion)){
-                            mensajeParrafo = "Censo finalizado correctamente"
+                if (!app.existeCenso(app.limpiarNroCI(ci))) {
+                    if (departamento!=0) {
+                        if (ocupacion!=0) {
+                            if(app.realizarCenso(nombre,edad,ci,departamento,ocupacion)){
+                                mensajeParrafo = "Censo finalizado correctamente"
+                                //función que reciba parámetros random    
+                            } else {
+                                console.warn(`app.realizar censo retornó false!`);
+                                mensajeParrafo = "Algo salió mal";
+                            }
                         } else {
-                            mensajeParrafo = "Algo salió mal";
+                            mensajeParrafo = "Seleccione la ocupación";
                         }
                     } else {
-                        mensajeParrafo = "Seleccione la ocupación";
+                        mensajeParrafo = "Seleccione un departamento"
                     }
                 } else {
-                    mensajeParrafo = "Seleccione un departamento"
+                    mensajeParrafo = "Ya hay un censo asociado a ";
                 }
             } else {
                 mensajeParrafo = "El número de cédula no es válido";
