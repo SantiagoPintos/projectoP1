@@ -70,7 +70,7 @@ class App {
 
     verificarCredenciales(usuario, contraseña){
          let credencialesCorrectas = false;
-         for (let i = 0; i < this.baseDeDatosCensos.length && !credencialesCorrectas; i++) {
+         for (let i = 0; i < this.baseDeDatosCensistas.length && !credencialesCorrectas; i++) {
             const censista = this.baseDeDatosCensistas[i];
             if (censista.usuario==usuario && censista.contraseña == contraseña) {
                 credencialesCorrectas = true;
