@@ -239,7 +239,6 @@ function iniciarCenso(){
                         if(app.realizarCenso(nombre,edad,ci,departamento,ocupacion)){
                             mensajeParrafo = "Censo finalizado correctamente"
                         } else {
-                            console.warn(``)
                             mensajeParrafo = "Algo salió mal";
                         }
                     } else {
@@ -270,7 +269,7 @@ function iniciarValidacionDeCenso(){
     let mensaje = "";
     if (app.validarDigitoVerificadorCI(ciLimpia)) {
         //si ci es válida se procede a buscar su existencia en bdd
-        if (censoEstaValidado(ciLimpia) == false) {
+        if (app.censoEstaValidado(ciLimpia) == false) {
             //censo aún no está validado
             //se tiene que llamar a función que muestre formulario, otra que traiga los datos asociados a c/u de los campos
             //y se agregue el eventlistener del botón para validar
@@ -308,7 +307,7 @@ function iniciarValidacionDeCenso(){
                 //censo no fue modificado
                 console.log("Censo no fue modificado!")
             }
-        } else if (censoEstaValidado(ciLimpia) == true){
+        } else if (app.censoEstaValidado(ciLimpia) == true){
             //censo ya fue validado
             mensaje = "El censo asociado a esta cédula de indentidad ya fue validado";
         } else {
@@ -359,29 +358,6 @@ function censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
     }
 }
 
-
-/* 
-    Función que recibe ci de formulario de validación de censo y comprueba si el censo asociado está validado.
-    Si censo está validado retorna true, si está pendiente retorna false y si no hay censo
-    asociado a esa ci retorna -1
-*/
-function censoEstaValidado(ci){
-    if (app.existeCenso(ci)) {
-        //Se obtiene índice de censo en bdd y se verifica estado de prop "censado"
-        const indice = app.obtenerIndiceCenso(ci);
-        if (app.baseDeDatosCensos[indice].censado == false) {
-            //aún no está validado
-            //mostrar UI y completar campos
-            return false;
-        } else {
-            //censo ya fue validado
-            return true;
-        }
-    } else {
-        //no hay censo asociado a esa ci
-        return -1;
-    }
-}
 
 //recibe por parámetro id de <select> y le agrega departamentos
 function cargarSelectDeDepartamentos(id){

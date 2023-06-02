@@ -56,6 +56,22 @@ class App {
     }
 
     /* 
+        Método que recibe ci y comprueba si el censo asociado está validado.
+        Si censo está validado retorna true, si está pendiente retorna false
+    */
+    censoEstaValidado(ci){
+        //Se obtiene índice de censo en bdd y se verifica estado de prop "censado"
+        const indice = this.obtenerIndiceCenso(ci);
+        if (this.baseDeDatosCensos[indice].censado == false) {
+            //aún no está validado
+            return false;
+        } else {
+            //censo ya fue validado
+            return true;
+        }
+    }
+
+    /* 
         Método para crear un nuevo censista y agregaro a su array correspondiente
     */
     crearCensista(nombre, usuario, contraseña, id){
@@ -67,7 +83,9 @@ class App {
 
         this.baseDeDatosCensistas.push(nuevoCensista)
     }
-
+    /* 
+        Método usado en inicio de sesión
+    */
     verificarCredenciales(usuario, contraseña){
          let credencialesCorrectas = false;
          for (let i = 0; i < this.baseDeDatosCensistas.length && !credencialesCorrectas; i++) {
@@ -175,12 +193,7 @@ class App {
         Valida edad de persona ingresada en censo
     */
     validarEdad(edad){
-        /* 
-            Cubre caso en que el usuario no ingrese nada en el campo "Edad" 
-            la variable edad tendrá un string vacío
-        */
         if (edad != "" && !isNaN(edad)) {
-            //verificar si es entero?
             if (edad<=130 && edad>=0) {
                 return true;
             } else {
@@ -209,10 +222,10 @@ class App {
 
     //valida digito verificador y retorna true o false
     validarDigitoVerificadorCI(cedula){
-        /*
-            Referencia obtenida de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number ,
-            diferente al mostrado en clase pero pasa todos los casos proporcionados en práctico 5 ejercicio 16
-        */
+    /*
+        Referencia obtenida de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number ,
+        diferente al mostrado en clase pero pasa todos los casos proporcionados en práctico 5 ejercicio 16
+    */
     let multiplos = [8,1,2,3,4,7,6];
     let acumulador = 0;
     let esValida = false;
