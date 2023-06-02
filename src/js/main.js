@@ -160,13 +160,13 @@ function iniciarRegistroCensista(){
     const contraseña = document.querySelector("#nuevoContraseñaCensista").value;
     let mensajeParaParrafo = "";
     const validacionUsuario = app.validarNombreUsuario(nombreDeUsuario);
-    console.log(`validacionUsuario: ${validacionUsuario}`)
     
     if(validacionUsuario==true){
         //si nombre de usuario es válido se llama a función que valida contraseña
-        if (validarContraseña(contraseña)) {
+        if (app.validarContraseña(contraseña)) {
             //se llama a función que registra usuario
             registrarCensista(nombre, nombreDeUsuario, contraseña);
+            //se redirige al censista hacia panel principal
         } else {
             mensajeParaParrafo = "La contraseña debe tener al mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número";
         }
@@ -457,44 +457,6 @@ function registrarCensista(nombre, usuario, contraseña){
 */
 function generarIdCensista(){
     return app.baseDeDatosCensistas.length;
-}
-
-/* 
-    Verifica que la contraseña cumpla con los siguientes requisitos:
-    - Mínimo 5 caracteres
-    - Al menos 1 mayúscula
-    - Al menos 1 minúscula
-    - Al menos 1 número
-*/
-function validarContraseña(clave){
-    let esValida = false;
-    let tieneNumero = false;
-    let tieneMayus = false;
-    let tieneMinuscula = false;
-    let tieneMayusNumeroYMinuscula = false;
-
-    if(clave.length>=5){
-        for (let i = 0; i < clave.length && !tieneMayusNumeroYMinuscula; i++) {
-            //65=`A`, 90=`Z`, 209=Ñ
-            if (clave.charCodeAt(i)>=65 && clave.charCodeAt(i)<=90 || clave.charCodeAt(i)==209 ) {
-                tieneMayus=true;
-            }
-            if (clave.charCodeAt(i)>=97 && clave.charCodeAt(i)<=122 || clave.charCodeAt(i)==241) {
-            //97=`a`, 122=`z`, 241=`ñ`
-                tieneMinuscula=true;
-            }
-            //48=`0`, 57=`9`
-            if (clave.charCodeAt(i)>=48 && clave.charCodeAt(i)<=57) {
-                tieneNumero=true;
-            }
-            if (tieneMayus&&tieneNumero&&tieneMinuscula) {
-                //detiene el loop si tiene mayus y num
-                tieneMayusNumeroYMinuscula=true;
-                esValida = true;
-            }
-        } 
-    }
-    return esValida;
 }
 
 // Comprueba longitud de número de cédula y quita cualquier cosa que no sea un nro

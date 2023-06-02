@@ -129,6 +129,44 @@ class App {
         return -1;
     }
 
+    /* 
+        Verifica que la contraseña cumpla con los siguientes requisitos:
+        - Mínimo 5 caracteres
+        - Al menos 1 mayúscula
+        - Al menos 1 minúscula
+        - Al menos 1 número
+    */
+    validarContraseña(clave){
+        let esValida = false;
+        let tieneNumero = false;
+        let tieneMayus = false;
+        let tieneMinuscula = false;
+        let tieneMayusNumeroYMinuscula = false;
+
+        if(clave.length>=5){
+            for (let i = 0; i < clave.length && !tieneMayusNumeroYMinuscula; i++) {
+                //65=`A`, 90=`Z`, 209=Ñ
+                if (clave.charCodeAt(i)>=65 && clave.charCodeAt(i)<=90 || clave.charCodeAt(i)==209 ) {
+                    tieneMayus=true;
+                }
+                if (clave.charCodeAt(i)>=97 && clave.charCodeAt(i)<=122 || clave.charCodeAt(i)==241) {
+                //97=`a`, 122=`z`, 241=`ñ`
+                    tieneMinuscula=true;
+                }
+                //48=`0`, 57=`9`
+                if (clave.charCodeAt(i)>=48 && clave.charCodeAt(i)<=57) {
+                    tieneNumero=true;
+                }
+                if (tieneMayus&&tieneNumero&&tieneMinuscula) {
+                    //detiene el loop si tiene mayus y num
+                    tieneMayusNumeroYMinuscula=true;
+                    esValida = true;
+                }
+            } 
+        }
+        return esValida;
+    }
+
 }
 
 class Censo {
