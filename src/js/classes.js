@@ -56,26 +56,6 @@ class App {
     }
 
     /* 
-        Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
-        "censado" a "true" y da por finalizado el mismo.
-        Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado desede main.js).
-    */ 
-    confirmarCenso(ci){
-        let encontrado = false;
-        for (let i = 0; i < this.baseDeDatosCensos.length && !encontrado; i++) {
-            const ciAcomparar = this.baseDeDatosCensos[i].ci;
-            if (ci == ciAcomparar) {
-                this.baseDeDatosCensos[i].censado = true;
-                encontrado = true;
-            }            
-        }
-
-        //retorna encontrado para validar desde main.js
-        return encontrado;
-    }
-
-
-    /* 
         Método para crear un nuevo censista y agregaro a su array correspondiente
     */
     crearCensista(nombre, usuario, contraseña, id){
@@ -165,6 +145,158 @@ class App {
             } 
         }
         return esValida;
+    }
+
+    /* 
+        Verifica que nombre ingresado en censo no tenga números 
+    */
+    validarNombre(nombre){
+        let esValido = true;
+        nombre = nombre.trim();
+
+        //controla caso en que nombre sea un string de espacios y quede vacío después de trim
+        if (nombre) {
+            //validar si tiene números
+            for (let i = 0; i < nombre.length && esValido; i++) {
+                const caracter = nombre.charAt(i);
+                //si el caracter encontrado es un número se detiene el loop
+                if (Number(caracter)) {
+                    esValido = false;
+                }
+            }
+        } else {
+            esValido = false;
+        }
+        
+        return esValido;
+    }
+
+    /* 
+        Valida edad de persona ingresada en censo
+    */
+    validarEdad(edad){
+        /* 
+            Cubre caso en que el usuario no ingrese nada en el campo "Edad" 
+            la variable edad tendrá un string vacío
+        */
+        if (edad != "" && !isNaN(edad)) {
+            //verificar si es entero?
+            if (edad<=130 && edad>=0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false
+    }
+
+    // Comprueba longitud de número de cédula y quita cualquier cosa que no sea un nro
+    limpiarNroCI(cedula){
+        let nroCedulaEnLimpio = "";
+        cedula=cedula.trim();
+        if (cedula.length<7) {
+            return -1;
+        } else {
+            for (let i = 0; i < cedula.length; i++) {
+                const numero = cedula.charAt(i);
+                if (numero.charCodeAt(0) >= 48 && numero.charCodeAt(0) <= 57) {
+                    nroCedulaEnLimpio+=numero;
+                }
+            }
+            return nroCedulaEnLimpio;
+        }
+    }
+
+    //valida digito verificador y retorna true o false
+    validarDigitoVerificadorCI(cedula){
+        /*
+            Referencia obtenida de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number ,
+            diferente al mostrado en clase pero pasa todos los casos proporcionados en práctico 5 ejercicio 16
+        */
+    let multiplos = [8,1,2,3,4,7,6];
+    let acumulador = 0;
+    let esValida = false;
+    
+    if(cedula.length>6 && cedula.length<10){
+            //variable declarada dentro de if para evitar fallo en caso de que ci sea un string vacío
+            const digitoVerificador = cedula.charAt(cedula.length-1);
+
+            if (cedula.length<8) {
+                /* 
+                    Si CI<1.000.000 no se debe multiplicar por multiplos[0] (8) 
+                    
+                    .slice() retorna array con posiciones a elección, por lo tanto se usa
+                    1-array.length para "descartar" la primera posición            
+                */
+                multiplos=multiplos.slice(1,multiplos.length);
+            }
+        
+            for (let i = 0; i<(cedula.length-1); i++) {
+                const nro = cedula.charAt(i);
+                acumulador+=nro*multiplos[i];
+            }
+            acumulador=acumulador%10;
+            if (acumulador==digitoVerificador) {
+                esValida=true;
+            }
+        }
+        
+        return esValida;
+    }
+
+    /* 
+        Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
+        "censado" a "true" y da por finalizado el mismo.
+        Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado desede main.js).
+    */ 
+    confirmarCenso(ci){
+        let confirmado = false;
+        for (let i = 0; i < this.baseDeDatosCensos.length && !confirmado; i++) {
+            const ciAcomparar = this.baseDeDatosCensos[i].ci;
+            if (ci == ciAcomparar) {
+                this.baseDeDatosCensos[i].censado = true;
+                confirmado = true;
+            }            
+        }
+    
+        return confirmado;
+    }
+
+    /* 
+        Método que hace todas las verificaciones llamando a otros métodos específicos para cada 
+        cada elemento, crea el nuevo censo y luego lo confirma. 
+        retorna booleano 
+    */
+    realizarCenso(nombre,edad,ci,departamento,ocupacion){
+        //nro ci sin puntos ni guiones
+        let nroCiLimpio = this.limpiarNroCI(ci);
+        let censado = false;
+        
+        //validar datos
+        if (this.validarNombre(nombre)) {
+            //validar edad
+            if(this.validarEdad(edad)){
+                //validar ci
+                if(this.validarDigitoVerificadorCI(nroCiLimpio)){
+                    //valida que no exista censo con esa ci
+                    if (!this.existeCenso(nroCiLimpio)) {
+                        //validar que departamento y ocupación no tengan valores por defecto
+                        if (departamento!=0) {
+                            if (ocupacion!=0) {
+                                //crea censo
+                                this.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, this.censistaLogueado.id);
+                                //confima censo cambiando la propiedad "censado" a "true"
+                                if (this.confirmarCenso(nroCiLimpio)) {
+                                    censado = true;
+                                }
+                            } 
+                        }
+                    }
+                }
+            }
+        }
+
+        return censado;
     }
 
     /* 

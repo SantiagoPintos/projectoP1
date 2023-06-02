@@ -173,11 +173,11 @@ function iniciarRegistroCensista(){
                 //NO FUNCIONA(?)
                 document.querySelector("#msjRegistroCensista").innerHTML = "Registro exitoso, en 5 segundos será redirigido hacia la pantalla de inicio de seesión";
                 
-                document.querySelector("#nuevoNombreCensista").value = "";
-                document.querySelector("#nuevoUsuarioCensista").value = "";
-                document.querySelector("#nuevoContraseñaCensista").value = "";
                 //detiene la ejecución durante 5 segundos para mostrar mensaje
                 setTimeout(() => {
+                    document.querySelector("#nuevoNombreCensista").value = "";
+                    document.querySelector("#nuevoUsuarioCensista").value = "";
+                    document.querySelector("#nuevoContraseñaCensista").value = "";
                     ocultarFormularioRegistroCensista();
                     mostrarLoginCensista(); 
                 }, 5000);
@@ -229,8 +229,34 @@ function iniciarCenso(){
     const ci = document.querySelector("#cedulaNuevoCenso").value;
     const departamento = Number(document.querySelector("#departamentoNuevoCenso").value);
     const ocupacion = Number(document.querySelector("#ocupacionNuevoCenso").value);
+    let mensajeParrafo = "";
 
-    let mensajeParrafo = realizarCenso(nombre,edad,ci,departamento,ocupacion);
+    if (nombre != "") {
+        if (edad>=0 && edad<=130) {
+            if (app.validarDigitoVerificadorCI(app.limpiarNroCI(ci))) {
+                if (departamento!=0) {
+                    if (ocupacion!=0) {
+                        if(app.realizarCenso(nombre,edad,ci,departamento,ocupacion)){
+                            mensajeParrafo = "Censo finalizado correctamente"
+                        } else {
+                            console.warn(``)
+                            mensajeParrafo = "Algo salió mal";
+                        }
+                    } else {
+                        mensajeParrafo = "Seleccione la ocupación";
+                    }
+                } else {
+                    mensajeParrafo = "Seleccione un departamento"
+                }
+            } else {
+                mensajeParrafo = "El número de cédula no es válido";
+            }
+        } else {
+            mensajeParrafo = "La edad ingresada no está dentro del rango permitido";
+        }
+    } else {
+        mensajeParrafo = "El nombre no puede estar vacío";
+    }
 
     document.querySelector("#msjRealizarNuevoCenso").innerHTML = mensajeParrafo;
 }
@@ -240,9 +266,9 @@ function iniciarCenso(){
 */
 function iniciarValidacionDeCenso(){
     const ci = document.querySelector("#ciValidarCenso").value;
-    const ciLimpia = limpiarNroCI(ci);
+    const ciLimpia = app.limpiarNroCI(ci);
     let mensaje = "";
-    if (validarDigitoVerificadorCI(ciLimpia)) {
+    if (app.validarDigitoVerificadorCI(ciLimpia)) {
         //si ci es válida se procede a buscar su existencia en bdd
         if (censoEstaValidado(ciLimpia) == false) {
             //censo aún no está validado
@@ -355,161 +381,6 @@ function censoEstaValidado(ci){
         //no hay censo asociado a esa ci
         return -1;
     }
-}
-
-/* 
-    Función intermedia que hace todas las verificaciones llamando a funciones específicas para cada 
-    cada elemento y retorna string con mensaje de aprobación/error 
-*/
-function realizarCenso(nombre,edad,ci,departamento,ocupacion){
-    //nro ci sin puntos ni guiones
-    let nroCiLimpio = limpiarNroCI(ci);
-    let mensaje = "";
-    
-    //validar datos
-    if (validarNombre(nombre)) {
-        //validar edad
-        if(validarEdad(edad)){
-            //validar ci
-            if(validarDigitoVerificadorCI(nroCiLimpio)){
-                //valida que no exista censo con esa ci
-                if (!app.existeCenso(nroCiLimpio)) {
-                    //validar que departamento y ocupación no tengan valores por defecto
-                    if (departamento!=0) {
-                        if (ocupacion!=0) {
-                            //crea censo
-                            app.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, app.censistaLogueado.id);
-                            //confima censo cambiando la propiedad "censado" a "true"
-                            if (app.confirmarCenso(nroCiLimpio)) {
-                                mensaje = "Censo finalizado correctamente"
-                            } else {
-                                mensaje = "Algo salió mal";
-                            }
-                        } else {
-                            mensaje = "La ocupación no es válida";
-                        }
-                    } else {
-                        mensaje = "El departamento no es válido";
-                    }
-                } else {
-                    mensaje = "Ya existe un censo asociado a la cédula de indentidad";
-                }
-            } else {
-                mensaje = "El número de cédula ingresado no es correcto";
-            }
-        } else {
-            mensaje = "La edad ingresada no es válida";
-        }
-    } else {
-        mensaje = "El nombre ingresado no es válido";
-    }
-
-    return mensaje
-}
-
-/* 
-    Función que valida edad de personas, para el censo
-*/
-function validarEdad(edad){
-    /* 
-        Cubre caso en que el usuario no ingrese nada en el campo "Edad" 
-        la variable edad tendrá un string vacío
-    */
-    if (edad != "" && !isNaN(edad)) {
-        //verificar si es entero?
-        if (edad<=130 && edad>=0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    return false
-}
-
-
-/* 
-    Función que valida nombre ingresado
-    verifica que no tenga números 
-    TODO: verificar otros caracteres no-letras
-*/
-function validarNombre(nombre){
-    let esValido = true;
-    nombre = nombre.trim();
-
-    //controla caso en que nombre sea un string de espacios y quede vacío después de trim
-    if (nombre) {
-        //validar si tiene números
-        for (let i = 0; i < nombre.length && esValido; i++) {
-            const caracter = nombre.charAt(i);
-            //si el caracter encontrado es un número se detiene el loop
-            if (Number(caracter)) {
-                esValido = false;
-            }
-            //TODO:controlar caracteres diferentes a letras (!.-+)
-        }
-    } else {
-        esValido = false;
-    }
-    
-    return esValido;
-}
-
-
-
-
-
-// Comprueba longitud de número de cédula y quita cualquier cosa que no sea un nro
-function limpiarNroCI(cedula){
-    let nroCedulaEnLimpio = "";
-    cedula=cedula.trim();
-    if (cedula.length<7) {
-        return -1;
-    } else {
-        for (let i = 0; i < cedula.length; i++) {
-            const numero = cedula.charAt(i);
-            if (numero.charCodeAt(0) >= 48 && numero.charCodeAt(0) <= 57) {
-                nroCedulaEnLimpio+=numero;
-            }
-        }
-        return nroCedulaEnLimpio;
-    }
-}
-
-//valida digito verificador y retorna true o false
-function validarDigitoVerificadorCI(cedula){
-    /*
-        Referencia obtenida de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number ,
-        diferente al mostrado en clase pero pasa todos los casos proporcionados en práctico 5 ejercicio 16
-    */
-   let multiplos = [8,1,2,3,4,7,6];
-   let acumulador = 0;
-   let esValida = false;
-   
-   if(cedula.length>6 && cedula.length<10){
-        //variable declarada dentro de if para evitar fallo en caso de que ci sea un string vacío
-        const digitoVerificador = cedula.charAt(cedula.length-1);
-
-        if (cedula.length<8) {
-            /* 
-                Si CI<1.000.000 no se debe multiplicar por multiplos[0] (8) 
-                
-                .slice() retorna array con posiciones a elección, por lo tanto se usa
-                1-array.length para "descartar" la primera posición            
-             */
-            multiplos=multiplos.slice(1,multiplos.length);
-        }
-    
-        for (let i = 0; i<(cedula.length-1); i++) {
-            const nro = cedula.charAt(i);
-            acumulador+=nro*multiplos[i];
-        }
-        acumulador=acumulador%10;
-        if (acumulador==digitoVerificador) {
-            esValida=true;
-        }
-    }
-    
-    return esValida;
 }
 
 //recibe por parámetro id de <select> y le agrega departamentos
