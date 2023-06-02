@@ -167,6 +167,18 @@ class App {
         return esValida;
     }
 
+    /* 
+        El ID de censista se genera de forma incremental
+    */
+    generarIdCensista(){
+        return this.baseDeDatosCensistas.length;
+    }
+
+    registrarCensista(nombre, usuario, contraseña){
+        const nuevaId = this.generarIdCensista();
+        this.crearCensista(nombre, usuario, contraseña, nuevaId);
+    }
+
 }
 
 class Censo {

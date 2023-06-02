@@ -100,9 +100,9 @@ let app = new App();
     Función que precarga censistas al inicar la aplicación
 */
 function precargarCensistas(){
-    app.crearCensista("Pedro Rodríguez", "pedror", "123aA", generarIdCensista());
-    app.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21", generarIdCensista());
-    app.crearCensista("Julián Pérez", "juliancitop", "Hola45", generarIdCensista());
+    app.crearCensista("Pedro Rodríguez", "pedror", "123aA", app.generarIdCensista());
+    app.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21", app.generarIdCensista());
+    app.crearCensista("Julián Pérez", "juliancitop", "Hola45", app.generarIdCensista());
 }
 function precargarCensos(){
     app.nuevoCenso("Usuario Prueba", 20, 49915228, 2, 3, 2);
@@ -156,27 +156,43 @@ function registroCensista(){
 */
 function iniciarRegistroCensista(){
     const nombre = document.querySelector("#nuevoNombreCensista").value;
-    const nombreDeUsuario = (document.querySelector("#nuevoUsuarioCensista").value).toLowerCase();
+    const nombreDeUsuario = document.querySelector("#nuevoUsuarioCensista").value.toLowerCase();
     const contraseña = document.querySelector("#nuevoContraseñaCensista").value;
     let mensajeParaParrafo = "";
     const validacionUsuario = app.validarNombreUsuario(nombreDeUsuario);
-    
-    if(validacionUsuario==true){
-        //si nombre de usuario es válido se llama a función que valida contraseña
-        if (app.validarContraseña(contraseña)) {
-            //se llama a función que registra usuario
-            registrarCensista(nombre, nombreDeUsuario, contraseña);
-            //se redirige al censista hacia panel principal
+ 
+    if (nombre!="") {
+        if(validacionUsuario==true){
+            //si nombre de usuario es válido se llama a función que valida contraseña
+            if (app.validarContraseña(contraseña)) {
+                //se llama a función que registra usuario
+                app.registrarCensista(nombre, nombreDeUsuario, contraseña);
+                //se muestra mensaje de confirmación y redirige al censista hacia panel de login después de 5 segundos
+                console.log("registro exitoso");
+
+                //NO FUNCIONA(?)
+                document.querySelector("#msjRegistroCensista").innerHTML = "Registro exitoso, en 5 segundos será redirigido hacia la pantalla de inicio de seesión";
+                
+                document.querySelector("#nuevoNombreCensista").value = "";
+                document.querySelector("#nuevoUsuarioCensista").value = "";
+                document.querySelector("#nuevoContraseñaCensista").value = "";
+                //detiene la ejecución durante 5 segundos para mostrar mensaje
+                setTimeout(() => {
+                    ocultarFormularioRegistroCensista();
+                    mostrarLoginCensista(); 
+                }, 5000);
+            } else {
+                mensajeParaParrafo = "La contraseña debe tener al mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número";
+            }
+        } else if (validacionUsuario == -1){
+            mensajeParaParrafo="El nombre de usuario no es válido";
         } else {
-            mensajeParaParrafo = "La contraseña debe tener al mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número";
+            mensajeParaParrafo="El nombre de usuario no está disponible";
         }
-    } else if (validacionUsuario == -1){
-        mensajeParaParrafo="El nombre de usuario no es válido";
     } else {
-        mensajeParaParrafo="El nombre de usuario no está disponible";
+        mensajeParaParrafo = "El nombre no puede estar vacío"
     }
 
-    //mensaje de error/confirmación
     document.querySelector("#msjRegistroCensista").innerHTML = mensajeParaParrafo;
 }
 
@@ -362,7 +378,7 @@ function realizarCenso(nombre,edad,ci,departamento,ocupacion){
                     if (departamento!=0) {
                         if (ocupacion!=0) {
                             //crea censo
-                            app.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, idCensistaLogueado);
+                            app.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, app.censistaLogueado.id);
                             //confima censo cambiando la propiedad "censado" a "true"
                             if (app.confirmarCenso(nroCiLimpio)) {
                                 mensaje = "Censo finalizado correctamente"
@@ -441,23 +457,6 @@ function validarNombre(nombre){
 
 
 
-
-/* 
-    Función que adjunta id a los datos extraídos del formulario y llama a método que lo pushea a base de datos
-*/
-function registrarCensista(nombre, usuario, contraseña){
-    let nuevaId = generarIdCensista();
-    app.crearCensista(nombre, usuario, contraseña, nuevaId);
-}
-
-/* 
-    Función que se encarga de generar el id único de cada censista al momento de su registro
-    en la aplicación, retorna un número incremental basado en la cantidad de ids registrados 
-    previamente
-*/
-function generarIdCensista(){
-    return app.baseDeDatosCensistas.length;
-}
 
 // Comprueba longitud de número de cédula y quita cualquier cosa que no sea un nro
 function limpiarNroCI(cedula){
