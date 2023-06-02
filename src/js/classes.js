@@ -34,7 +34,7 @@ class App {
     }
     precargarCensos(){
         this.nuevoCenso("Usuario Prueba", 20, 11111111, 2, 3, 2);
-        this.confirmarCenso(11111111);
+        //this.confirmarCenso(11111111);
     }
 
     /* 
@@ -52,11 +52,10 @@ class App {
     }
 
     /* 
-        Método que recibe la ci de un censo y devuelve su indice en bdd,
-        asume que este ya existe
+        Método que recibe la ci de un censo y devuelve su indice en bdd, si este no existe retorna -1
     */
     obtenerIndiceCenso(ci){
-        let indice = 0;
+        let indice = -1;
         let encontrado = false;
         for (let i = 0; i < this.baseDeDatosCensos.length && !encontrado; i++) {
             const elemento = this.baseDeDatosCensos[i].ci;
@@ -75,13 +74,45 @@ class App {
     censoEstaValidado(ci){
         //Se obtiene índice de censo en bdd y se verifica estado de prop "censado"
         const indice = this.obtenerIndiceCenso(ci);
-        if (this.baseDeDatosCensos[indice].censado == false) {
-            //aún no está validado
-            return false;
+        let validado;
+        if (indice!=-1) {
+            if (this.baseDeDatosCensos[indice].censado == true) {
+                validado = true;
+            } else {
+                validado = false;
+            }
         } else {
-            //censo ya fue validado
-            return true;
+            validado = -1;
         }
+        return validado;
+    }
+
+    /* 
+        Función que comprueba si hubo modificaciones en datos de censo, es llamada desde iniciarValidacionDeCenso()
+        recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios) false (no hubo cambios)
+    */
+
+    censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
+        let fueModificado=true;
+        const nuevosDatos = {
+            //es lo mismo que nombre: nombre,
+            nombre,
+            edad,
+            departamento,
+            ocupacion,
+        }
+
+        const datosOriginales = this.baseDeDatosCensos[indice];
+
+        if(nuevosDatos.departamento == datosOriginales.nombre
+            && nuevosDatos.edad == datosOriginales.edad
+            && nuevosDatos.departamento == datosOriginales.departamento
+            && nuevosDatos.ocupacion == datosOriginales.ocupacion){
+                //no hay modificaciones en el censo
+                fueModificado=false;
+        }
+
+        return fueModificado;
     }
 
     /* 

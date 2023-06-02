@@ -29,11 +29,14 @@ function capturarClicks(){
 
     document.querySelector("#btnAtrasNuevoCenso").addEventListener("click", volverAtrasNuevoCenso);
     
+    document.querySelector("#btnValidarCensoMenuCensista").addEventListener("click", mostrarBusquedaValidacionDeCenso);
+    
+    
     //botón para buscar cédula en sección "validación de censo"
     document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", iniciarValidacionDeCenso);
 
     //botón "validar" en sección validar censo, funciones comprueban si hubo cambio en censo y lo validan
-    document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", finalizarValidacionDeCenso);
+    document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", mostrarFormValidacionCenso);
 
 }
 
@@ -70,6 +73,13 @@ function ocultarEstadisticasCensista(){
 function ocultarLoginCensista(){
     document.querySelector("#loginCensista").style.display = "none";
 }
+function ocultarFormBusquedaValidacionCenso(){
+    document.querySelector("#formBusquedaCiValidarCenso").style.display = "none";
+}
+function ocultarFormValidacionCenso(){
+    document.querySelector("#formValidarCenso").style.display = "none";
+}
+
 function mostrarAppCensista(){
     ocultarSeleccionUsuario();
     document.querySelector("#aplicacionCensista").style.display = "block";
@@ -95,6 +105,15 @@ function mostrarFormularioRegistroCensista(){
 }
 function mostrarNuevoCensoCensista(){
     document.querySelector("#realizarNuevoCenso").style.display = "block";
+}
+function mostrarValidarCenso(){
+    document.querySelector("#validarCenso").style.display = "block";
+}
+function mostrarFormBusquedaValidacionCenso(){
+    document.querySelector("#formBusquedaCiValidarCenso").style.display = "block";
+}
+function mostrarFormValidacionCenso(){
+    document.querySelector("#formValidarCenso").style.display = "block";
 }
 
 
@@ -227,6 +246,13 @@ function volverAtrasNuevoCenso(){
     mostrarMenuOpcionesCensista();
 }
 
+function mostrarBusquedaValidacionDeCenso(){
+    ocultarMenuOpcionesCensista();
+    mostrarValidarCenso();
+    mostrarFormBusquedaValidacionCenso();
+    ocultarFormValidacionCenso();
+}
+
 
 /* 
     Función que extrae datos
@@ -288,32 +314,30 @@ function iniciarValidacionDeCenso(){
     if (app.validarDigitoVerificadorCI(ciLimpia)) {
         //si ci es válida se procede a buscar su existencia en bdd
         if (app.censoEstaValidado(ciLimpia) == false) {
-            //censo aún no está validado
-            //se tiene que llamar a función que muestre formulario, otra que traiga los datos asociados a c/u de los campos
-            //y se agregue el eventlistener del botón para validar
-            console.log("censo no está validado, cargando datos a formulario");
+            console.log("censo no está validado");
+            mostrarValidarCenso()
+            ocultarFormBusquedaValidacionCenso();
+            mostrarFormValidacionCenso();
+            console.log("Mostrando formulario y cargando datos");
+            
             //obtener y mostrar en formulario datos de censo
             const indiceCenso = app.obtenerIndiceCenso(ciLimpia);
             const censo = app.baseDeDatosCensos[indiceCenso];
-
             document.querySelector("#formValidarCensoNombrePersona").value += censo.nombre;
             document.querySelector("#formValidarCensoEdadPersona").value += censo.edad;
             document.querySelector("#formValidarCensoCiPersona").value += censo.ci;
-            //popular select departamento y edad
 
             //carga select con departamentos y muestra opción por defecto
             cargarSelectDeDepartamentos("formValidarCensoDepartamentoPersona");
             //selectedIndex establece la opción por defecto en select
             //referencia: https://www.w3schools.com/jsref/prop_select_selectedindex.asp
-            document.querySelector("#formValidarCensoDepartamentoPersona").selectedIndex = censo.departamento;
-            
+            document.querySelector("#formValidarCensoDepartamentoPersona").selectedIndex = censo.departamento;            
             cargarSelectDeOcupacion("formValidarCensoOcupacionPersona");
             document.querySelector("#formValidarCensoOcupacionPersona").selectedIndex = censo.ocupacion;
 
             //TODO: Pasar a finalizarValidacionDeCenso() que se ejecuta al presionar boton validar, 
-            //buscar forma de pasarle indice y/o ciLimpia
             //llamada a función que verifica si hubo modificaciones, valida y guarda en bdd
-            if (censoFueModificado({
+            if (app.censoFueModificado({
                 nombre: document.querySelector("#formValidarCensoNombrePersona").value,
                 edad: document.querySelector("#formValidarCensoEdadPersona").value,
                 departamento: document.querySelector("#formValidarCensoDepartamentoPersona").value,
@@ -338,43 +362,8 @@ function iniciarValidacionDeCenso(){
     document.querySelector("#msjBusquedaValidarCenso").innerHTML = mensaje;
 }
 
-/* 
-    Función que se ejecuta al presionar botón "Validar" en sección "Validar Censo",
-    extrae datos desde campos de texto e invoca a censoFueModificado()
-*/
-function finalizarValidacionDeCenso(){
-
-}
-
 
                     /* Funciones de lógica */
-
-/* 
-    Función que comprueba si hubo modificaciones en datos de censo, es llamada desde iniciarValidacionDeCenso()
-    recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios) false (no hubo cambios)
-*/
-
-function censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
-    const nuevosDatos = {
-        //es lo mismo que nombre: nombre,
-        nombre,
-        edad,
-        departamento,
-        ocupacion,
-    }
-    //datosOriginales es objeto
-    const datosOriginales = app.baseDeDatosCensos[indice];
-
-    if(nuevosDatos.departamento == datosOriginales.nombre
-        && nuevosDatos.edad == datosOriginales.edad
-        && nuevosDatos.departamento == datosOriginales.departamento
-        && nuevosDatos.ocupacion == datosOriginales.ocupacion){
-            //no hay modificaciones en el censo
-            return false;
-    } else {
-        //hay modificaciones en el censo, crear método para agregarlas
-    }
-}
 
 
 //recibe por parámetro id de <select> y le agrega departamentos
