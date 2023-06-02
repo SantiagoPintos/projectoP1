@@ -26,6 +26,8 @@ function capturarClicks(){
 
     //boton "terminar censo" que pushea datos de censo a bdd
     document.querySelector("#btnTerminarCenso").addEventListener("click", terminarCenso);
+
+    document.querySelector("#btnAtrasNuevoCenso").addEventListener("click", volverAtrasNuevoCenso);
     
     //botón para buscar cédula en sección "validación de censo"
     document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", iniciarValidacionDeCenso);
@@ -212,6 +214,19 @@ function mostrarInterfazCenso(){
     cargarSelectDeOcupacion("ocupacionNuevoCenso");
 }
 
+/* 
+    Función que permite al censista volver hacia el menú principal desde "Realizar nuevo censo"
+*/
+function volverAtrasNuevoCenso(){
+    ocultarNuevoCensoCensista();
+    document.querySelector("#nombreNuevoCenso").value = "";    
+    document.querySelector("#edadNuevoCenso").value = "";    
+    document.querySelector("#cedulaNuevoCenso").value = "";   
+    document.querySelector("#departamentoNuevoCenso").selectedIndex = 0;
+    document.querySelector("#ocupacionNuevoCenso").selectedIndex = 0;
+    mostrarMenuOpcionesCensista();
+}
+
 
 /* 
     Función que extrae datos
@@ -232,7 +247,11 @@ function terminarCenso(){
                         if (ocupacion!=0) {
                             if(app.realizarCenso(nombre,edad,ci,departamento,ocupacion)){
                                 mensajeParrafo = "Censo finalizado correctamente"
-                                //función que reciba parámetros random    
+                                document.querySelector("#nombreNuevoCenso").value = "";    
+                                document.querySelector("#edadNuevoCenso").value = "";    
+                                document.querySelector("#cedulaNuevoCenso").value = "";   
+                                document.querySelector("#departamentoNuevoCenso").selectedIndex = 0;
+                                document.querySelector("#ocupacionNuevoCenso").selectedIndex = 0;
                             } else {
                                 console.warn(`app.realizar censo retornó false!`);
                                 mensajeParrafo = "Algo salió mal";
