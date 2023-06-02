@@ -119,15 +119,14 @@ function iniciarSesionCensista(){
     const usuario = document.querySelector("#usuarioCensista").value.toLowerCase();
     const clave = document.querySelector("#contraseñaCensista").value;
     /* 
-        Perfil puede almacenar un objeto (contiene el nombre del censista y su id,
-        este último es usado al momento de terminar/validar un censo) o "false"
+        Perfil puede almacenar true o false
     */
     const perfil = app.verificarCredenciales(usuario, clave);
     if (perfil) {
         //Mostrar menú censista
         ocultarLoginCensista();
         mostrarMenuOpcionesCensista();
-        document.querySelector("#parrafoNombreCensista").innerHTML = `Bienvenido ${app.censistaLogueado.nombre}`
+        document.querySelector("#parrafoNombreCensista").innerHTML = `Bienvenido ${app.censistaLogueado.nombre}`;
     } else {
         document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
     }
