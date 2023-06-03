@@ -36,7 +36,7 @@ function capturarClicks(){
     document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", iniciarValidacionDeCenso);
 
     //botón "validar" en sección validar censo, funciones comprueban si hubo cambio en censo y lo validan
-    document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", mostrarFormValidacionCenso);
+    document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", finalizarValidacionDeCenso);
 
 }
 
@@ -305,8 +305,20 @@ function terminarCenso(){
 }
 
 /*  
-    funcion que extrae ci de sección "validar censo" y llama a función que la procesa 
+    funcion que extrae ci de sección "validar censo" y llama a función que la procesa.
+
+    "indiceValidacionCenso" es usada para almacenar el índice del censo a validar ya que
+    es requerido por "iniciarValidacionDeCenso()" y "finalizarValidacionDeCenso()" no tiene
+    sentido realizar dos veces la validación de dígito verificador, censoEstaValidado y 
+    obtenerIndiceCenso.
+
+    validacionDatosCenso es usado en "finalizarValidacionDeCenso()" para comprobar que
+    "finalizarValidacionDeCenso()" se haya ejecutado con anterioridad, es decir,
+    la app verificó si hubo un proceso de validación de datos.
 */
+let indiceValidacionCenso=-1;
+let validacionDatosCenso = false;
+let ciValidacionCenso = 0;
 function iniciarValidacionDeCenso(){
     const ci = document.querySelector("#ciValidarCenso").value;
     const ciLimpia = app.limpiarNroCI(ci);
@@ -314,11 +326,9 @@ function iniciarValidacionDeCenso(){
     if (app.validarDigitoVerificadorCI(ciLimpia)) {
         //si ci es válida se procede a buscar su existencia en bdd
         if (app.censoEstaValidado(ciLimpia) == false) {
-            console.log("censo no está validado");
             mostrarValidarCenso()
             ocultarFormBusquedaValidacionCenso();
             mostrarFormValidacionCenso();
-            console.log("Mostrando formulario y cargando datos");
             
             //obtener y mostrar en formulario datos de censo
             const indiceCenso = app.obtenerIndiceCenso(ciLimpia);
@@ -335,20 +345,11 @@ function iniciarValidacionDeCenso(){
             cargarSelectDeOcupacion("formValidarCensoOcupacionPersona");
             document.querySelector("#formValidarCensoOcupacionPersona").selectedIndex = censo.ocupacion;
 
-            //TODO: Pasar a finalizarValidacionDeCenso() que se ejecuta al presionar boton validar, 
-            //llamada a función que verifica si hubo modificaciones, valida y guarda en bdd
-            if (app.censoFueModificado({
-                nombre: document.querySelector("#formValidarCensoNombrePersona").value,
-                edad: document.querySelector("#formValidarCensoEdadPersona").value,
-                departamento: document.querySelector("#formValidarCensoDepartamentoPersona").value,
-                ocupacion: document.querySelector("#formValidarCensoOcupacionPersona").value,
-            }, indiceCenso)) {
-                //censo fue modificado
-                
-            } else {
-                //censo no fue modificado
-                console.log("Censo no fue modificado!")
-            }
+            //variables usadas por finazarValidacionDeCenso
+            validacionDatosCenso = true;
+            indiceValidacionCenso=indiceCenso;
+            ciValidacionCenso=ciLimpia;
+
         } else if (app.censoEstaValidado(ciLimpia) == true){
             //censo ya fue validado
             mensaje = "El censo asociado a esta cédula de indentidad ya fue validado";
@@ -362,8 +363,45 @@ function iniciarValidacionDeCenso(){
     document.querySelector("#msjBusquedaValidarCenso").innerHTML = mensaje;
 }
 
-
-                    /* Funciones de lógica */
+function finalizarValidacionDeCenso(){
+    //TODO: Preguntar si es posible utilizar closures para anidar esta función dentro de 
+    //iniciarValidacionDeCenso().
+    let mensaje = "";
+    if(validacionDatosCenso){
+        //índice del primer censo siempre debe ser 0, si es -1 signfica que función anterior
+        //no se ejecutó y por lo tanto los datos del formulario estarán vacíos
+        if (indiceValidacionCenso>-1) {
+            //comprueba si censo está validado para que validación solo se ejecute una vez 
+            if (!app.censoEstaValidado(ciValidacionCenso)) {
+                if (app.censoFueModificado({
+                    nombre: document.querySelector("#formValidarCensoNombrePersona").value,
+                    edad: document.querySelector("#formValidarCensoEdadPersona").value,
+                    departamento: document.querySelector("#formValidarCensoDepartamentoPersona").value,
+                    ocupacion: document.querySelector("#formValidarCensoOcupacionPersona").value,
+                }, indiceValidacionCenso)) {
+                    //censo fue modificado
+                    mensaje = "Modificaciones guardadas correctamente";
+                    if(app.confirmarCenso(ciValidacionCenso)){
+                        mensaje = "<br> Censo confirmado con éxito";
+                    } else {
+                        mensaje = "<br> El censo no pudo ser confirmado";
+                    }     
+                } else {
+                    if(app.confirmarCenso(ciValidacionCenso)){
+                        mensaje = "Censo confirmado con éxito";
+                    }
+                }
+            } else {
+                mensaje = "El censo ya fue validado";
+            }
+        } else {
+            mensaje = "El censo no pudo ser encontrado en la base de datos";
+        }
+    } else {
+        mensaje = "No se pudo validar el censo";
+    }
+    document.querySelector("#mjsFormValidarCenso").innerHTML = mensaje;
+}
 
 
 //recibe por parámetro id de <select> y le agrega departamentos

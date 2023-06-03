@@ -88,12 +88,13 @@ class App {
     }
 
     /* 
-        Función que comprueba si hubo modificaciones en datos de censo, es llamada desde iniciarValidacionDeCenso()
+        Método que comprueba si hubo modificaciones en datos de censo,
         recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios) false (no hubo cambios)
     */
 
     censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
         let fueModificado=true;
+
         const nuevosDatos = {
             //es lo mismo que nombre: nombre,
             nombre,
@@ -104,7 +105,7 @@ class App {
 
         const datosOriginales = this.baseDeDatosCensos[indice];
 
-        if(nuevosDatos.departamento == datosOriginales.nombre
+        if(nuevosDatos.nombre == datosOriginales.nombre
             && nuevosDatos.edad == datosOriginales.edad
             && nuevosDatos.departamento == datosOriginales.departamento
             && nuevosDatos.ocupacion == datosOriginales.ocupacion){
@@ -304,7 +305,7 @@ class App {
     /* 
         Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
         "censado" a "true" y da por finalizado el mismo.
-        Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado desede main.js).
+        Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado con métodos anteriores).
     */ 
     confirmarCenso(ci){
         let confirmado = false;
