@@ -42,6 +42,8 @@ function capturarClicks(){
 
     document.querySelector("#btnAtrasRegistroCensista").addEventListener("click", volverAtrasRegistroCensista);
 
+    document.querySelector("#btnVolverAtrasLoginCensista").addEventListener("click", volverAtrasLoginCensista);
+
 }
 
 /* 
@@ -179,6 +181,11 @@ function volverAtrasRegistroCensista(){
     document.querySelector("#nuevoUsuarioCensista").value = "";
     document.querySelector("#nuevoContraseñaCensista").value = "";
     mostrarLoginCensista();
+}
+
+function volverAtrasLoginCensista(){
+    ocultarLoginCensista();
+    mostrarSeleccionUsuario();
 }
 
 /* 
