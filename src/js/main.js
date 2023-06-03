@@ -40,6 +40,8 @@ function capturarClicks(){
 
     document.querySelector("#btnVolverAtrasValidarCenso").addEventListener("click", volverAtrasValidarCenso);
 
+    document.querySelector("#btnAtrasRegistroCensista").addEventListener("click", volverAtrasRegistroCensista);
+
 }
 
 /* 
@@ -169,6 +171,14 @@ function volverAtrasValidarCenso(){
     ocultarValidarCenso();
     document.querySelector("#ciValidarCenso").value = "";
     mostrarMenuOpcionesCensista();
+}
+
+function volverAtrasRegistroCensista(){
+    ocultarFormularioRegistroCensista();
+    document.querySelector("#nuevoNombreCensista").value = "";
+    document.querySelector("#nuevoUsuarioCensista").value = "";
+    document.querySelector("#nuevoContraseñaCensista").value = "";
+    mostrarLoginCensista();
 }
 
 /* 
