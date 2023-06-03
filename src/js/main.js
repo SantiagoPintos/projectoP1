@@ -38,6 +38,8 @@ function capturarClicks(){
     //botón "validar" en sección validar censo, funciones comprueban si hubo cambio en censo y lo validan
     document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", finalizarValidacionDeCenso);
 
+    document.querySelector("#btnVolverAtrasValidarCenso").addEventListener("click", volverAtrasValidarCenso);
+
 }
 
 /* 
@@ -161,6 +163,12 @@ function cerrarSesionCensista(){
 function registroCensista(){
     ocultarLoginCensista();
     mostrarFormularioRegistroCensista();
+}
+
+function volverAtrasValidarCenso(){
+    ocultarValidarCenso();
+    document.querySelector("#ciValidarCenso").value = "";
+    mostrarMenuOpcionesCensista();
 }
 
 /* 
