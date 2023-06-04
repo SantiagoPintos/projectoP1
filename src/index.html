@@ -261,16 +261,18 @@
                 <input type="button" id="btnMostrarEstadisticasMenuPersona" value="Mostrar estadísticas">
             </div>
             <div id="realizarCensoPersona">
-                    <p id="cuadroBusquedaCIPersona">
+                <div id="cuadroBusquedaCIPersona">
+                    <p>
                         <label for="busquedaNroCedulaCensoPersona">Cédula de identidad:</label><br>
-                        <input type="number" id="busquedaNroCIPersona"><br>
+                        <input type="text" id="busquedaNroCIPersona"><br>
                         <input type="button" id="btnBuscarCIPersona" value="Buscar">
                         <p id="mensajesCuadroBusquedaCIPersona"></p>
                     </p>
-                    <p id="CuadroCensoPersona">
-                        <!-- Título modificable desde JS -->
+                </div>
+                <div id="formCensoPersona">
+                    <p>
                         <h2 id="tituloCuadroCensoPersona">Usuario invitado</h2>
-                        <p id="formCensoPersona">
+                        <p>
                             <label for="nombrePersonaCenso">Nombre completo</label><br>
                             <input type="text" id="nombrePersonaCenso"><br>
                             <label for="edadPersonaCenso">Edad</label><br>
@@ -288,13 +290,16 @@
                             <p>
                                 <input type="button" value="Finalizar" id="btnFinalizarCensoPersona">
                             </p>
-                            <p id="contenedorBtnEliminarCensoPersona">
-                                <!-- contenedor para el botón eliminar en caso de que sea posible usarlo -->
-                                <input type="button" value="Eliminar datos" id="btnEliminarCensoPersona">
-                            </p>
+                            <div  id="contenedorBtnEliminarCensoPersona" >
+                                <p>
+                                    <!-- contenedor para el botón eliminar en caso de que sea posible usarlo -->
+                                    <input type="button" value="Eliminar datos" id="btnEliminarCensoPersona">
+                                </p>
+                            </div>
                             <p id="msjFormCensoPersona"></p>
                         </p>
                     </p>
+                </div>
             </div>
             <div id="mostrarEstadisticasPersona">
                 <p>

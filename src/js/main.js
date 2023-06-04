@@ -7,7 +7,7 @@ function main(){
     app.precargarCensos()
 }
 function capturarClicks(){
-    document.querySelector("#btnUsuarioCensista").addEventListener("click", mostrarAppCensista);
+    document.querySelector("#btnUsuarioCensista").addEventListener("click", iniciarAppCensista);
 
     document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
     document.querySelector("#btnRegistroCensista").addEventListener("click", registroCensista);
@@ -43,6 +43,14 @@ function capturarClicks(){
     document.querySelector("#btnAtrasRegistroCensista").addEventListener("click", volverAtrasRegistroCensista);
 
     document.querySelector("#btnVolverAtrasLoginCensista").addEventListener("click", volverAtrasLoginCensista);
+
+
+    document.querySelector("#btnUsuarioPersona").addEventListener("click", iniciarAppPersona);
+
+    document.querySelector("#btnRealizarCensoMenuPersona").addEventListener("click", cuadroBusquedaCIPersona);
+
+
+    document.querySelector("#btnBuscarCIPersona").addEventListener("click", buscarCiPersona);
 
 }
 
@@ -85,6 +93,21 @@ function ocultarFormBusquedaValidacionCenso(){
 function ocultarFormValidacionCenso(){
     document.querySelector("#formValidarCenso").style.display = "none";
 }
+function ocultarMenuOpcionesPersona(){
+    document.querySelector("#menuPersona").style.display = "none";
+}
+function ocultarEstadisticasPersona(){
+    document.querySelector("#mostrarEstadisticasPersona").style.display = "none";
+}
+function ocultarCensoPersona(){
+    document.querySelector("#realizarCensoPersona").style.display = "none";
+}
+function ocultarCuadroBusquedaCiPersona(){
+    document.querySelector("#cuadroBusquedaCIPersona").style.display = "none";
+}
+function ocultarFormCensoPersona(){
+    document.querySelector("#formCensoPersona").style.display = "none";
+}
 
 function mostrarAppCensista(){
     ocultarSeleccionUsuario();
@@ -120,6 +143,24 @@ function mostrarFormBusquedaValidacionCenso(){
 }
 function mostrarFormValidacionCenso(){
     document.querySelector("#formValidarCenso").style.display = "block";
+}
+function mostrarAppUsuario(){
+    document.querySelector("#aplicacionPersona").style.display = "block";
+}
+function mostrarMenuOpcionesPersona(){
+    document.querySelector("#menuPersona").style.display = "block";
+}
+function mostrarEstadisticasPersona(){
+    document.querySelector("#mostrarEstadisticasPersona").style.display = "block";
+}
+function mostrarCensoPersona(){
+    document.querySelector("#realizarCensoPersona").style.display = "block";
+}
+function mostrarCuadroBusquedaCiPersona(){
+    document.querySelector("#cuadroBusquedaCIPersona").style.display = "block";
+}
+function mostrarFormCensoPersona(){
+    document.querySelector("#formCensoPersona").style.display = "block";
 }
 
 
@@ -164,6 +205,11 @@ function cerrarSesionCensista(){
     mostrarSeleccionUsuario();
 }
 
+function iniciarAppCensista(){
+    ocultarAppUsuario();
+    mostrarAppCensista();
+}
+
 function registroCensista(){
     ocultarLoginCensista();
     mostrarFormularioRegistroCensista();
@@ -186,6 +232,111 @@ function volverAtrasRegistroCensista(){
 function volverAtrasLoginCensista(){
     ocultarLoginCensista();
     mostrarSeleccionUsuario();
+}
+/* 
+    Función que controla el checkbox "Mostrar contraseña" de registro de nuevo censista
+*/
+function mostrarContraseñaRegistroCensista(){
+    let estado=document.querySelector("#nuevoContraseñaCensista");
+
+    if (estado.type=="password") {
+        estado.type = "text";
+    } else {
+        estado.type = "password";
+    }
+}
+
+/* 
+    Función que se ejecuta al iniciar nuevo censo desde app censista
+*/
+function mostrarInterfazCenso(){
+    ocultarMenuOpcionesCensista();
+    mostrarNuevoCensoCensista();
+    cargarSelectDeDepartamentos("departamentoNuevoCenso");
+    cargarSelectDeOcupacion("ocupacionNuevoCenso");
+}
+
+/* 
+    Función que permite al censista volver hacia el menú principal desde "Realizar nuevo censo"
+*/
+function volverAtrasNuevoCenso(){
+    ocultarNuevoCensoCensista();
+    document.querySelector("#nombreNuevoCenso").value = "";    
+    document.querySelector("#edadNuevoCenso").value = "";    
+    document.querySelector("#cedulaNuevoCenso").value = "";   
+    document.querySelector("#departamentoNuevoCenso").selectedIndex = 0;
+    document.querySelector("#ocupacionNuevoCenso").selectedIndex = 0;
+    mostrarMenuOpcionesCensista();
+}
+
+function mostrarBusquedaValidacionDeCenso(){
+    ocultarMenuOpcionesCensista();
+    mostrarValidarCenso();
+    mostrarFormBusquedaValidacionCenso();
+    ocultarFormValidacionCenso();
+}
+
+function iniciarAppPersona(){
+    ocultarAppCensista();
+    ocultarSeleccionUsuario();
+    mostrarAppUsuario();
+    mostrarMenuOpcionesPersona();
+    ocultarCuadroBusquedaCiPersona();
+    ocultarFormCensoPersona();
+    ocultarEstadisticasPersona();
+}
+
+function cuadroBusquedaCIPersona(){
+    ocultarMenuOpcionesPersona();
+    mostrarCuadroBusquedaCiPersona();
+}
+
+function buscarCiPersona(){
+    //buscar censo asociado a ci (limpiar & validar CI)
+    //si no hay censo asociado=mostrar cuadro para hacer censo
+    //si hay censo asociado - verificar validación - si no está validado=mostrar campos con info - verificar si hubo cambios
+    const ci=document.querySelector("#busquedaNroCIPersona").value;
+    const ciLimpia = app.limpiarNroCI(ci);
+    let mensaje = "";
+
+    //Validación de ci
+    if (app.validarDigitoVerificadorCI(ciLimpia)) {
+        //existe censo asociado a esa ci?
+        // existe=está validado?
+        // no existe= nuevo censo
+        if (!app.existeCenso(ciLimpia)) {
+            //nuevo censo
+        } else {
+            //está validado?
+            if (!app.censoEstaValidado(ciLimpia)) {
+                console.log("no está validado");
+                //se puede modificar, obtiene índice y carga datos en campos de texto
+                const indice = app.obtenerIndiceCenso(ciLimpia);
+                const censo = app.baseDeDatosCensos[indice];
+                console.log(censo)
+                ocultarCuadroBusquedaCiPersona();
+                mostrarFormCensoPersona();
+                //cambia h2 por nombre de la persona
+                document.querySelector("#tituloCuadroCensoPersona").innerHTML = censo.nombre;
+                //carga datos en formulario
+                document.querySelector("#nombrePersonaCenso").value = censo.nombre;
+                document.querySelector("#edadPersonaCenso").value = censo.edad;
+                document.querySelector("#ciPersonaCenso").value = censo.ci;
+                cargarSelectDeDepartamentos("departamentoPersonaCenso");
+                document.querySelector("#departamentoPersonaCenso").selectedIndex = censo.departamento;
+                cargarSelectDeOcupacion("ocupacionPersonaCenso");
+                document.querySelector("#ocupacionPersonaCenso").selectedIndex = censo.ocupacion;
+
+                //TODO: comprobar cambios y pushear si es necesario
+
+            } else {
+                mensaje = "El censo asociado a esa cédula de indentidad ya fue validado por un censista";
+            }
+        }
+    } else {
+        mensaje = "El número de cédula no es válido";
+    }
+    document.querySelector("#mensajesCuadroBusquedaCIPersona").innerHTML = mensaje;
 }
 
 /* 
@@ -234,49 +385,6 @@ function iniciarRegistroCensista(){
 }
 
 
-/* 
-    Función que controla el checkbox "Mostrar contraseña" de registro de nuevo censista
-*/
-function mostrarContraseñaRegistroCensista(){
-    let estado=document.querySelector("#nuevoContraseñaCensista");
-
-    if (estado.type=="password") {
-        estado.type = "text";
-    } else {
-        estado.type = "password";
-    }
-}
-
-/* 
-    Función que se ejecuta al iniciar nuevo censo desde app censista
-*/
-function mostrarInterfazCenso(){
-    ocultarMenuOpcionesCensista();
-    mostrarNuevoCensoCensista();
-    //popular el selectores de ocupación y departamento
-    cargarSelectDeDepartamentos("departamentoNuevoCenso");
-    cargarSelectDeOcupacion("ocupacionNuevoCenso");
-}
-
-/* 
-    Función que permite al censista volver hacia el menú principal desde "Realizar nuevo censo"
-*/
-function volverAtrasNuevoCenso(){
-    ocultarNuevoCensoCensista();
-    document.querySelector("#nombreNuevoCenso").value = "";    
-    document.querySelector("#edadNuevoCenso").value = "";    
-    document.querySelector("#cedulaNuevoCenso").value = "";   
-    document.querySelector("#departamentoNuevoCenso").selectedIndex = 0;
-    document.querySelector("#ocupacionNuevoCenso").selectedIndex = 0;
-    mostrarMenuOpcionesCensista();
-}
-
-function mostrarBusquedaValidacionDeCenso(){
-    ocultarMenuOpcionesCensista();
-    mostrarValidarCenso();
-    mostrarFormBusquedaValidacionCenso();
-    ocultarFormValidacionCenso();
-}
 
 
 /* 
@@ -405,6 +513,7 @@ function finalizarValidacionDeCenso(){
                     ocupacion: document.querySelector("#formValidarCensoOcupacionPersona").value,
                 }, indiceValidacionCenso)) {
                     //censo fue modificado
+                    //FALTA PUSHEAR CAMBIOS
                     mensaje = "Modificaciones guardadas correctamente";
                     if(app.confirmarCenso(ciValidacionCenso)){
                         mensaje = "<br> Censo confirmado con éxito";
