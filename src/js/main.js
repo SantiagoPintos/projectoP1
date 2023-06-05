@@ -525,15 +525,15 @@ function finalizarValidacionDeCenso(){
 
                     if (app.actualizarCenso({nombre, edad, ci, departamento, ocupacion}, indiceValidacionCenso)) {
                         mensaje = "Modificaciones guardadas correctamente";
+                        if(app.confirmarCenso(ciValidacionCenso)){
+                            mensaje = "<br> Censo confirmado con éxito";
+                        } else {
+                            mensaje = "<br> El censo no pudo ser confirmado";
+                        }     
                     } else {
                         mensaje = "Datos no válidos, el censo no puede ser validado";
                     }
                     
-                    if(app.confirmarCenso(ciValidacionCenso)){
-                        mensaje = "<br> Censo confirmado con éxito";
-                    } else {
-                        mensaje = "<br> El censo no pudo ser confirmado";
-                    }     
                 } else {
                     if(app.confirmarCenso(ciValidacionCenso)){
                         mensaje = "Censo confirmado con éxito";
