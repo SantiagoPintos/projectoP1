@@ -499,22 +499,36 @@ function iniciarValidacionDeCenso(){
 function finalizarValidacionDeCenso(){
     //TODO: Preguntar si es posible utilizar closures para anidar esta función dentro de 
     //iniciarValidacionDeCenso().
+    const nombre = document.querySelector("#formValidarCensoNombrePersona").value;
+    const edad = document.querySelector("#formValidarCensoEdadPersona").value;
+    const ci = ciValidacionCenso;
+    const departamento = document.querySelector("#formValidarCensoDepartamentoPersona").value;
+    const ocupacion = document.querySelector("#formValidarCensoOcupacionPersona").value;
+
     let mensaje = "";
     if(validacionDatosCenso){
         //índice del primer censo siempre debe ser 0, si es -1 signfica que función anterior
         //no se ejecutó y por lo tanto los datos del formulario estarán vacíos
         if (indiceValidacionCenso>-1) {
             //comprueba si censo está validado para que validación solo se ejecute una vez 
-            if (!app.censoEstaValidado(ciValidacionCenso)) {
+            if (!app.censoEstaValidado(ci)) {
                 if (app.censoFueModificado({
-                    nombre: document.querySelector("#formValidarCensoNombrePersona").value,
-                    edad: document.querySelector("#formValidarCensoEdadPersona").value,
-                    departamento: document.querySelector("#formValidarCensoDepartamentoPersona").value,
-                    ocupacion: document.querySelector("#formValidarCensoOcupacionPersona").value,
+                    nombre: nombre,
+                    edad: edad,
+                    departamento: departamento,
+                    ocupacion: ocupacion,
                 }, indiceValidacionCenso)) {
                     //censo fue modificado
-                    //FALTA PUSHEAR CAMBIOS
-                    mensaje = "Modificaciones guardadas correctamente";
+                    //TODO: PUSHEAR CAMBIOS
+
+                    /* método para actualizar censo */
+
+                    if (app.actualizarCenso({nombre, edad, ci, departamento, ocupacion}, indiceValidacionCenso)) {
+                        mensaje = "Modificaciones guardadas correctamente";
+                    } else {
+                        mensaje = "Datos no válidos, el censo no puede ser validado";
+                    }
+                    
                     if(app.confirmarCenso(ciValidacionCenso)){
                         mensaje = "<br> Censo confirmado con éxito";
                     } else {

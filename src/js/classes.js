@@ -117,6 +117,34 @@ class App {
     }
 
     /* 
+        Método que modifica datos de censo (es usado cuando censista realiza modificaciones al censo antes de 
+        validarlo).
+    */
+    actualizarCenso({nombre, edad, ci, departamento, ocupacion}, indice){
+        let actualizado = false; 
+        const nuevosDatos = {
+            nombre,
+            edad, 
+            ci,
+            departamento,
+            ocupacion,
+            idCensista : this.censistaLogueado.id,
+        }
+        if(edad >= 0 && edad <= 130){
+            if(this.validarDigitoVerificadorCI(ci)){
+                //departamento y ocupacion se extrae de select(s) donde
+                //value = 0 es opción "Seleccione..."
+                if(departamento != 0 && ocupacion != 0){
+                    this.baseDeDatosCensos[indice] = nuevosDatos;
+                    actualizado = true;
+                }
+            }
+        }
+
+        return actualizado;        
+    }
+
+    /* 
         Método para crear un nuevo censista y agregaro a su array correspondiente
     */
     crearCensista(nombre, usuario, contraseña, id){
