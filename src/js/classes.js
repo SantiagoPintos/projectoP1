@@ -93,6 +93,7 @@ class App {
     */
 
     censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
+        //TODO: Cambiar argumento indice por ci, porque con ella se puede usar método para obtener el índice del censo
         let fueModificado=true;
 
         const nuevosDatos = {
@@ -121,8 +122,9 @@ class App {
         validarlo).
     */
     actualizarCenso({nombre, edad, ci, departamento, ocupacion}, indice){
+        //TODO: Cambiar argumento indice por ci, porque con ella se puede usar método para obtener el índice del censo
         let actualizado = false; 
-        const nuevosDatos = {
+        let nuevosDatos = {
             nombre,
             edad, 
             ci,
