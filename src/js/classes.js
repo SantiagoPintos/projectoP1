@@ -92,29 +92,35 @@ class App {
         recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios) false (no hubo cambios)
     */
 
-    censoFueModificado({nombre, edad, departamento, ocupacion}, indice){
-        //TODO: Cambiar argumento indice por ci, porque con ella se puede usar método para obtener el índice del censo
+    censoFueModificado({nombre, edad, ci, departamento, ocupacion}){
         let fueModificado=true;
 
         const nuevosDatos = {
             //es lo mismo que nombre: nombre,
             nombre,
             edad,
+            ci,
             departamento,
             ocupacion,
         }
 
-        const datosOriginales = this.baseDeDatosCensos[indice];
-
-        if(nuevosDatos.nombre == datosOriginales.nombre
-            && nuevosDatos.edad == datosOriginales.edad
-            && nuevosDatos.departamento == datosOriginales.departamento
-            && nuevosDatos.ocupacion == datosOriginales.ocupacion){
-                //no hay modificaciones en el censo
-                fueModificado=false;
+        if(this.validarDigitoVerificadorCI(this.limpiarNroCI(ci))){
+            const indice = this.obtenerIndiceCenso(ci);
+            const datosOriginales = this.baseDeDatosCensos[indice];
+    
+            if(nuevosDatos.nombre == datosOriginales.nombre
+                && nuevosDatos.edad == datosOriginales.edad
+                && nuevosDatos.departamento == datosOriginales.departamento
+                && nuevosDatos.ocupacion == datosOriginales.ocupacion){
+                    //no hay modificaciones en el censo
+                    fueModificado=false;
+            }
+            
+            return fueModificado;
+        } else { 
+            return -1; 
         }
 
-        return fueModificado;
     }
 
     /* 
@@ -122,7 +128,6 @@ class App {
         (es usado cuando censista o usuarios realizan modificaciones al censo antes de validarlo).
     */
     actualizarCenso({nombre, edad, ci, departamento, ocupacion}){
-        //TODO: Cambiar argumento indice por ci, porque con ella se puede usar método para obtener el índice del censo
         let actualizado = false; 
         let nuevosDatos = {
             nombre,

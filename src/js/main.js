@@ -391,7 +391,7 @@ function usuarioModificoCenso(){
                     if (ocupacion != 0) {
                         //llamada a método para comprobar si hubo cambios
                         //si hubo, actualizo
-                        if(app.censoFueModificado({nombre, edad, departamento, ocupacion}, indiceDeCenso)){
+                        if(app.censoFueModificado({nombre, edad, ci, departamento, ocupacion})){
                             //censo fue modificado
                             if (app.actualizarCenso({nombre, edad, ci, departamento, ocupacion})) {
                                 mensaje = "Datos actualizados correctamente";
@@ -399,7 +399,7 @@ function usuarioModificoCenso(){
                                 mensaje = "Error, no se pueden actualizar los datos";
                             }
                         } else {
-                            mensaje = "No hubo cambios"
+                            mensaje = "No hubo cambios";
                         }
                     } else {
                         mensaje = "Seleccione una ocupación";
@@ -592,9 +592,10 @@ function finalizarValidacionDeCenso(){
                 if (app.censoFueModificado({
                     nombre: nombre,
                     edad: edad,
+                    ci: ci,
                     departamento: departamento,
                     ocupacion: ocupacion,
-                }, indiceValidacionCenso)) {
+                }) == true) {
                     //censo fue modificado
                     //TODO: PUSHEAR CAMBIOS
 
@@ -611,10 +612,18 @@ function finalizarValidacionDeCenso(){
                         mensaje = "Datos no válidos, el censo no puede ser validado";
                     }
                     
-                } else {
+                } else if (app.censoFueModificado({
+                    nombre: nombre,
+                    edad: edad,
+                    ci: ci,
+                    departamento: departamento,
+                    ocupacion: ocupacion,
+                }) == false) {
                     if(app.confirmarCenso(ciValidacionCenso)){
                         mensaje = "Censo confirmado con éxito";
                     }
+                } else {
+                    mensaje = "Datos incorrectos";
                 }
             } else {
                 mensaje = "El censo ya fue validado";
