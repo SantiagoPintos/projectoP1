@@ -399,8 +399,9 @@ function terminarCenso(){
     let mensajeParrafo = "";
 
     if (nombre != "") {
-        if (edad>=0 && edad<=130) {
+        if (edad>=0 && edad<=130 && edad!="") {
             if (app.validarDigitoVerificadorCI(app.limpiarNroCI(ci))) {
+                
                 if (!app.existeCenso(app.limpiarNroCI(ci))) {
                     if (departamento!=0) {
                         if (ocupacion!=0) {
@@ -412,8 +413,7 @@ function terminarCenso(){
                                 document.querySelector("#departamentoNuevoCenso").selectedIndex = 0;
                                 document.querySelector("#ocupacionNuevoCenso").selectedIndex = 0;
                             } else {
-                                console.warn(`app.realizar censo retornó false!`);
-                                mensajeParrafo = "Algo salió mal";
+                                mensajeParrafo = "Error: compruebe la información";
                             }
                         } else {
                             mensajeParrafo = "Seleccione la ocupación";
