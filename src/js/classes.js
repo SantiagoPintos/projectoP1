@@ -146,7 +146,7 @@ class App {
             nuevosDatos.idCensista = this.censistaLogueado.id 
         }
 
-        if(edad >= 0 && edad <= 130){
+        if(edad >= 0 && edad <= 130 && edad != ""){
             if(this.validarDigitoVerificadorCI(ci)){
                 let indice = this.obtenerIndiceCenso(ci);
                 //departamento y ocupacion se extrae de select(s) donde
