@@ -118,10 +118,10 @@ class App {
     }
 
     /* 
-        Método que modifica datos de censo (es usado cuando censista realiza modificaciones al censo antes de 
-        validarlo).
+        Método que modifica datos de censo 
+        (es usado cuando censista o usuarios realizan modificaciones al censo antes de validarlo).
     */
-    actualizarCenso({nombre, edad, ci, departamento, ocupacion}, indice){
+    actualizarCenso({nombre, edad, ci, departamento, ocupacion}){
         //TODO: Cambiar argumento indice por ci, porque con ella se puede usar método para obtener el índice del censo
         let actualizado = false; 
         let nuevosDatos = {
@@ -130,10 +130,20 @@ class App {
             ci,
             departamento,
             ocupacion,
-            idCensista : this.censistaLogueado.id,
         }
+
+        /* 
+            censistaLogueado es un objeto con los datos del censista que inició sesión, por lo tanto esta propiedad solo es
+            accesible cuando un censista es quien está modificando los datos del censo, en caso contrario se asume que un 
+            usuario es quien está editando sus datos
+        */
+        if (this.censistaLogueado != null) {
+            nuevosDatos.idCensista = this.censistaLogueado.id 
+        }
+
         if(edad >= 0 && edad <= 130){
             if(this.validarDigitoVerificadorCI(ci)){
+                let indice = this.obtenerIndiceCenso(ci);
                 //departamento y ocupacion se extrae de select(s) donde
                 //value = 0 es opción "Seleccione..."
                 if(departamento != 0 && ocupacion != 0){

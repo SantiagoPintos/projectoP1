@@ -306,7 +306,7 @@ function cuadroBusquedaCIPersona(){
     es usado por usuarioModificoCenso() para invocar a método censoFueModifcado y verificar
     si hubo cambios en el mismo
 */
-let indiceDeCenso = -1;
+let ciCenso = -1;
 function buscarCiPersona(){
     //buscar censo asociado a ci (limpiar & validar CI)
     //si no hay censo asociado=mostrar cuadro para hacer censo
@@ -328,14 +328,12 @@ function buscarCiPersona(){
             //se puede modificar, obtiene índice y carga datos en campos de texto
             const indice = app.obtenerIndiceCenso(ciLimpia);
             const censo = app.baseDeDatosCensos[indice];
-            console.log(censo)
 
             //se muestra nombre de la persona en títutlo
             document.querySelector("#tituloCuadroCensoPersona").innerHTML = censo.nombre;
             
             //está validado?
             if (!app.censoEstaValidado(ciLimpia)) {
-                console.log("no está validado");
                 ocultarCuadroBusquedaCiPersona();
                 mostrarFormCensoPersona();
                 //carga datos en formulario
@@ -346,7 +344,10 @@ function buscarCiPersona(){
                 document.querySelector("#departamentoPersonaCenso").selectedIndex = censo.departamento;
                 cargarSelectDeOcupacion("ocupacionPersonaCenso");
                 document.querySelector("#ocupacionPersonaCenso").selectedIndex = censo.ocupacion;
-                indiceDeCenso = indice;
+                ciCenso = ciLimpia;
+
+                //El número de cédula de un censo no puede ser modificado
+                document.getElementById("ciPersonaCenso").readOnly = true;
             } else {
                 mensaje = "El censo asociado a esa cédula de indentidad ya fue validado por un censista";
                 // si está validado se deshabilitan botones para modificar y eliminar datos
@@ -376,7 +377,8 @@ function usuarioModificoCenso(){
     */
     const nombre = document.querySelector("#nombrePersonaCenso").value;
     const edad = Number(document.querySelector("#edadPersonaCenso").value);
-    const ci = document.querySelector("#ciPersonaCenso").value ;
+    //se pasa ci como variable global porque no puede ni debe ser modificada
+    const ci = ciCenso;
     const departamento = Number(document.querySelector("#departamentoPersonaCenso").value);
     const ocupacion = Number(document.querySelector("#ocupacionPersonaCenso").value);
     let mensaje ="";
@@ -385,14 +387,13 @@ function usuarioModificoCenso(){
     //SOLO se actualizan los cambios si los datos ingresados son válidos
     if(nombre!=""){
         if(edad>=0 && edad <=130 && edad != ""){
-            if (app.validarDigitoVerificadorCI(app.limpiarNroCI(ci))) {
                 if (departamento != 0) {
                     if (ocupacion != 0) {
                         //llamada a método para comprobar si hubo cambios
                         //si hubo, actualizo
                         if(app.censoFueModificado({nombre, edad, departamento, ocupacion}, indiceDeCenso)){
                             //censo fue modificado
-                            if (app.actualizarCenso({nombre, edad, ci, departamento, ocupacion}, indiceDeCenso)) {
+                            if (app.actualizarCenso({nombre, edad, ci, departamento, ocupacion})) {
                                 mensaje = "Datos actualizados correctamente";
                             } else {
                                 mensaje = "Error, no se pueden actualizar los datos";
@@ -406,9 +407,6 @@ function usuarioModificoCenso(){
                 } else {
                     mensaje = "Seleccione un departamento";
                 }
-            } else {
-                mensaje = "El número de cédula ingresado no es válido";
-            }
         } else {
             mensaje = "La edad ingresada no está dentro del rango permitido";
         }
@@ -602,7 +600,7 @@ function finalizarValidacionDeCenso(){
 
                     /* método para actualizar censo */
 
-                    if (app.actualizarCenso({nombre, edad, ci, departamento, ocupacion}, indiceValidacionCenso)) {
+                    if (app.actualizarCenso({nombre, edad, ci, departamento, ocupacion})) {
                         mensaje = "Modificaciones guardadas correctamente";
                         if(app.confirmarCenso(ciValidacionCenso)){
                             mensaje = "<br> Censo confirmado con éxito";
