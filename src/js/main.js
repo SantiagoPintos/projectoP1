@@ -35,7 +35,7 @@ function capturarClicks(){
     //botón para buscar cédula en sección "validación de censo"
     document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", iniciarValidacionDeCenso);
 
-    //botón "validar" en sección validar censo, funciones comprueban si hubo cambio en censo y lo validan
+    //botón "validar" en sección validar censo (app censista), funciones comprueban si hubo cambio en censo y lo validan
     document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", finalizarValidacionDeCenso);
 
     document.querySelector("#btnVolverAtrasValidarCenso").addEventListener("click", volverAtrasValidarCenso);
