@@ -221,6 +221,12 @@ function registroCensista(){
 function volverAtrasValidarCenso(){
     ocultarValidarCenso();
     document.querySelector("#ciValidarCenso").value = "";
+    /* 
+        finalizarValidacionDeCenso() usa el párrafo para mostrar mensajes al usuario, esto cubre caso en que se intenta validar censo y luego presiona botón "Atrás",
+        de esta forma se evita que se muestre un mensaje de una ejecución previa. 
+    */
+    document.querySelector("#mjsFormValidarCenso").innerHTML = "";
+    document.querySelector("#msjBusquedaValidarCenso").innerHTML = "";
     mostrarMenuOpcionesCensista();
 }
 
@@ -235,6 +241,10 @@ function volverAtrasRegistroCensista(){
 function volverAtrasLoginCensista(){
     ocultarLoginCensista();
     mostrarSeleccionUsuario();
+    /* 
+        Limpia mensajes de ejecuciones anteriores al volver atrás
+    */
+    document.querySelector("#msjLoginCensista").innerHTML = "";
 }
 /* 
     Función que controla el checkbox "Mostrar contraseña" de registro de nuevo censista
