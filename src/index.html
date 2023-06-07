@@ -287,12 +287,13 @@
                             <select id="ocupacionPersonaCenso">
                                 <option value="0">Seleccione...</option>
                             </select><br>
-                            <p>
-                                <input type="button" value="Finalizar" id="btnFinalizarCensoPersona">
-                            </p>
+                            <div id="contenedorBtnFinalizarCenso">
+                                    <input type="button" value="Finalizar censo" id="btnFinalizarCensoPersona">
+                            </div>
                             <div  id="contenedorBtnEliminarCensoPersona" >
                                 <p>
-                                    <!-- contenedor para el botón eliminar en caso de que sea posible usarlo -->
+                                    <!-- contenedor con botones eliminar y editar en caso de que sea posible usarlos -->
+                                    <input type="button" value="Guardar cambios" id="btnEditarCensoPersona">
                                     <input type="button" value="Eliminar datos" id="btnEliminarCensoPersona">
                                 </p>
                             </div>
