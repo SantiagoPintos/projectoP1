@@ -114,6 +114,9 @@ function ocultarFormCensoPersona(){
 function ocultarBtnFinalizarCensoPersona(){
     document.querySelector("#btnFinalizarCensoPersona").style.display = "none";
 }
+function ocultarBtnEditarCensoPersona(){
+    document.querySelector("#contenedorBtnEliminarCensoPersona").style.display = "none";
+}
 
 function mostrarAppCensista(){
     ocultarSeleccionUsuario();
@@ -171,7 +174,9 @@ function mostrarFormCensoPersona(){
 function mostrarBtnFinalizarCensoPersona(){
     document.querySelector("#btnFinalizarCensoPersona").style.display = "block";
 }
-
+function mostrarBtnEditarCensoPersona(){
+    document.querySelector("#contenedorBtnEliminarCensoPersona").style.display = "block";
+}
 
 
 //aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
@@ -338,6 +343,7 @@ function buscarCiPersona(){
         // no existe= nuevo censo
         if (!app.existeCenso(ciLimpia)) {
             //nuevo censo
+            usuarioIniciaNuevoCenso(ciLimpia);
         } else {
             //existe censo asociado a esa CI
             
@@ -382,22 +388,19 @@ function buscarCiPersona(){
 
 /* 
     Función invocada desde buscarCiPersona().
-    Usuario ingresa ci, no hay censo asociado a ella y esta se encarga de validar y almacenar censo  
+    Usuario ingresa ci, no hay censo asociado a ella y esta se encarga de mostrar formulario
+    popular campo de ci y mostrar funciones (botones) disponibles  
 */
-function usuarioNuevoCenso(){
+function usuarioIniciaNuevoCenso(ci){
+    mostrarFormCensoPersona();
+    ocultarCuadroBusquedaCiPersona();
+    ocultarBtnEditarCensoPersona();
     //popula selectores de departamento y ocupacion
     cargarSelectDeDepartamentos("departamentoPersonaCenso");
     cargarSelectDeOcupacion("ocupacionPersonaCenso");
-
-    const nombre =  document.querySelector("#nombrePersonaCenso").value;
-    const edad = Number(document.querySelector("#edadPersonaCenso").value);
-    const ci = Number(document.querySelector("#busquedaNroCIPersona").value);
-    const departamento = Number(document.querySelector("#departamentoPersonaCenso").value);
-    const ocupacion = Number(document.querySelector("#ocupacionPersonaCenso").value);
-
-
-
-
+    //popular cuadro de ci y deshabilitar edición
+    document.querySelector("#ciPersonaCenso").value = ci;
+    document.querySelector("#ciPersonaCenso").readOnly = "true";
 }
 
 
