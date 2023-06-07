@@ -53,7 +53,7 @@ function capturarClicks(){
     document.querySelector("#btnBuscarCIPersona").addEventListener("click", buscarCiPersona);
 
     //btn para modificar datos de censo (app persona)
-    document.querySelector("#btnFinalizarCensoPersona").addEventListener("click", usuarioModificoCenso);
+    document.querySelector("#btnEditarCensoPersona").addEventListener("click", usuarioModificoCenso);
 
 }
 
@@ -111,6 +111,9 @@ function ocultarCuadroBusquedaCiPersona(){
 function ocultarFormCensoPersona(){
     document.querySelector("#formCensoPersona").style.display = "none";
 }
+function ocultarBtnFinalizarCensoPersona(){
+    document.querySelector("#btnFinalizarCensoPersona").style.display = "none";
+}
 
 function mostrarAppCensista(){
     ocultarSeleccionUsuario();
@@ -164,6 +167,9 @@ function mostrarCuadroBusquedaCiPersona(){
 }
 function mostrarFormCensoPersona(){
     document.querySelector("#formCensoPersona").style.display = "block";
+}
+function mostrarBtnFinalizarCensoPersona(){
+    document.querySelector("#btnFinalizarCensoPersona").style.display = "block";
 }
 
 
@@ -346,6 +352,8 @@ function buscarCiPersona(){
             if (!app.censoEstaValidado(ciLimpia)) {
                 ocultarCuadroBusquedaCiPersona();
                 mostrarFormCensoPersona();
+                //botón "Finalizar" solo se debe mostrar cuando la persona no haya hecho el censo previamente
+                ocultarBtnFinalizarCensoPersona();
                 //carga datos en formulario
                 document.querySelector("#nombrePersonaCenso").value = censo.nombre;
                 document.querySelector("#edadPersonaCenso").value = censo.edad;
@@ -370,6 +378,26 @@ function buscarCiPersona(){
         document.querySelector("#busquedaNroCIPersona").value = "";
     }
     document.querySelector("#mensajesCuadroBusquedaCIPersona").innerHTML = mensaje;
+}
+
+/* 
+    Función invocada desde buscarCiPersona().
+    Usuario ingresa ci, no hay censo asociado a ella y esta se encarga de validar y almacenar censo  
+*/
+function usuarioNuevoCenso(){
+    //popula selectores de departamento y ocupacion
+    cargarSelectDeDepartamentos("departamentoPersonaCenso");
+    cargarSelectDeOcupacion("ocupacionPersonaCenso");
+
+    const nombre =  document.querySelector("#nombrePersonaCenso").value;
+    const edad = Number(document.querySelector("#edadPersonaCenso").value);
+    const ci = Number(document.querySelector("#busquedaNroCIPersona").value);
+    const departamento = Number(document.querySelector("#departamentoPersonaCenso").value);
+    const ocupacion = Number(document.querySelector("#ocupacionPersonaCenso").value);
+
+
+
+
 }
 
 
