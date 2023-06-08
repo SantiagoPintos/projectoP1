@@ -18,7 +18,7 @@ class App {
         generarCenso.ci = ci;
         generarCenso.departamento = departamento;
         generarCenso.ocupacion = ocupacion;
-        //si censista está logueado se guarda su id para saber que él lo hizo, en caso contrario se invoca método que asigna un
+        //si censista está logueado se guarda su id, en caso contrario se invoca método que asigna un
         //id al azar entre todos los disponibles
         if (this.censistaLogueado!=null) {
             generarCenso.idCensista = idCensista;
