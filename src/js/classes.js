@@ -89,9 +89,8 @@ class App {
     
             for (let i=0; i<this.baseDeDatosCensos.length; i++) {
                 const censoActual = this.baseDeDatosCensos[i];
-                if(censoActual.censado==false && censoActual.id==id){
+                if(censoActual.censado==false && censoActual.idCensista==id){
                     //si censo no está validado y el censista asignado es el logueado actualmente
-                    //se agrega al array
                     listaDeCensosSinValidar.push(censoActual);
                 }
             }
