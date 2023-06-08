@@ -54,7 +54,7 @@ class App {
         this.crearCensista("Julián Pérez", "juliancitop", "Hola45", this.generarIdCensista());
     }
     precargarCensos(){
-        this.nuevoCenso("Usuario Prueba", 20, 11111111, 2, 3, 2);
+        this.nuevoCenso("Usuario Prueba", 20, 11111111, 2, 3);
         //this.confirmarCenso(11111111);
     }
 
