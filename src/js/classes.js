@@ -49,9 +49,9 @@ class App {
         Método que precarga censistas al inicar la aplicación
     */
     precargarCensistas(){
-        this.crearCensista("Pedro Rodríguez", "pedror", "123aA", this.generarIdCensista());
-        this.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21", this.generarIdCensista());
-        this.crearCensista("Julián Pérez", "juliancitop", "Hola45", this.generarIdCensista());
+        this.crearCensista("Pedro Rodríguez", "pedror", "123aA");
+        this.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21");
+        this.crearCensista("Julián Pérez", "juliancitop", "Hola45");
     }
     precargarCensos(){
         this.nuevoCenso("Usuario Prueba", 20, 11111111, 2, 3);
@@ -185,14 +185,25 @@ class App {
     /* 
         Método para crear un nuevo censista y agregaro a su array correspondiente
     */
-    crearCensista(nombre, usuario, contraseña, id){
+    crearCensista(nombre, usuario, contraseña){
         let nuevoCensista = new Censista();
         nuevoCensista.nombre = nombre;
         nuevoCensista.usuario = usuario;
         nuevoCensista.contraseña = contraseña;
-        nuevoCensista.id = id;
+        nuevoCensista.id = this.generarIdCensista();
 
         this.baseDeDatosCensistas.push(nuevoCensista)
+    }
+    
+    registrarCensista(nombre, usuario, contraseña){
+        this.crearCensista(nombre, usuario, contraseña);
+    }
+    
+    /* 
+        El ID de censista se genera de forma incremental
+    */
+    generarIdCensista(){
+        return this.baseDeDatosCensistas.length;
     }
     /* 
         Método usado en inicio de sesión
@@ -423,17 +434,6 @@ class App {
         return censado;
     }
 
-    /* 
-        El ID de censista se genera de forma incremental
-    */
-    generarIdCensista(){
-        return this.baseDeDatosCensistas.length;
-    }
-
-    registrarCensista(nombre, usuario, contraseña){
-        const nuevaId = this.generarIdCensista();
-        this.crearCensista(nombre, usuario, contraseña, nuevaId);
-    }
 
 }
 
