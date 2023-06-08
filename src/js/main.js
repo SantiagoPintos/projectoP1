@@ -54,6 +54,9 @@ function capturarClicks(){
 
     //btn para modificar datos de censo (app persona)
     document.querySelector("#btnEditarCensoPersona").addEventListener("click", usuarioModificoCenso);
+    
+    //btn para finalizar censo (app persona)
+    document.querySelector("#btnFinalizarCensoPersona").addEventListener("click", usuariofinalizaCenso);
 
 }
 
@@ -401,6 +404,46 @@ function usuarioIniciaNuevoCenso(ci){
     //popular cuadro de ci y deshabilitar edición
     document.querySelector("#ciPersonaCenso").value = ci;
     document.querySelector("#ciPersonaCenso").readOnly = "true";
+}
+
+function usuariofinalizaCenso(){
+    console.log(`Terminando censo`);
+    const nombre = document.querySelector("#btnFinalizarCensoPersona").value;
+    const edad = Number(document.querySelector("#edadPersonaCenso").value);
+    const ci = document.querySelector("#ciPersonaCenso").value;
+    const departamento = Number(document.querySelector("#departamentoPersonaCenso").value);
+    const ocupacion = Number(document.querySelector("#ocupacionPersonaCenso").value);
+    const ciLimpia = app.limpiarNroCI(ci)
+    let mensaje = "";
+
+    if(nombre!=""){
+        //nombre no es string vacío
+        if (edad>=0 && edad <=130) {
+            if (app.validarDigitoVerificadorCI(ciLimpia)) {
+                //ci es válida
+                if (departamento != 0) {
+                    //0 es valor por defecto en select
+                    if (ocupacion != 0) {
+                        //se crea el censo
+                        app.nuevoCenso(nombre, edad, ciLimpia, departamento, ocupacion);
+                        mensaje = "Censo creado con éxito";
+                    } else {
+                        mensaje = "Seleccione una ocupación";
+                    }
+                } else {
+                    mensaje = "Seleccione un departamento";
+                }
+            } else {
+                mensaje = "El número de cédula no es válido";
+            }
+            
+        } else {
+            mensaje = "La edad ingresada no está dentro del rango permitido";
+        }
+    } else {
+        mensaje = "El nombre no puede estar vacío";
+    }
+    document.querySelector("#msjFormCensoPersona").innerHTML = mensaje;
 }
 
 
