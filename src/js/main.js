@@ -298,6 +298,7 @@ function volverAtrasNuevoCenso(){
 
 function mostrarBusquedaValidacionDeCenso(){
     ocultarMenuOpcionesCensista();
+    cargarSelectorCensosPendientes();
     mostrarValidarCenso();
     mostrarFormBusquedaValidacionCenso();
     ocultarFormValidacionCenso();
@@ -598,6 +599,22 @@ function terminarCenso(){
     document.querySelector("#msjRealizarNuevoCenso").innerHTML = mensajeParrafo;
 }
 
+/* 
+    Función que muestra en <select> los censos pendientes del censista logueado
+*/
+function cargarSelectorCensosPendientes(){
+    const censosPendientes = app.obtenerCensosPendientes();
+    if (censosPendientes.length>0) {
+        let cargar = ``;
+        //hay censos, popular select
+        for (let i = 0; i < censosPendientes.length; i++) {
+            const censo = censosPendientes[i];
+            cargar+=`<option value="${censo.ci}">${censo.ci}</option>`
+        }
+        document.querySelector("#ciValidarCenso").innerHTML = cargar;        
+    }
+}
+
 /*  
     funcion que extrae ci de sección "validar censo" y llama a función que la procesa.
 
@@ -615,45 +632,38 @@ let validacionDatosCenso = false;
 let ciValidacionCenso = 0;
 function iniciarValidacionDeCenso(){
     const ci = document.querySelector("#ciValidarCenso").value;
-    const ciLimpia = app.limpiarNroCI(ci);
     let mensaje = "";
-    if (app.validarDigitoVerificadorCI(ciLimpia)) {
-        //si ci es válida se procede a buscar su existencia en bdd
-        if (app.censoEstaValidado(ciLimpia) == false) {
-            mostrarValidarCenso()
-            ocultarFormBusquedaValidacionCenso();
-            mostrarFormValidacionCenso();
-            
-            //obtener y mostrar en formulario datos de censo
-            const indiceCenso = app.obtenerIndiceCenso(ciLimpia);
-            const censo = app.baseDeDatosCensos[indiceCenso];
-            document.querySelector("#formValidarCensoNombrePersona").value += censo.nombre;
-            document.querySelector("#formValidarCensoEdadPersona").value += censo.edad;
-            document.querySelector("#formValidarCensoCiPersona").value += censo.ci;
-
-            //carga select con departamentos y muestra opción por defecto
-            cargarSelectDeDepartamentos("formValidarCensoDepartamentoPersona");
-            //selectedIndex establece la opción por defecto en select
-            //referencia: https://www.w3schools.com/jsref/prop_select_selectedindex.asp
-            document.querySelector("#formValidarCensoDepartamentoPersona").selectedIndex = censo.departamento;            
-            cargarSelectDeOcupacion("formValidarCensoOcupacionPersona");
-            document.querySelector("#formValidarCensoOcupacionPersona").selectedIndex = censo.ocupacion;
-
-            //variables usadas por finazarValidacionDeCenso
-            validacionDatosCenso = true;
-            indiceValidacionCenso=indiceCenso;
-            ciValidacionCenso=ciLimpia;
-
-        } else if (app.censoEstaValidado(ciLimpia) == true){
-            //censo ya fue validado
-            mensaje = "El censo asociado a esta cédula de indentidad ya fue validado";
-        } else {
-            //censo no existe 
-            mensaje = "No hay censo asociado a la cédula de indentidad";
-        }
+    
+    if(ci!=""){
+        const ciLimpia = app.limpiarNroCI(ci);
+        mostrarValidarCenso()
+        ocultarFormBusquedaValidacionCenso();
+        mostrarFormValidacionCenso();
+                
+        //obtener y mostrar en formulario datos de censo
+        const indiceCenso = app.obtenerIndiceCenso(ciLimpia);
+        const censo = app.baseDeDatosCensos[indiceCenso];
+        document.querySelector("#formValidarCensoNombrePersona").value += censo.nombre;
+        document.querySelector("#formValidarCensoEdadPersona").value += censo.edad;
+        document.querySelector("#formValidarCensoCiPersona").value += censo.ci;
+    
+        //carga select con departamentos y muestra opción por defecto
+        cargarSelectDeDepartamentos("formValidarCensoDepartamentoPersona");
+        //selectedIndex establece la opción por defecto en select
+        //referencia: https://www.w3schools.com/jsref/prop_select_selectedindex.asp
+        document.querySelector("#formValidarCensoDepartamentoPersona").selectedIndex = censo.departamento;            
+        cargarSelectDeOcupacion("formValidarCensoOcupacionPersona");
+        document.querySelector("#formValidarCensoOcupacionPersona").selectedIndex = censo.ocupacion;
+    
+        //variables usadas por finazarValidacionDeCenso
+        validacionDatosCenso = true;
+        indiceValidacionCenso=indiceCenso;
+        ciValidacionCenso=ciLimpia;
     } else {
-        mensaje = "El número de cédula no es válido";
+        mensaje = "Seleccione un censo";
     }
+    
+
     document.querySelector("#msjBusquedaValidarCenso").innerHTML = mensaje;
 }
 

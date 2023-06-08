@@ -11,7 +11,7 @@ class App {
         ya que un censo puede quedar pendiente de validación y por lo tanto solo debe modificarse una vez que este haya 
         sido confirmado por un censista.
     */
-    nuevoCenso(nombre, edad, ci, departamento, ocupacion, idCensista){
+    nuevoCenso(nombre, edad, ci, departamento, ocupacion){
         let generarCenso = new Censo();
         generarCenso.nombre = nombre;
         generarCenso.edad = edad;
@@ -21,12 +21,11 @@ class App {
         //si censista está logueado se guarda su id, en caso contrario se invoca método que asigna un
         //id al azar entre todos los disponibles
         if (this.censistaLogueado!=null) {
-            generarCenso.idCensista = idCensista;
+            generarCenso.idCensista = this.censistaLogueado.id;
         } else {
             generarCenso.idCensista = this.asignarCensista();
         }
         //no se incluye propiedad "censado" porque está declarada como false por defecto
-        
         this.baseDeDatosCensos.push(generarCenso);
     }
 
@@ -70,6 +69,28 @@ class App {
             }
         }
         return existe;
+    }
+
+    /* 
+        Método que retorna los censos pendientes de validación asociados al censista
+        logueado    
+    */
+    obtenerCensosPendientes(){
+        if(this.censistaLogueado!=null){
+            const id = this.censistaLogueado.id;
+            let listaDeCensosSinValidar = [];
+    
+            for (let i=0; i<this.baseDeDatosCensos.length; i++) {
+                const censoActual = this.baseDeDatosCensos[i];
+                if(censoActual.censado==false && censoActual.id==id){
+                    //si censo no está validado y el censista asignado es el logueado actualmente
+                    //se agrega al array
+                    listaDeCensosSinValidar.push(censoActual);
+                }
+            }
+
+            return listaDeCensosSinValidar;
+        }
     }
 
     /* 
@@ -198,6 +219,7 @@ class App {
     registrarCensista(nombre, usuario, contraseña){
         this.crearCensista(nombre, usuario, contraseña);
     }
+    
     
     /* 
         El ID de censista se genera de forma incremental
