@@ -58,6 +58,9 @@ function capturarClicks(){
     //btn para finalizar censo (app persona)
     document.querySelector("#btnFinalizarCensoPersona").addEventListener("click", usuariofinalizaCenso);
 
+    //btn para volver atrás (app persona, formulario censo)
+    document.querySelector("#btnVolverAtrasCensoPersona").addEventListener("click", volverAtrasPersonaNuevoCenso);
+
 }
 
 /* 
@@ -319,6 +322,17 @@ function cuadroBusquedaCIPersona(){
     mostrarCuadroBusquedaCiPersona();
 }
 
+function volverAtrasPersonaNuevoCenso(){
+    ocultarFormCensoPersona();
+    ocultarBtnEditarCensoPersona();
+    iniciarAppPersona();
+    document.querySelector("#nombrePersonaCenso").value = "";
+    document.querySelector("#edadPersonaCenso").value = "";
+    document.querySelector("#ciPersonaCenso").value = "";
+    document.querySelector("#departamentoPersonaCenso").value = "";
+    document.querySelector("#ocupacionPersonaCenso").value = "";
+    document.querySelector("#busquedaNroCIPersona").value = "";
+}
 
 /* 
     buscarCiPersona: función que verifica si la CI ingresada por el usuario tiene un censo asociado,
@@ -364,6 +378,8 @@ function buscarCiPersona(){
                 mostrarFormCensoPersona();
                 //botón "Finalizar" solo se debe mostrar cuando la persona no haya hecho el censo previamente
                 ocultarBtnFinalizarCensoPersona();
+                //muestra botones "Editar" y "Eliminar datos"
+                mostrarBtnEditarCensoPersona();
                 //carga datos en formulario
                 document.querySelector("#nombrePersonaCenso").value = censo.nombre;
                 document.querySelector("#edadPersonaCenso").value = censo.edad;
