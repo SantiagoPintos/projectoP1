@@ -23,7 +23,7 @@ class App {
         if (this.censistaLogueado!=null) {
             generarCenso.idCensista = idCensista;
         } else {
-            this.asignarCensista();
+            generarCenso.idCensista = this.asignarCensista();
         }
         //no se incluye propiedad "censado" porque está declarada como false por defecto
         
@@ -34,13 +34,14 @@ class App {
         Método que asigna un censista al azar (Según su id) a censo (realizado por usuario invitado) para que este lo valide posteriormente,
     */
     asignarCensista(){
-                const min = 0;
+        const min = 0;
         const max = this.baseDeDatosCensistas.length-1;
 
         /* 
             ej: Math.random retorna 0,2, min=0 y max=10
             0,2*(10-0+1) + 0 = 2,2 => num: 2
         */
+       
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
