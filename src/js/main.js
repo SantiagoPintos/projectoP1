@@ -61,6 +61,8 @@ function capturarClicks(){
     //btn para volver atrás (app persona, formulario censo)
     document.querySelector("#btnVolverAtrasCensoPersona").addEventListener("click", volverAtrasPersonaNuevoCenso);
 
+    document.querySelector("#btnSalirAppPersona").addEventListener("click", salirAppPersona);
+
 }
 
 /* 
@@ -421,6 +423,11 @@ function usuarioIniciaNuevoCenso(ci){
     //popular cuadro de ci y deshabilitar edición
     document.querySelector("#ciPersonaCenso").value = ci;
     document.querySelector("#ciPersonaCenso").readOnly = "true";
+}
+
+function salirAppPersona(){
+    ocultarAppUsuario();
+    mostrarSeleccionUsuario();
 }
 
 function usuariofinalizaCenso(){
