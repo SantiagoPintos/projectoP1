@@ -18,15 +18,35 @@ class App {
         generarCenso.ci = ci;
         generarCenso.departamento = departamento;
         generarCenso.ocupacion = ocupacion;
-        generarCenso.idCensista = idCensista;
-        //no se incluye propiedad "censado" porque está declarada como falsa por defecto
+        //si censista está logueado se guarda su id para saber que él lo hizo, en caso contrario se invoca método que asigna un
+        //id al azar entre todos los disponibles
+        if (this.censistaLogueado!=null) {
+            generarCenso.idCensista = idCensista;
+        } else {
+            this.asignarCensista();
+        }
+        //no se incluye propiedad "censado" porque está declarada como false por defecto
         
         this.baseDeDatosCensos.push(generarCenso);
     }
 
     /* 
-    Función que precarga censistas al inicar la aplicación
-*/
+        Método que asigna un censista al azar (Según su id) a censo (realizado por usuario invitado) para que este lo valide posteriormente,
+    */
+    asignarCensista(){
+                const min = 0;
+        const max = this.baseDeDatosCensistas.length-1;
+
+        /* 
+            ej: Math.random retorna 0,2, min=0 y max=10
+            0,2*(10-0+1) + 0 = 2,2 => num: 2
+        */
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    /* 
+        Método que precarga censistas al inicar la aplicación
+    */
     precargarCensistas(){
         this.crearCensista("Pedro Rodríguez", "pedror", "123aA", this.generarIdCensista());
         this.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21", this.generarIdCensista());
