@@ -33,178 +33,6 @@ class App {
     }
 
     /* 
-        Método que se ejecuta al comenzar un nuevo censo, completa todos los datos excepto la propiedad "censado"
-        ya que un censo puede quedar pendiente de validación y por lo tanto solo debe modificarse una vez que este haya 
-        sido confirmado por un censista.
-    */
-    nuevoCenso(nombre, edad, ci, departamento, ocupacion){
-        let generarCenso = new Censo();
-        generarCenso.nombre = nombre;
-        generarCenso.edad = edad;
-        generarCenso.ci = ci;
-        generarCenso.departamento = departamento;
-        generarCenso.ocupacion = ocupacion;
-        //no se incluye propiedad "censado" porque está declarada como false por defecto
-        
-        /*  
-            Si censista está logueado se guarda su id, en caso contrario asume que está siendo registrado por el
-            usuario invitado, e invoca método que asigna un id al azar entre todos los disponibles (asigna un censista para
-            validar censo posteriormente) 
-        */
-        if (this.censistaLogueado!=null) {
-            generarCenso.idCensista = this.censistaLogueado.id;
-        } else {
-            generarCenso.idCensista = this.asignarCensista();
-        }
-        this.baseDeDatosCensos.push(generarCenso);
-    }
-
-    /* 
-        Método que comprueba si existe censo y retorna true(existe) o false(no existe)
-    */
-    existeCenso(ci){
-        let existe = false;
-        for (let i = 0; i < this.baseDeDatosCensos.length && !existe; i++) {
-            const ciAcomparar = this.baseDeDatosCensos[i].ci;
-            if (ci==ciAcomparar) {
-                existe = true;
-            }
-        }
-        return existe;
-    }
-
-    /* 
-        Método que retorna los censos pendientes de validación asociados al censista
-        logueado    
-    */
-    obtenerCensosPendientes(){
-        if(this.censistaLogueado!=null){
-            const id = this.censistaLogueado.id;
-            let listaDeCensosSinValidar = [];
-    
-            for (let i=0; i<this.baseDeDatosCensos.length; i++) {
-                const censoActual = this.baseDeDatosCensos[i];
-                if(censoActual.censado==false && censoActual.idCensista==id){
-                    //si censo no está validado y el censista asignado es el logueado actualmente
-                    listaDeCensosSinValidar.push(censoActual);
-                }
-            }
-
-            return listaDeCensosSinValidar;
-        }
-    }
-
-    /* 
-        Método que recibe la ci de un censo y devuelve su indice en bdd, si este no existe retorna -1
-    */
-    obtenerIndiceCenso(ci){
-        let indice = -1;
-        let encontrado = false;
-        for (let i = 0; i < this.baseDeDatosCensos.length && !encontrado; i++) {
-            const elemento = this.baseDeDatosCensos[i].ci;
-            if (elemento==ci) {
-                indice=i;
-                encontrado=true;
-            }
-        }
-        return indice;
-    }
-
-    /* 
-        Método que recibe ci y comprueba si el censo asociado está validado.
-        Si censo está validado retorna true, si está pendiente retorna false
-    */
-    censoEstaValidado(ci){
-        //Se obtiene índice de censo en bdd y se verifica estado de prop "censado"
-        const indice = this.obtenerIndiceCenso(ci);
-        let validado;
-        if (indice!=-1) {
-            if (this.baseDeDatosCensos[indice].censado == true) {
-                validado = true;
-            } else {
-                validado = false;
-            }
-        } else {
-            validado = -1;
-        }
-        return validado;
-    }
-
-    /* 
-        Método que comprueba si hubo modificaciones en datos de censo,
-        recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios), false (no hubo cambios)
-        ó -1 (El dígito verificador de la CI no es válido)
-    */
-    censoFueModificado({nombre, edad, ci, departamento, ocupacion}){
-        let fueModificado=true;
-
-        const nuevosDatos = {
-            //es lo mismo que nombre: nombre,
-            nombre,
-            edad,
-            ci,
-            departamento,
-            ocupacion,
-        }
-
-        if(this.validarDigitoVerificadorCI(this.limpiarNroCI(ci))){
-            const indice = this.obtenerIndiceCenso(ci);
-            const datosOriginales = this.baseDeDatosCensos[indice];
-    
-            if(nuevosDatos.nombre == datosOriginales.nombre
-                && nuevosDatos.edad == datosOriginales.edad
-                && nuevosDatos.departamento == datosOriginales.departamento
-                && nuevosDatos.ocupacion == datosOriginales.ocupacion){
-                    //no hay modificaciones en el censo
-                    fueModificado=false;
-            }
-            
-            return fueModificado;
-        } else { 
-            return -1; 
-        }
-
-    }
-
-    /* 
-        Método que modifica datos de censo 
-        (es usado cuando censista o usuarios realizan modificaciones al censo previo a ser validado).
-    */
-    actualizarCenso({nombre, edad, ci, departamento, ocupacion}){
-        let actualizado = false; 
-        let nuevosDatos = {
-            nombre,
-            edad, 
-            ci,
-            departamento,
-            ocupacion,
-        }
-
-        /* 
-            censistaLogueado es un objeto con los datos del censista que inició sesión, por lo tanto esta propiedad solo es
-            accesible cuando un censista es quien está modificando los datos del censo, en caso contrario se asume que un 
-            usuario es quien está editando sus datos
-        */
-        if (this.censistaLogueado != null) {
-            nuevosDatos.idCensista = this.censistaLogueado.id 
-        }
-
-        if(edad >= 0 && edad <= 130 && edad != ""){
-            if(this.validarDigitoVerificadorCI(ci)){
-                let indice = this.obtenerIndiceCenso(ci);
-                //departamento y ocupacion se extrae de select(s) donde
-                //value = 0 es opción "Seleccione..."
-                if(departamento != 0 && ocupacion != 0){
-                    this.baseDeDatosCensos[indice] = nuevosDatos;
-                    actualizado = true;
-                }
-            }
-        }
-
-        return actualizado;        
-    }
-
-    /* 
         Método para crear un nuevo censista y agregaro a su array correspondiente
     */
     crearCensista(nombre, usuario, contraseña){
@@ -389,7 +217,9 @@ class App {
         return false
     }
 
-    // Comprueba longitud de número de cédula y quita cualquier cosa que no sea un nro
+    /* 
+        Comprueba longitud de número de cédula y quita cualquier cosa que no sea un nro 
+    */
     limpiarNroCI(cedula){
         let nroCedulaEnLimpio = "";
         cedula=cedula.trim();
@@ -406,7 +236,9 @@ class App {
         }
     }
 
-    //valida digito verificador y retorna true o false
+    /* 
+        Valida digito verificador de ci, retorna true o false
+    */
     validarDigitoVerificadorCI(cedula){
     /*
         Referencia obtenida de: https://ciuy.readthedocs.io/es/latest/about.html#calculating-the-validation-number ,
@@ -445,11 +277,11 @@ class App {
 
     
     /* 
-    Método que hace todas las verificaciones llamando a otros métodos específicos para cada 
-    cada elemento, crea el nuevo censo y luego lo confirma. 
-    retorna booleano 
+        Método que hace todas las verificaciones llamando a otros métodos específicos para cada 
+        cada elemento, crea el nuevo censo y luego lo confirma. 
+        retorna booleano 
     */
-   realizarCenso(nombre,edad,ci,departamento,ocupacion){
+    realizarCenso(nombre,edad,ci,departamento,ocupacion){
        //nro ci sin puntos ni guiones
         let nroCiLimpio = this.limpiarNroCI(ci);
         let censado = false;
@@ -465,9 +297,9 @@ class App {
                         //validar que departamento y ocupación no tengan valores por defecto
                         if (departamento!=0) {
                             if (ocupacion!=0) {
-                                //crea censo
+                                //invoca a método que crea censo
                                 this.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, this.censistaLogueado.id);
-                                //confima censo cambiando la propiedad "censado" a "true"
+                                //valida censo cambiando la propiedad "censado" a "true"
                                 if (this.confirmarCenso(nroCiLimpio)) {
                                     censado = true;
                                 }
@@ -498,6 +330,178 @@ class App {
     
         return confirmado;
     }
+
+    /* 
+        Método que se ejecuta al comenzar un nuevo censo, completa todos los datos excepto la propiedad "censado"
+        ya que un censo puede quedar pendiente de validación y por lo tanto solo debe modificarse una vez que este haya 
+        sido confirmado por un censista.
+    */
+    nuevoCenso(nombre, edad, ci, departamento, ocupacion){
+        let generarCenso = new Censo();
+        generarCenso.nombre = nombre;
+        generarCenso.edad = edad;
+        generarCenso.ci = ci;
+        generarCenso.departamento = departamento;
+        generarCenso.ocupacion = ocupacion;
+        //no se incluye propiedad "censado" porque está declarada como false por defecto
+        
+        /*  
+            Si censista está logueado se guarda su id, en caso contrario asume que está siendo registrado por el
+            usuario invitado, e invoca método que asigna un id al azar entre todos los disponibles (asigna un censista para
+            validar censo posteriormente) 
+        */
+        if (this.censistaLogueado!=null) {
+            generarCenso.idCensista = this.censistaLogueado.id;
+        } else {
+            generarCenso.idCensista = this.asignarCensista();
+        }
+        this.baseDeDatosCensos.push(generarCenso);
+    }
+
+    /* 
+        Método que comprueba si existe censo y retorna true(existe) o false(no existe)
+    */
+    existeCenso(ci){
+        let existe = false;
+        for (let i = 0; i < this.baseDeDatosCensos.length && !existe; i++) {
+            const ciAcomparar = this.baseDeDatosCensos[i].ci;
+            if (ci==ciAcomparar) {
+                existe = true;
+            }
+        }
+        return existe;
+    }
+
+    /* 
+        Método que retorna los censos pendientes de validación asociados al censista
+        logueado    
+    */
+    obtenerCensosPendientes(){
+        if(this.censistaLogueado!=null){
+            const id = this.censistaLogueado.id;
+            let listaDeCensosSinValidar = [];
+    
+            for (let i=0; i<this.baseDeDatosCensos.length; i++) {
+                const censoActual = this.baseDeDatosCensos[i];
+                if(censoActual.censado==false && censoActual.idCensista==id){
+                    //si censo no está validado y el censista asignado es el logueado actualmente
+                    listaDeCensosSinValidar.push(censoActual);
+                }
+            }
+
+            return listaDeCensosSinValidar;
+        }
+    }
+
+    /* 
+        Método que recibe la ci de un censo y devuelve su indice en bdd, si este no existe retorna -1
+    */
+    obtenerIndiceCenso(ci){
+        let indice = -1;
+        let encontrado = false;
+        for (let i = 0; i < this.baseDeDatosCensos.length && !encontrado; i++) {
+            const elemento = this.baseDeDatosCensos[i].ci;
+            if (elemento==ci) {
+                indice=i;
+                encontrado=true;
+            }
+        }
+        return indice;
+    }
+
+    /* 
+        Método que recibe ci y comprueba si el censo asociado está validado.
+        Si censo está validado retorna true, si está pendiente retorna false
+    */
+    censoEstaValidado(ci){
+        //Se obtiene índice de censo en bdd y se verifica estado de prop "censado"
+        const indice = this.obtenerIndiceCenso(ci);
+        let validado;
+        if (indice!=-1) {
+            if (this.baseDeDatosCensos[indice].censado == true) {
+                validado = true;
+            } else {
+                validado = false;
+            }
+        } else {
+            validado = -1;
+        }
+        return validado;
+    }
+
+    /* 
+        Método que comprueba si hubo modificaciones en datos de censo,
+        recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios), false (no hubo cambios)
+        ó -1 (El dígito verificador de la CI no es válido)
+    */
+    censoFueModificado({nombre, edad, ci, departamento, ocupacion}){
+        let fueModificado=true;
+
+        const nuevosDatos = {
+            //es lo mismo que nombre: nombre,
+            nombre,
+            edad,
+            ci,
+            departamento,
+            ocupacion,
+        }
+
+        if(this.validarDigitoVerificadorCI(this.limpiarNroCI(ci))){
+            const indice = this.obtenerIndiceCenso(ci);
+            const datosOriginales = this.baseDeDatosCensos[indice];
+    
+            if(nuevosDatos.nombre == datosOriginales.nombre
+                && nuevosDatos.edad == datosOriginales.edad
+                && nuevosDatos.departamento == datosOriginales.departamento
+                && nuevosDatos.ocupacion == datosOriginales.ocupacion){
+                    //no hay modificaciones en el censo
+                    fueModificado=false;
+            }
+            
+            return fueModificado;
+        } else { 
+            return -1; 
+        }
+
+    }
+
+    /* 
+        Método que modifica datos de censo 
+        (es usado cuando censista o usuarios realizan modificaciones al censo previo a ser validado).
+    */
+    actualizarCenso({nombre, edad, ci, departamento, ocupacion}){
+        let actualizado = false; 
+        let nuevosDatos = {
+            nombre,
+            edad, 
+            ci,
+            departamento,
+            ocupacion,
+        }
+
+        /* 
+            censistaLogueado es un objeto con los datos del censista que inició sesión, por lo tanto esta propiedad solo es
+            accesible cuando un censista es quien está modificando los datos del censo, en caso contrario se asume que un 
+            usuario es quien está editando sus datos
+        */
+        if (this.censistaLogueado != null) {
+            nuevosDatos.idCensista = this.censistaLogueado.id 
+        }
+
+        if(edad >= 0 && edad <= 130 && edad != ""){
+            if(this.validarDigitoVerificadorCI(ci)){
+                let indice = this.obtenerIndiceCenso(ci);
+                //departamento y ocupacion se extrae de select(s) donde
+                //value = 0 es opción "Seleccione..."
+                if(departamento != 0 && ocupacion != 0){
+                    this.baseDeDatosCensos[indice] = nuevosDatos;
+                    actualizado = true;
+                }
+            }
+        }
+
+        return actualizado;        
+    }    
 }
 
 class Censo {
