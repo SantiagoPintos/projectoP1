@@ -572,19 +572,17 @@ function iniciarRegistroCensista(){
             if (app.validarContraseña(contraseña)) {
                 //método que registra el censista
                 app.crearCensista(nombre, nombreDeUsuario, contraseña);
-                //se muestra mensaje de confirmación y redirige al censista hacia panel de login después de 5 segundos
 
-                //NO FUNCIONA(?)
-                document.querySelector("#msjRegistroCensista").innerHTML = "Registro exitoso, en 5 segundos será redirigido hacia la pantalla de inicio de seesión";
+                //se muestra mensaje de confirmación y redirige al censista hacia panel de login después de 3 segundos
+                mensajeParaParrafo = "Registro exitoso, en 3 segundos será redirigido hacia la pantalla de inicio de sesión";
                 
-                //detiene la ejecución durante 5 segundos para mostrar mensaje
                 setTimeout(() => {
                     document.querySelector("#nuevoNombreCensista").value = "";
                     document.querySelector("#nuevoUsuarioCensista").value = "";
                     document.querySelector("#nuevoContraseñaCensista").value = "";
                     ocultarFormularioRegistroCensista();
                     mostrarLoginCensista(); 
-                }, 5000);
+                }, 3000);
             } else {
                 mensajeParaParrafo = "La contraseña debe tener al mínimo 5 caracteres, al menos una mayúscula, una minúscula y un número";
             }
