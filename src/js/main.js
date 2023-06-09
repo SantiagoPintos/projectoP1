@@ -240,6 +240,11 @@ function registroCensista(){
 function volverAtrasValidarCenso(){
     ocultarValidarCenso();
     document.querySelector("#ciValidarCenso").value = "";
+    document.querySelector("#formValidarCensoCiPersona").value = "";
+    document.querySelector("#formValidarCensoNombrePersona").value = "";
+    document.querySelector("#formValidarCensoEdadPersona").value = "";
+    document.querySelector("#formValidarCensoDepartamentoPersona").value = "";
+    document.querySelector("#formValidarCensoOcupacionPersona").value = "";
     /* 
         finalizarValidacionDeCenso() usa el párrafo para mostrar mensajes al usuario, esto cubre caso en que se intenta validar censo y luego presiona botón "Atrás",
         de esta forma se evita que se muestre un mensaje de una ejecución previa. 
@@ -706,18 +711,18 @@ function finalizarValidacionDeCenso(){
         if (indiceValidacionCenso>-1) {
             //comprueba si censo está validado para que validación solo se ejecute una vez 
             if (!app.censoEstaValidado(ci)) {
-                if (app.censoFueModificado({
+                /* 
+                    censoFueModificado puede retornar: true, false ó -1 (datos incorrectos)
+                */
+                const fueModificado = app.censoFueModificado({
                     nombre: nombre,
                     edad: edad,
                     ci: ci,
                     departamento: departamento,
                     ocupacion: ocupacion,
-                }) == true) {
-                    //censo fue modificado
-                    //TODO: PUSHEAR CAMBIOS
-
+                });
+                if (fueModificado == true) {
                     /* método para actualizar censo */
-
                     if (app.actualizarCenso({nombre, edad, ci, departamento, ocupacion})) {
                         mensaje = "Modificaciones guardadas correctamente";
                         if(app.confirmarCenso(ciValidacionCenso)){
@@ -729,13 +734,7 @@ function finalizarValidacionDeCenso(){
                         mensaje = "Datos no válidos, el censo no puede ser validado";
                     }
                     
-                } else if (app.censoFueModificado({
-                    nombre: nombre,
-                    edad: edad,
-                    ci: ci,
-                    departamento: departamento,
-                    ocupacion: ocupacion,
-                }) == false) {
+                } else if (fueModificado == false) {
                     if(app.confirmarCenso(ciValidacionCenso)){
                         mensaje = "Censo confirmado con éxito";
                     }
