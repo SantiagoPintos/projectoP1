@@ -52,16 +52,20 @@ class App {
         this.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21");
         this.crearCensista("Julián Pérez", "juliancitop", "Hola45");
     }
+    /* 
+        Números de ci válidos generados aleatoriamente usando: 
+        * https://github.com/picandocodigo/ci_js 
+    */
     precargarCensos(){
-        this.nuevoCenso("Usuario Prueba", 20, 11111111, 2, 3);
-        this.nuevoCenso("Usuario Prueba 2", 30, 12345678, 2, 3);
-        this.nuevoCenso("Usuario Prueba 3", 40, 44443331, 2, 3);
-        this.nuevoCenso("Usuario Prueba 4", 50, 90010091, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 48817702, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 43312851, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 95209461, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 34650124, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 51230411, 2, 3);
+        this.nuevoCenso("Usuario Prueba", 20, 56536112, 2, 3);
+        this.nuevoCenso("Usuario Prueba 2", 30, 33269613, 2, 3);
+        this.nuevoCenso("Usuario Prueba 3", 40, 94202155, 2, 3);
+        this.nuevoCenso("Usuario Prueba 4", 50, 23530252, 2, 3);
+        this.nuevoCenso("Usuario Prueba 5", 10, 3761156, 2, 3);
+        this.nuevoCenso("Usuario Prueba 5", 10, 73152098, 2, 3);
+        this.nuevoCenso("Usuario Prueba 5", 10, 98839948, 2, 3);
+        this.nuevoCenso("Usuario Prueba 5", 10, 26155924, 2, 3);
+        this.nuevoCenso("Usuario Prueba 5", 10, 30138950, 2, 3);
     }
 
     /* 
