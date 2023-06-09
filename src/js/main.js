@@ -632,15 +632,17 @@ function terminarCenso(){
 */
 function cargarSelectorCensosPendientes(){
     const censosPendientes = app.obtenerCensosPendientes();
+    let cargar = ``;
     if (censosPendientes.length>0) {
-        let cargar = ``;
         //hay censos, popular select
         for (let i = 0; i < censosPendientes.length; i++) {
             const censo = censosPendientes[i];
             cargar+=`<option value="${censo.ci}">${censo.ci}</option>`
         }
-        document.querySelector("#ciValidarCenso").innerHTML = cargar;        
+    } else {
+        cargar = `<option value="">No hay censos pendientes</option>`;
     }
+    document.querySelector("#ciValidarCenso").innerHTML = cargar;        
 }
 
 /*  
