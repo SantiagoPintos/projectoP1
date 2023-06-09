@@ -51,10 +51,6 @@ class App {
     generarIdCensista(){
         return this.baseDeDatosCensistas.length;
     }
-    
-    registrarCensista(nombre, usuario, contraseña){
-        this.crearCensista(nombre, usuario, contraseña);
-    }
 
     /* 
         Método que asigna un censista al azar (Según su id) a censo (realizado por usuario invitado) para que este lo valide posteriormente,

@@ -568,12 +568,11 @@ function iniciarRegistroCensista(){
  
     if (nombre!="") {
         if(validacionUsuario==true){
-            //si nombre de usuario es válido se llama a función que valida contraseña
+            //si nombre de usuario es válido se invoca a función que valida contraseña
             if (app.validarContraseña(contraseña)) {
-                //se llama a función que registra usuario
-                app.registrarCensista(nombre, nombreDeUsuario, contraseña);
+                //método que registra el censista
+                app.crearCensista(nombre, nombreDeUsuario, contraseña);
                 //se muestra mensaje de confirmación y redirige al censista hacia panel de login después de 5 segundos
-                console.log("registro exitoso");
 
                 //NO FUNCIONA(?)
                 document.querySelector("#msjRegistroCensista").innerHTML = "Registro exitoso, en 5 segundos será redirigido hacia la pantalla de inicio de seesión";
