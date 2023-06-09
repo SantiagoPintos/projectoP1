@@ -61,6 +61,11 @@ function capturarClicks(){
     //btn para volver atrás (app persona, formulario censo)
     document.querySelector("#btnVolverAtrasCensoPersona").addEventListener("click", volverAtrasPersonaNuevoCenso);
 
+    //btn "reasignar censo" en app censista
+    document.querySelector("#btnReasignarCensoMenuCensista").addEventListener("click", mostrarMenuReasignarCenso);
+
+    document.querySelector("#btnAtrasReasignarCenso").addEventListener("click", volverAtrasReasignarCenso);
+
     document.querySelector("#btnSalirAppPersona").addEventListener("click", salirAppPersona);
 
 }
@@ -125,6 +130,9 @@ function ocultarBtnFinalizarCensoPersona(){
 function ocultarBtnEditarCensoPersona(){
     document.querySelector("#contenedorBtnEliminarCensoPersona").style.display = "none";
 }
+function ocultarReasignarCenso(){
+    document.querySelector("#reasignarCenso").style.display = "none";
+}
 
 function mostrarAppCensista(){
     ocultarSeleccionUsuario();
@@ -134,6 +142,7 @@ function mostrarAppCensista(){
     ocultarMenuOpcionesCensista();
     ocultarNuevoCensoCensista();
     ocultarValidarCenso();
+    ocultarReasignarCenso();
     ocultarPendientesValidacion();
     ocultarEstadisticasCensista();
 }
@@ -184,6 +193,9 @@ function mostrarBtnFinalizarCensoPersona(){
 }
 function mostrarBtnEditarCensoPersona(){
     document.querySelector("#contenedorBtnEliminarCensoPersona").style.display = "block";
+}
+function mostrarReasignarCenso(){
+    document.querySelector("#reasignarCenso").style.display = "block";
 }
 
 
@@ -339,6 +351,21 @@ function volverAtrasPersonaNuevoCenso(){
     document.querySelector("#departamentoPersonaCenso").value = "";
     document.querySelector("#ocupacionPersonaCenso").value = "";
     document.querySelector("#busquedaNroCIPersona").value = "";
+}
+
+function mostrarMenuReasignarCenso(){
+    ocultarMenuOpcionesCensista();
+    mostrarReasignarCenso();
+    //mostrar menú reasignar censo
+
+}
+
+function volverAtrasReasignarCenso(){
+    ocultarReasignarCenso();
+    document.querySelector("#mostrarCensosPendientes").innerHTML = "";
+    document.querySelector("#mostrarCensistasDisponibles").innerHTML = "";
+    document.querySelector("#parrafoMsjReasignarCenso").innerHTML = "";
+    mostrarMenuOpcionesCensista();
 }
 
 /* 
