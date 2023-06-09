@@ -3,47 +3,11 @@ class App {
         this.baseDeDatosCensos = [];
         this.baseDeDatosCensistas = [];
 
+        /* 
+            Objeto que guarda el censista logueado actualmente
+        */
         this.censistaLogueado = null;
     }
-
-    /* 
-        Método que se ejecuta al comenzar un nuevo censo, completa todos los datos excepto la propiedad "censado"
-        ya que un censo puede quedar pendiente de validación y por lo tanto solo debe modificarse una vez que este haya 
-        sido confirmado por un censista.
-    */
-    nuevoCenso(nombre, edad, ci, departamento, ocupacion){
-        let generarCenso = new Censo();
-        generarCenso.nombre = nombre;
-        generarCenso.edad = edad;
-        generarCenso.ci = ci;
-        generarCenso.departamento = departamento;
-        generarCenso.ocupacion = ocupacion;
-        //si censista está logueado se guarda su id, en caso contrario se invoca método que asigna un
-        //id al azar entre todos los disponibles
-        if (this.censistaLogueado!=null) {
-            generarCenso.idCensista = this.censistaLogueado.id;
-        } else {
-            generarCenso.idCensista = this.asignarCensista();
-        }
-        //no se incluye propiedad "censado" porque está declarada como false por defecto
-        this.baseDeDatosCensos.push(generarCenso);
-    }
-
-    /* 
-        Método que asigna un censista al azar (Según su id) a censo (realizado por usuario invitado) para que este lo valide posteriormente,
-    */
-    asignarCensista(){
-        const min = 0;
-        const max = this.baseDeDatosCensistas.length-1;
-
-        /* 
-            ej: Math.random retorna 0,2, min=0 y max=10
-            0,2*(10-0+1) + 0 = 2,2 => num: 2
-        */
-       
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
     /* 
         Método que precarga censistas al inicar la aplicación
     */
@@ -69,7 +33,34 @@ class App {
     }
 
     /* 
-        Método que comprueba si existe censo y retorna true(existe)/false(no existe)
+        Método que se ejecuta al comenzar un nuevo censo, completa todos los datos excepto la propiedad "censado"
+        ya que un censo puede quedar pendiente de validación y por lo tanto solo debe modificarse una vez que este haya 
+        sido confirmado por un censista.
+    */
+    nuevoCenso(nombre, edad, ci, departamento, ocupacion){
+        let generarCenso = new Censo();
+        generarCenso.nombre = nombre;
+        generarCenso.edad = edad;
+        generarCenso.ci = ci;
+        generarCenso.departamento = departamento;
+        generarCenso.ocupacion = ocupacion;
+        //no se incluye propiedad "censado" porque está declarada como false por defecto
+        
+        /*  
+            Si censista está logueado se guarda su id, en caso contrario asume que está siendo registrado por el
+            usuario invitado, e invoca método que asigna un id al azar entre todos los disponibles (asigna un censista para
+            validar censo posteriormente) 
+        */
+        if (this.censistaLogueado!=null) {
+            generarCenso.idCensista = this.censistaLogueado.id;
+        } else {
+            generarCenso.idCensista = this.asignarCensista();
+        }
+        this.baseDeDatosCensos.push(generarCenso);
+    }
+
+    /* 
+        Método que comprueba si existe censo y retorna true(existe) o false(no existe)
     */
     existeCenso(ci){
         let existe = false;
@@ -141,9 +132,9 @@ class App {
 
     /* 
         Método que comprueba si hubo modificaciones en datos de censo,
-        recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios) false (no hubo cambios)
+        recibe como parámetro un objeto (datos de censo) e índice y retorna true (hubo cambios), false (no hubo cambios)
+        ó -1 (El dígito verificador de la CI no es válido)
     */
-
     censoFueModificado({nombre, edad, ci, departamento, ocupacion}){
         let fueModificado=true;
 
@@ -177,7 +168,7 @@ class App {
 
     /* 
         Método que modifica datos de censo 
-        (es usado cuando censista o usuarios realizan modificaciones al censo antes de validarlo).
+        (es usado cuando censista o usuarios realizan modificaciones al censo previo a ser validado).
     */
     actualizarCenso({nombre, edad, ci, departamento, ocupacion}){
         let actualizado = false; 
@@ -226,17 +217,32 @@ class App {
         this.baseDeDatosCensistas.push(nuevoCensista)
     }
     
-    registrarCensista(nombre, usuario, contraseña){
-        this.crearCensista(nombre, usuario, contraseña);
-    }
-    
-    
     /* 
         El ID de censista se genera de forma incremental
     */
     generarIdCensista(){
         return this.baseDeDatosCensistas.length;
     }
+    
+    registrarCensista(nombre, usuario, contraseña){
+        this.crearCensista(nombre, usuario, contraseña);
+    }
+
+    /* 
+        Método que asigna un censista al azar (Según su id) a censo (realizado por usuario invitado) para que este lo valide posteriormente,
+    */
+    asignarCensista(){
+        const min = 0;
+        const max = this.baseDeDatosCensistas.length-1;
+    
+    /* 
+        ej: Math.random retorna 0,2, min=0 y max=10
+        0,2*(10-0+1) + 0 = 2,2 => num: 2
+    */
+           
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    
 
     /* 
         Método que retorna la lista de censistas registrados en el sistema excepto el logueado
@@ -276,6 +282,9 @@ class App {
         return credencialesCorrectas;
     }
 
+    /* 
+        Método usado para cerrar sesión
+    */
     cerrarSesion(){
         this.censistaLogueado = null;
     }
@@ -434,31 +443,14 @@ class App {
         return esValida;
     }
 
-    /* 
-        Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
-        "censado" a "true" y da por finalizado el mismo.
-        Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado con métodos anteriores).
-    */ 
-    confirmarCenso(ci){
-        let confirmado = false;
-        for (let i = 0; i < this.baseDeDatosCensos.length && !confirmado; i++) {
-            const ciAcomparar = this.baseDeDatosCensos[i].ci;
-            if (ci == ciAcomparar) {
-                this.baseDeDatosCensos[i].censado = true;
-                confirmado = true;
-            }            
-        }
     
-        return confirmado;
-    }
-
     /* 
-        Método que hace todas las verificaciones llamando a otros métodos específicos para cada 
-        cada elemento, crea el nuevo censo y luego lo confirma. 
-        retorna booleano 
+    Método que hace todas las verificaciones llamando a otros métodos específicos para cada 
+    cada elemento, crea el nuevo censo y luego lo confirma. 
+    retorna booleano 
     */
-    realizarCenso(nombre,edad,ci,departamento,ocupacion){
-        //nro ci sin puntos ni guiones
+   realizarCenso(nombre,edad,ci,departamento,ocupacion){
+       //nro ci sin puntos ni guiones
         let nroCiLimpio = this.limpiarNroCI(ci);
         let censado = false;
         
@@ -485,11 +477,27 @@ class App {
                 }
             }
         }
-
+        
         return censado;
     }
-
-
+    
+    /* 
+        Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
+        "censado" a "true" y da por finalizado el mismo.
+        Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado con métodos anteriores).
+    */ 
+    confirmarCenso(ci){
+        let confirmado = false;
+        for (let i = 0; i < this.baseDeDatosCensos.length && !confirmado; i++) {
+            const ciAcomparar = this.baseDeDatosCensos[i].ci;
+            if (ci == ciAcomparar) {
+                this.baseDeDatosCensos[i].censado = true;
+                confirmado = true;
+            }            
+        }
+    
+        return confirmado;
+    }
 }
 
 class Censo {
