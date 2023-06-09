@@ -320,7 +320,7 @@ function volverAtrasNuevoCenso(){
 
 function mostrarBusquedaValidacionDeCenso(){
     ocultarMenuOpcionesCensista();
-    cargarSelectorCensosPendientes();
+    cargarSelectorCensosPendientes("ciValidarCenso");
     mostrarValidarCenso();
     mostrarFormBusquedaValidacionCenso();
     ocultarFormValidacionCenso();
@@ -355,9 +355,9 @@ function volverAtrasPersonaNuevoCenso(){
 
 function mostrarMenuReasignarCenso(){
     ocultarMenuOpcionesCensista();
+    cargarSelectorCensosPendientes("mostrarCensosPendientes");
+    cargarSelectorCensistasDisponibles();
     mostrarReasignarCenso();
-    //mostrar menú reasignar censo
-
 }
 
 function volverAtrasReasignarCenso(){
@@ -655,9 +655,28 @@ function terminarCenso(){
 }
 
 /* 
-    Función que muestra en <select> los censos pendientes del censista logueado
+    Función que muestra los censistas disponibles excepto el logueado
 */
-function cargarSelectorCensosPendientes(){
+function cargarSelectorCensistasDisponibles(){
+    const censistasDisponibles = app.obtenerListaDeCensistas();
+
+    if (censistasDisponibles!=undefined) {
+        let cargar = ``;
+        for (let i = 0; i < censistasDisponibles.length; i++) {
+            const censista = censistasDisponibles[i];
+            cargar += `<option value="${censista.id}">${censista.nombre}</option>`;
+        }
+        document.querySelector("#mostrarCensistasDisponibles").innerHTML = cargar;
+    } else {
+        document.querySelector("#mostrarCensistasDisponibles").innerHTML = `No hay censistas disponibles`;
+    }
+}
+
+/* 
+    Función que muestra en <select> los censos pendientes del censista logueado,
+    recibe como parámetro el id del select a cargar
+*/
+function cargarSelectorCensosPendientes(id){
     const censosPendientes = app.obtenerCensosPendientes();
     let cargar = ``;
     if (censosPendientes.length>0) {
@@ -669,7 +688,7 @@ function cargarSelectorCensosPendientes(){
     } else {
         cargar = `<option value="">No hay censos pendientes</option>`;
     }
-    document.querySelector("#ciValidarCenso").innerHTML = cargar;        
+    document.querySelector(`#${id}`).innerHTML = cargar;        
 }
 
 /*  

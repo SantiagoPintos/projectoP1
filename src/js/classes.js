@@ -237,6 +237,29 @@ class App {
     generarIdCensista(){
         return this.baseDeDatosCensistas.length;
     }
+
+    /* 
+        Método que retorna la lista de censistas registrados en el sistema excepto el logueado
+        en forma de objeto (sin incluir su contraseña)
+    */
+    obtenerListaDeCensistas(){
+        let listaDeCensistas = [];
+
+        if(this.censistaLogueado!= null){
+            for (let i = 0; i < this.baseDeDatosCensistas.length; i++) {
+                if(this.baseDeDatosCensistas[i].id != this.censistaLogueado.id){
+                    const censista = {
+                        nombre: this.baseDeDatosCensistas[i].nombre,
+                        id: this.baseDeDatosCensistas[i].id,
+                    };
+                    listaDeCensistas.push(censista);
+                }   
+            }
+    
+            return listaDeCensistas;
+        }
+    }
+
     /* 
         Método usado en inicio de sesión
     */
