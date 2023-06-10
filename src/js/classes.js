@@ -59,12 +59,16 @@ class App {
         const min = 0;
         const max = this.baseDeDatosCensistas.length-1;
     
-    /* 
-        ej: Math.random retorna 0,2, min=0 y max=10
-        0,2*(10-0+1) + 0 = 2,2 => num: 2
-    */
-           
-        return Math.floor(Math.random() * (max - min + 1) + min);
+        /* 
+            Cubre caso en el que no hay censistas registrados
+        */
+        if (max>0) {
+            /* 
+                ej: Math.random retorna 0,2, min=0 y max=10
+                0,2*(10-0+1) + 0 = 2,2 => num: 2
+            */
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
     }
     
 
@@ -387,6 +391,27 @@ class App {
 
             return listaDeCensosSinValidar;
         }
+    }
+
+    /* 
+        Método que reasigna un censo (sin validar) a otro censista, retorna true o false
+    */
+    reasignarCenso(ciCenso, idCensista){
+        let reasignado = false;
+        // ci es válida
+        if (this.validarDigitoVerificadorCI(this.limpiarNroCI(ciCenso))) {
+            const indice = this.obtenerIndiceCenso(this.limpiarNroCI(ciCenso));
+            //censo está sin validar
+            if (this.baseDeDatosCensos[indice].censado == false) {
+                //censista seleccionado no está logueado
+                if (this.censistaLogueado.id != idCensista) {
+                    //reasignar censo cambiando propiedad idCensista
+                    this.baseDeDatosCensos[indice].idCensista = idCensista;
+                    reasignado = true;
+                }
+            }
+        }
+        return reasignado;
     }
 
     /* 

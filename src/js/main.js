@@ -64,6 +64,8 @@ function capturarClicks(){
     //btn "reasignar censo" en app censista
     document.querySelector("#btnReasignarCensoMenuCensista").addEventListener("click", mostrarMenuReasignarCenso);
 
+    document.querySelector("#btnReasignarCenso").addEventListener("click", reasignarCenso);
+
     document.querySelector("#btnAtrasReasignarCenso").addEventListener("click", volverAtrasReasignarCenso);
 
     document.querySelector("#btnSalirAppPersona").addEventListener("click", salirAppPersona);
@@ -649,6 +651,36 @@ function terminarCenso(){
     }
 
     document.querySelector("#msjRealizarNuevoCenso").innerHTML = mensajeParrafo;
+}
+
+/* 
+    Función que invoca método para reasignar censo a otro censista
+*/
+function reasignarCenso(){
+    const ci = document.querySelector("#mostrarCensosPendientes").value;
+    const censista = document.querySelector("#mostrarCensistasDisponibles").value;
+    let mensaje = "";
+
+    if (ci!="") {
+        if (app.validarDigitoVerificadorCI(app.limpiarNroCI(ci))) {
+            if(app.censistaLogueado.id != censista){
+                if(app.reasignarCenso(app.limpiarNroCI(ci), censista)){
+                    mensaje = "Censo reasignado correctamente";
+                    //Se invoca función para actualizar la lista y ya no aparezcan censos asignados a otro censista
+                    cargarSelectorCensosPendientes("mostrarCensosPendientes");
+                } else {
+                    mensaje = "No se pudo reasignar el censo";
+                }
+            } else {
+                mensaje = "Ya tienes asignado este censo";
+            }
+        } else {
+            mensaje = "El número de cédula de indentidad del censo no es correcto";
+        }
+    } else {
+        mensaje = "No hay censos pendientes de validación";
+    }
+    document.querySelector("#parrafoMsjReasignarCenso").innerHTML = mensaje;
 }
 
 /* 
