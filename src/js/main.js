@@ -353,6 +353,7 @@ function volverAtrasPersonaNuevoCenso(){
     document.querySelector("#departamentoPersonaCenso").value = "";
     document.querySelector("#ocupacionPersonaCenso").value = "";
     document.querySelector("#busquedaNroCIPersona").value = "";
+    document.querySelector("#msjFormCensoPersona").innerHTML = "";
 }
 
 function mostrarMenuReasignarCenso(){
