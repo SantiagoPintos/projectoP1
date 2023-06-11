@@ -473,32 +473,40 @@ function usuariofinalizaCenso(){
     const ciLimpia = app.limpiarNroCI(ci)
     let mensaje = "";
 
-    if(nombre!=""){
-        //nombre no es string vacío
-        if (edad>=0 && edad <=130) {
-            if (app.validarDigitoVerificadorCI(ciLimpia)) {
-                //ci es válida
-                if (departamento != 0) {
-                    //0 es valor por defecto en select
-                    if (ocupacion != 0) {
-                        //se crea el censo
-                        app.nuevoCenso(nombre, edad, ciLimpia, departamento, ocupacion);
-                        mensaje = "Censo creado con éxito";
+    /* 
+        Cubre caso en que usuario presiona varias veces botón "Finalizar censo", de esta forma se evita
+        que se generen mútiples censos con datos repetidos.
+    */
+    if(!app.existeCenso(ciLimpia)){
+        if(nombre!=""){
+            //nombre no es string vacío
+            if (edad>=0 && edad <=130) {
+                if (app.validarDigitoVerificadorCI(ciLimpia)) {
+                    //ci es válida
+                    if (departamento != 0) {
+                        //0 es valor por defecto en select
+                        if (ocupacion != 0) {
+                            //se crea el censo
+                            app.nuevoCenso(nombre, edad, ciLimpia, departamento, ocupacion);
+                            mensaje = "Censo creado con éxito";
+                        } else {
+                            mensaje = "Seleccione una ocupación";
+                        }
                     } else {
-                        mensaje = "Seleccione una ocupación";
+                        mensaje = "Seleccione un departamento";
                     }
                 } else {
-                    mensaje = "Seleccione un departamento";
+                    mensaje = "El número de cédula no es válido";
                 }
+                
             } else {
-                mensaje = "El número de cédula no es válido";
+                mensaje = "La edad ingresada no está dentro del rango permitido";
             }
-            
         } else {
-            mensaje = "La edad ingresada no está dentro del rango permitido";
+            mensaje = "El nombre no puede estar vacío";
         }
     } else {
-        mensaje = "El nombre no puede estar vacío";
+        mensaje = "El censo ya fue guardado";
     }
     document.querySelector("#msjFormCensoPersona").innerHTML = mensaje;
 }
