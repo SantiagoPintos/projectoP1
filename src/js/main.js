@@ -465,8 +465,7 @@ function salirAppPersona(){
 }
 
 function usuariofinalizaCenso(){
-    console.log(`Terminando censo`);
-    const nombre = document.querySelector("#btnFinalizarCensoPersona").value;
+    const nombre = document.querySelector("#nombrePersonaCenso").value;
     const edad = Number(document.querySelector("#edadPersonaCenso").value);
     const ci = document.querySelector("#ciPersonaCenso").value;
     const departamento = Number(document.querySelector("#departamentoPersonaCenso").value);
