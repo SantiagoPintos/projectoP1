@@ -646,7 +646,7 @@ function terminarCenso(){
                         mensajeParrafo = "Seleccione un departamento"
                     }
                 } else {
-                    mensajeParrafo = "Ya hay un censo asociado a ";
+                    mensajeParrafo = "Ya hay un censo asociado a esa cédula de identidad";
                 }
             } else {
                 mensajeParrafo = "El número de cédula no es válido";
