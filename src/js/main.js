@@ -488,8 +488,8 @@ function usuariofinalizaCenso(){
                         //0 es valor por defecto en select
                         if (ocupacion != 0) {
                             //se crea el censo
-                            app.nuevoCenso(nombre, edad, ciLimpia, departamento, ocupacion);
-                            mensaje = "Censo creado con éxito";
+                            const nombreAsignado = app.nuevoCenso(nombre, edad, ciLimpia, departamento, ocupacion);
+                            mensaje = `Información guardada con éxito, el censista ${nombreAsignado} será el encargado de visitar su hogar`;
                         } else {
                             mensaje = "Seleccione una ocupación";
                         }
