@@ -21,15 +21,15 @@ class App {
         * https://github.com/picandocodigo/ci_js 
     */
     precargarCensos(){
-        this.nuevoCenso("Usuario Prueba", 20, 56536112, 2, 3);
-        this.nuevoCenso("Usuario Prueba 2", 30, 33269613, 2, 3);
-        this.nuevoCenso("Usuario Prueba 3", 40, 94202155, 2, 3);
-        this.nuevoCenso("Usuario Prueba 4", 50, 23530252, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 3761156, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 73152098, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 98839948, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 26155924, 2, 3);
-        this.nuevoCenso("Usuario Prueba 5", 10, 30138950, 2, 3);
+        this.nuevoCenso("Pepito Hernández", 20, 56536112, 2, 3);
+        this.nuevoCenso("Roberto Pérez", 30, 33269613, 2, 3);
+        this.nuevoCenso("José Rodríguez", 40, 94202155, 2, 3);
+        this.nuevoCenso("Santiago Sosa", 50, 23530252, 2, 3);
+        this.nuevoCenso("Marcelo Núñez", 10, 3761156, 2, 3);
+        this.nuevoCenso("Josefina Pérez", 10, 73152098, 2, 3);
+        this.nuevoCenso("Andrés Andrés", 10, 98839948, 2, 3);
+        this.nuevoCenso("Martín Pintos", 10, 26155924, 2, 3);
+        this.nuevoCenso("Gonzalo Rodríguez", 10, 30138950, 2, 3);
     }
 
     /* 
