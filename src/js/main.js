@@ -68,6 +68,8 @@ function capturarClicks(){
 
     document.querySelector("#btnAtrasReasignarCenso").addEventListener("click", volverAtrasReasignarCenso);
 
+    document.querySelector("#btnEliminarCensoPersona").addEventListener("click", eliminarCensoPersona);
+
     document.querySelector("#btnSalirAppPersona").addEventListener("click", salirAppPersona);
 
 }
@@ -681,6 +683,34 @@ function reasignarCenso(){
         mensaje = "No hay censos pendientes de validación";
     }
     document.querySelector("#parrafoMsjReasignarCenso").innerHTML = mensaje;
+}
+
+/* 
+    Función que se ejecuta el presionar "Eliminar censo" en la app de usuario invitado
+    Invoca a método que verifica si es posible eliminarlo (NO debe estar validado) y muestra mensaje
+    en interfaz
+*/
+
+function eliminarCensoPersona(){
+    const ci = document.querySelector("#ciPersonaCenso").value;
+    const ciLimpia = app.limpiarNroCI(ci);
+    let mensaje = "";
+
+    if(app.validarDigitoVerificadorCI(ciLimpia)){
+        if (!app.censoEstaValidado(ciLimpia)) {
+            if(app.eliminarCenso(ciLimpia)){
+                mensaje = "Datos eliminados correctamente";
+            } else {
+                mensaje = "Los datos no pudieron ser eliminados";
+            }
+        } else {
+            mensaje = "Los datos no pueden ser eliminados porque el censo ya fue validado por un censista";
+        }
+    } else {
+        mensaje = "El número de cédula ingresado no es válido";
+    }
+
+    document.querySelector("#msjFormCensoPersona").innerHTML = mensaje;
 }
 
 /* 

@@ -522,7 +522,32 @@ class App {
         }
 
         return actualizado;        
-    }    
+    }
+    
+    /* 
+        Método encargado de eliminar censo (si no está validado).
+    */
+    eliminarCenso(ci){
+        let eliminado = false;
+        const cedula = this.limpiarNroCI(ci);
+
+        if (this.validarDigitoVerificadorCI(cedula)) {
+            //si nro de ci es válido
+            if (this.existeCenso(cedula)) {
+                if (!this.censoEstaValidado) {
+                    //si censo NO está validado
+                    const indice = this.obtenerIndiceCenso(cedula);
+                    console.log(this.baseDeDatosCensos);
+                    console.log(indice);
+                    console.log(this.baseDeDatosCensos);
+                    this.baseDeDatosCensos.splice(indice, 1);
+                    eliminado = true;
+                }
+            }
+        }
+
+        return eliminado;
+    }
 }
 
 class Censo {
