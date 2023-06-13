@@ -541,13 +541,13 @@ class App {
         if (this.validarDigitoVerificadorCI(cedula)) {
             //si nro de ci es válido
             if (this.existeCenso(cedula)) {
-                if (!this.censoEstaValidado) {
+                if (!this.censoEstaValidado(cedula)) {
                     //si censo NO está validado
                     const indice = this.obtenerIndiceCenso(cedula);
                     console.log(this.baseDeDatosCensos);
                     console.log(indice);
-                    console.log(this.baseDeDatosCensos);
                     this.baseDeDatosCensos.splice(indice, 1);
+                    console.log(this.baseDeDatosCensos);
                     eliminado = true;
                 }
             }
