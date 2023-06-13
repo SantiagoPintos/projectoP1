@@ -544,10 +544,7 @@ class App {
                 if (!this.censoEstaValidado(cedula)) {
                     //si censo NO está validado
                     const indice = this.obtenerIndiceCenso(cedula);
-                    console.log(this.baseDeDatosCensos);
-                    console.log(indice);
                     this.baseDeDatosCensos.splice(indice, 1);
-                    console.log(this.baseDeDatosCensos);
                     eliminado = true;
                 }
             }
