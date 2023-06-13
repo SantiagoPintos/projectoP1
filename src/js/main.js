@@ -355,6 +355,7 @@ function volverAtrasPersonaNuevoCenso(){
     document.querySelector("#departamentoPersonaCenso").value = "";
     document.querySelector("#ocupacionPersonaCenso").value = "";
     document.querySelector("#busquedaNroCIPersona").value = "";
+    document.querySelector("#msjFormCensoPersona").innerHTML = "";
 }
 
 function mostrarMenuReasignarCenso(){
@@ -467,8 +468,7 @@ function salirAppPersona(){
 }
 
 function usuariofinalizaCenso(){
-    console.log(`Terminando censo`);
-    const nombre = document.querySelector("#btnFinalizarCensoPersona").value;
+    const nombre = document.querySelector("#nombrePersonaCenso").value;
     const edad = Number(document.querySelector("#edadPersonaCenso").value);
     const ci = document.querySelector("#ciPersonaCenso").value;
     const departamento = Number(document.querySelector("#departamentoPersonaCenso").value);
@@ -476,32 +476,40 @@ function usuariofinalizaCenso(){
     const ciLimpia = app.limpiarNroCI(ci)
     let mensaje = "";
 
-    if(nombre!=""){
-        //nombre no es string vacío
-        if (edad>=0 && edad <=130) {
-            if (app.validarDigitoVerificadorCI(ciLimpia)) {
-                //ci es válida
-                if (departamento != 0) {
-                    //0 es valor por defecto en select
-                    if (ocupacion != 0) {
-                        //se crea el censo
-                        app.nuevoCenso(nombre, edad, ciLimpia, departamento, ocupacion);
-                        mensaje = "Censo creado con éxito";
+    /* 
+        Cubre caso en que usuario presiona varias veces botón "Finalizar censo", de esta forma se evita
+        que se generen mútiples censos con datos repetidos.
+    */
+    if(!app.existeCenso(ciLimpia)){
+        if(nombre!=""){
+            //nombre no es string vacío
+            if (edad>=0 && edad <=130) {
+                if (app.validarDigitoVerificadorCI(ciLimpia)) {
+                    //ci es válida
+                    if (departamento != 0) {
+                        //0 es valor por defecto en select
+                        if (ocupacion != 0) {
+                            //se crea el censo
+                            const nombreAsignado = app.nuevoCenso(nombre, edad, ciLimpia, departamento, ocupacion);
+                            mensaje = `Información guardada con éxito, el censista ${nombreAsignado} será el encargado de visitar su hogar`;
+                        } else {
+                            mensaje = "Seleccione una ocupación";
+                        }
                     } else {
-                        mensaje = "Seleccione una ocupación";
+                        mensaje = "Seleccione un departamento";
                     }
                 } else {
-                    mensaje = "Seleccione un departamento";
+                    mensaje = "El número de cédula no es válido";
                 }
+                
             } else {
-                mensaje = "El número de cédula no es válido";
+                mensaje = "La edad ingresada no está dentro del rango permitido";
             }
-            
         } else {
-            mensaje = "La edad ingresada no está dentro del rango permitido";
+            mensaje = "El nombre no puede estar vacío";
         }
     } else {
-        mensaje = "El nombre no puede estar vacío";
+        mensaje = "El censo ya fue guardado";
     }
     document.querySelector("#msjFormCensoPersona").innerHTML = mensaje;
 }
@@ -640,7 +648,7 @@ function terminarCenso(){
                         mensajeParrafo = "Seleccione un departamento"
                     }
                 } else {
-                    mensajeParrafo = "Ya hay un censo asociado a ";
+                    mensajeParrafo = "Ya hay un censo asociado a esa cédula de identidad";
                 }
             } else {
                 mensajeParrafo = "El número de cédula no es válido";

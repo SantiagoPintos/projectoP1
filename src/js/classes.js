@@ -356,6 +356,13 @@ class App {
             generarCenso.idCensista = this.asignarCensista();
         }
         this.baseDeDatosCensos.push(generarCenso);
+
+        /* 
+            Si usuario está haciendo censo se retorna nombre de censista asignado
+        */
+        if (this.censistaLogueado==null) {
+            return this.baseDeDatosCensistas[generarCenso.idCensista].nombre;
+        }
     }
 
     /* 
