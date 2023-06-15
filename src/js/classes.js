@@ -46,7 +46,7 @@ class App {
         this.nuevoCenso("Andrés Andrés", 10, 98839948, 2, 3);
         this.confirmarCenso(98839948);
         this.nuevoCenso("Martín Pintos", 10, 26155924, 2, 3);
-        this.confirmarCenso(26155924)
+        this.confirmarCenso(26155924);
         this.nuevoCenso("Gonzalo Rodríguez", 10, 30138950, 2, 3);
         this.confirmarCenso(30138950);
         this.nuevoCenso("Felipe Estrada", 98, 76149820, 19, 4);
@@ -597,6 +597,22 @@ class App {
         }
 
         return eliminado;
+    }
+
+    /* 
+        Método que retorna cantidad de censos validados
+    */
+    totalDePersonasCensadas(){
+        let cantidad = 0;
+
+        for (let i=0; i < this.baseDeDatosCensos.length; i++) {
+            const validado = this.baseDeDatosCensos[i].censado;
+            console.log(`validado en ${i} es: ${validado}`);
+            if (validado) {
+                cantidad++;
+            }
+        }
+        return cantidad
     }
 }
 
