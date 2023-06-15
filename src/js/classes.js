@@ -2,6 +2,16 @@ class App {
     constructor(){
         this.baseDeDatosCensos = [];
         this.baseDeDatosCensistas = [];
+        /* 
+            Array que contiene lista de departamentos
+        */
+        this.baseDeDatosDepartamentos = ["Seleccione...", "Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", 
+        "Flores", "Florida", "Lavalleja","Maldonado", "Montevideo", "Paysandú", "Río Negro", 
+        "Rivera", "Rocha", "Salto", "San José", "Soriano", "Tacuarembó", "Treinta y Trés"];
+       /* 
+            Array que contiene lista de ocupaciones
+       */
+        this.baseDeDatosOcupaciones = ["Seleccione...", "Dependiente", "Independiente", "Estudiante", "No trabaja"];
 
         /* 
             Objeto que guarda el censista logueado actualmente

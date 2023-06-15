@@ -871,9 +871,7 @@ function finalizarValidacionDeCenso(){
 
 //recibe por parámetro id de <select> y le agrega departamentos
 function cargarSelectDeDepartamentos(id){
-    const arrayDepartamentos = ["Seleccione...", "Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", 
-    "Flores", "Florida", "Lavalleja","Maldonado", "Montevideo", "Paysandú", "Río Negro", 
-    "Rivera", "Rocha", "Salto", "San José", "Soriano", "Tacuarembó", "Treinta y Trés"];
+    const arrayDepartamentos = app.baseDeDatosDepartamentos;
     let cargar = ``;
 
     for (let i = 0; i < arrayDepartamentos.length; i++) {
@@ -884,7 +882,7 @@ function cargarSelectDeDepartamentos(id){
 }
 
 function cargarSelectDeOcupacion(id){
-    const arrayOcupaciones = ["Seleccione...", "Dependiente", "Independiente", "Estudiante", "No trabaja"];
+    const arrayOcupaciones = app.baseDeDatosOcupaciones;
     let cargar = ``;
 
     for (let i = 0; i < arrayOcupaciones.length; i++) {
