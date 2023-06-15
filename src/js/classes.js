@@ -57,8 +57,8 @@ class App {
         this.confirmarCenso(84714506);
         this.nuevoCenso("Lucía Rodríguez", 23, 27539434, 10, 2);
         this.confirmarCenso(27539434);
-        this.nuevoCenso("Gimena Aída", 30, 30138950, 1, 7);
-        this.confirmarCenso(30138950);
+        this.nuevoCenso("Gimena Aída", 30, 47137810, 1, 7);
+        this.confirmarCenso(47137810);
         this.nuevoCenso("Ivanna Pereira", 21, 1918010, 18, 4);
         this.confirmarCenso(1918010);
         this.nuevoCenso("Marcelo Fernández", 50, 4152253, 5, 2);
