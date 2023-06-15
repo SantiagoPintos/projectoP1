@@ -32,14 +32,50 @@ class App {
     */
     precargarCensos(){
         this.nuevoCenso("Pepito Hernández", 20, 56536112, 2, 3);
+        this.confirmarCenso(56536112);
         this.nuevoCenso("Roberto Pérez", 30, 33269613, 2, 3);
+        this.confirmarCenso(33269613);
         this.nuevoCenso("José Rodríguez", 40, 94202155, 2, 3);
+        this.confirmarCenso(94202155);
         this.nuevoCenso("Santiago Sosa", 50, 23530252, 2, 3);
+        this.confirmarCenso(23530252);
         this.nuevoCenso("Marcelo Núñez", 10, 3761156, 2, 3);
+        this.confirmarCenso(3761156);
         this.nuevoCenso("Josefina Pérez", 10, 73152098, 2, 3);
+        this.confirmarCenso(73152098);
         this.nuevoCenso("Andrés Andrés", 10, 98839948, 2, 3);
+        this.confirmarCenso(98839948);
         this.nuevoCenso("Martín Pintos", 10, 26155924, 2, 3);
+        this.confirmarCenso(26155924)
         this.nuevoCenso("Gonzalo Rodríguez", 10, 30138950, 2, 3);
+        this.confirmarCenso(30138950);
+        this.nuevoCenso("Felipe Estrada", 98, 76149820, 19, 4);
+        this.confirmarCenso(76149820);
+        this.nuevoCenso("Rodrigo Pérez", 26, 40499633, 5, 2);
+        this.confirmarCenso(40499633);
+        this.nuevoCenso("Enzo Arocha", 38, 84714506, 2, 1);
+        this.confirmarCenso(84714506);
+        this.nuevoCenso("Lucía Rodríguez", 23, 27539434, 10, 2);
+        this.confirmarCenso(27539434);
+        this.nuevoCenso("Gimena Aída", 30, 30138950, 1, 7);
+        this.confirmarCenso(30138950);
+        this.nuevoCenso("Ivanna Pereira", 21, 1918010, 18, 4);
+        this.confirmarCenso(1918010);
+        this.nuevoCenso("Marcelo Fernández", 50, 4152253, 5, 2);
+        this.nuevoCenso("Gabriela Hernández", 37, 29926376, 11, 1);
+        this.nuevoCenso("Bruno Rossi", 29, 29598515, 10, 1);
+        this.nuevoCenso("Gabriel Fernández", 61, 45686938, 19, 4);
+        this.nuevoCenso("Victoria Miños", 22, 46733677, 2, 1);
+        this.nuevoCenso("Gonzalo Marrero", 45, 36573774, 9, 2);
+        this.nuevoCenso("Anna Rodríguez", 39, 36228698, 4, 4);
+        this.nuevoCenso("Pedro Barboza", 80, 14931326, 17, 4);
+        this.nuevoCenso("Ignacio Romero", 30, 52392978, 12, 2);
+        this.nuevoCenso("Gimena Castro", 29, 4503686, 14, 1);
+        this.nuevoCenso("Yolanda Pérez", 70, 967270, 1, 4);
+        this.nuevoCenso("Diego Pereira", 1, 27136650, 17, 4);
+        this.nuevoCenso("Rita Castelli", 40, 27469378, 9, 1);
+        this.nuevoCenso("Fernando Mauricio", 22, 55723314, 14, 2);
+        this.nuevoCenso("Andrea Zapata", 49, 40378039, 16, 2);
     }
 
     /* 
