@@ -665,6 +665,27 @@ class App {
 
         return (censosSinValidar*100)/cantCensos
     }
+
+    /* 
+        Método que retorna el porcentaje de personas mayores de edad
+    */
+    porcentajePersonasMayoresDeEdad(){
+        const cantCensos=this.baseDeDatosCensos.length;
+        let mayoresDeEdad=0;
+
+        for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
+            const edad = this.baseDeDatosCensos[i].edad;
+            if (edad>=18) {
+                mayoresDeEdad++;
+            }
+        }
+
+        if (cantCensos!=0) {
+            return (mayoresDeEdad*100)/cantCensos;
+        } else {
+            return 0;
+        }
+    }
 }
 
 class Censo {
