@@ -663,7 +663,11 @@ class App {
             }
         }
 
-        return (censosSinValidar*100)/cantCensos
+        if (cantCensos!=0) {
+            return (censosSinValidar*100)/cantCensos;
+        } else {
+            return 0;
+        }
     }
 
     /* 
