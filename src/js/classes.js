@@ -769,7 +769,7 @@ class App {
 
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
             const censo = this.baseDeDatosCensos[i];
-            if (censo.ocupacion==1 || censo.ocupacion==2 || censo.ocupacion==3) {
+            if (censo.ocupacion==1 || censo.ocupacion==2) {
                 trabajadores[censo.departamento] = trabajadores[censo.departamento]+1; 
             }
         }
