@@ -615,8 +615,7 @@ class App {
     }
 
     /* 
-        Método que retorna array con cantidad de personas censadas para cada departamento, retorna objeto con
-        id de departamento (asociado a baseDeDatosDepartamentos) y la cantidad de repeticiones
+        Método que retorna objeto con cantidad de personas censadas para cada departamento
     */
     cantPersonasCensadasPorDepartamento(){
         let cantCensados = {
@@ -642,8 +641,10 @@ class App {
         };
 
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
-            const deptoDeCenso = Number(this.baseDeDatosCensos[i].departamento);           
-            cantCensados[deptoDeCenso] = cantCensados[deptoDeCenso]+1;
+            const deptoDeCenso = this.baseDeDatosCensos[i];
+            if (deptoDeCenso.censado) {
+                cantCensados[deptoDeCenso.departamento] = cantCensados[deptoDeCenso.departamento]+1;
+            }           
         }
 
         return cantCensados;
