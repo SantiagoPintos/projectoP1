@@ -70,6 +70,8 @@ function capturarClicks(){
 
     document.querySelector("#btnEliminarCensoPersona").addEventListener("click", eliminarCensoPersona);
 
+    document.querySelector("#btnMostrarEstadisticasMenuPersona").addEventListener("click", estadisticasPersona);
+
     document.querySelector("#btnSalirAppPersona").addEventListener("click", salirAppPersona);
 
 }
@@ -371,6 +373,12 @@ function volverAtrasReasignarCenso(){
     document.querySelector("#mostrarCensistasDisponibles").innerHTML = "";
     document.querySelector("#parrafoMsjReasignarCenso").innerHTML = "";
     mostrarMenuOpcionesCensista();
+}
+
+function estadisticasPersona(){
+    ocultarMenuOpcionesPersona();
+    mostrarEstadisticasPersona();
+    cargarEstadisticasPersona();
 }
 
 /* 
@@ -868,6 +876,31 @@ function finalizarValidacionDeCenso(){
     document.querySelector("#mjsFormValidarCenso").innerHTML = mensaje;
 }
 
+/* 
+    Función encargada de crear tabla con estadísticas en app invitado
+*/
+function cargarEstadisticasPersona(){
+    //se limpia párrafo para evitar conflictos con tablas presentes de ejecuciones anteriores
+    document.querySelector("#tablaEstadisticasPersona").innerHTML=``;
+    
+    let estadisticas=``;
+    const listaDepartamentos = app.baseDeDatosDepartamentos;
+    const estudiantes = app.cantEstudiantesPorDepartamento();
+    const noTrabajan = app.cantPersonasNoTrabajanPorDepartamento();
+    const trabajadores = app.cantTrabajadoresPorDepartamento();
+    const porcentaje = app.porcentajePersonasCensadasPorDepartamentoConRespectoAlTotal();
+
+    estadisticas=`<table border="1"><tr><th>Departamento</th><th>Estudian</th><th>No trabajan</th><th>Trabajan</th><th>Porcentaje del total de censados</th></tr>`;
+
+    //Itera "listaDepartamentos" ya que esta contiene un array con los 19 departamentos ordenados alfabéticamente.
+    //Comienza en 1 porque index=0 es opción por defecto ("Seleccione...").
+    for (let i = 1; i < listaDepartamentos.length; i++) {
+        const depto = listaDepartamentos[i];
+        estadisticas+=`<tr><td>${depto}</td><td>${estudiantes[i]}</td><td>${noTrabajan[i]}</td><td>${trabajadores[i]}</td><td>${porcentaje[i]}</td></tr>`
+    }
+    estadisticas+=`</table>`;
+    document.querySelector("#tablaEstadisticasPersona").innerHTML=estadisticas;
+}
 
 //recibe por parámetro id de <select> y le agrega departamentos
 function cargarSelectDeDepartamentos(id){
