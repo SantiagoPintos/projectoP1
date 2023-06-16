@@ -671,7 +671,7 @@ class App {
     }
 
     /* 
-        Método que retorna el porcentaje de personas mayores de edad
+        Método que retorna el porcentaje de personas (Censos validados) mayores de edad
     */
     porcentajePersonasMayoresDeEdad(){
         const cantCensos=this.baseDeDatosCensos.length;
@@ -693,7 +693,7 @@ class App {
     }
 
     /* 
-        Método que retorna el porcentaje de personas menores de edad
+        Método que retorna el porcentaje de personas (Censos validados) menores de edad
     */
     porcentajePersonasMenoresDeEdad(){
         const mayores = this.porcentajePersonasMayoresDeEdad;
