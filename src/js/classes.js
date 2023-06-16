@@ -742,7 +742,7 @@ class App {
 
     /* 
         Método que retorna objeto con la cantidad de trabajadores por departamento
-        (Tiene en cuenta censos validados y sin validar).
+        (Tiene en cuenta censos validados).
     */
 
     cantTrabajadoresPorDepartamento(){
@@ -770,8 +770,10 @@ class App {
 
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
             const censo = this.baseDeDatosCensos[i];
-            if (censo.ocupacion==1 || censo.ocupacion==2) {
-                trabajadores[censo.departamento] = trabajadores[censo.departamento]+1; 
+            if (censo.censado) {
+                if (censo.ocupacion==1 || censo.ocupacion==2) {
+                    trabajadores[censo.departamento] = trabajadores[censo.departamento]+1; 
+                }
             }
         }
 
