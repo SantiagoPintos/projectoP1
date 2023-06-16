@@ -642,13 +642,28 @@ class App {
         };
 
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
-            const deptoDeCenso = Number(this.baseDeDatosCensos[i].departamento);
-            console.log(`id departamento: ${deptoDeCenso}`);
-            
+            const deptoDeCenso = Number(this.baseDeDatosCensos[i].departamento);           
             cantCensados[deptoDeCenso] = cantCensados[deptoDeCenso]+1;
         }
 
         return cantCensados;
+    }
+
+    /* 
+        Método que retorna el porcentaje de censos pendientes de validación
+    */
+    porcentajeCensosPendientesValidacion(){
+        const cantCensos=this.baseDeDatosCensos.length;
+        let censosSinValidar=0;
+        
+        for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
+            const validado = this.baseDeDatosCensos[i].censado;
+            if (!validado) {
+                censosSinValidar++;
+            }
+        }
+
+        return (censosSinValidar*100)/cantCensos
     }
 }
 
