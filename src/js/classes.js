@@ -738,6 +738,44 @@ class App {
 
         return estudiantes;
     }
+
+    /* 
+        Método que retorna objeto con la cantidad de trabajadores por departamento
+        (Tiene en cuenta censos validados y sin validar).
+    */
+
+    cantTrabajadoresPorDepartamento(){
+        let trabajadores = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+            10: 0,
+            11: 0,
+            12: 0,
+            13: 0,
+            14: 0,
+            15: 0,
+            16: 0,
+            17: 0,
+            18: 0,
+            19: 0,
+        };
+
+        for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
+            const censo = this.baseDeDatosCensos[i];
+            if (censo.ocupacion==1 || censo.ocupacion==2) {
+                trabajadores[censo.departamento] = trabajadores[censo.departamento]+1; 
+            }
+        }
+
+        return trabajadores;
+    }
 }
 
 class Censo {
