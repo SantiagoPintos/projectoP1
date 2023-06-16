@@ -679,7 +679,8 @@ class App {
 
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
             const edad = this.baseDeDatosCensos[i].edad;
-            if (edad>=18) {
+            const censado = this.baseDeDatosCensos[i].censado;
+            if (edad>=18 && censado) {
                 mayoresDeEdad++;
             }
         }
