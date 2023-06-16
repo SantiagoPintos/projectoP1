@@ -691,6 +691,16 @@ class App {
             return 0;
         }
     }
+
+    /* 
+        Método que retorna el porcentaje de personas menores de edad
+    */
+    porcentajePersonasMenoresDeEdad(){
+        const mayores = this.porcentajePersonasMayoresDeEdad;
+        const menores = Math.round(100-mayores);
+
+        return menores;
+    }
 }
 
 class Censo {
