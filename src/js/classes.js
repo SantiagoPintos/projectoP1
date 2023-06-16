@@ -813,6 +813,49 @@ class App {
 
         return noTrabajan;
     }
+
+    /* 
+        Método que retorna en porcentaje de personas censadas en cada departamento con respecto al total
+        (Tiene en cuenta censos validados y no validados).
+    */
+    porcentajePersonasCensadasPorDepartamentoConRespectoAlTotal(){
+        let porcentajeCensadosPorDepartamento = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+            10: 0,
+            11: 0,
+            12: 0,
+            13: 0,
+            14: 0,
+            15: 0,
+            16: 0,
+            17: 0,
+            18: 0,
+            19: 0,
+        };
+        const cantCensos = this.baseDeDatosCensos.length;
+        //let sumatoria = 0;
+
+        //recorre lista de censos, los cuenta y almacena en el objeto
+        for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
+            const censo = this.baseDeDatosCensos[i];
+            porcentajeCensadosPorDepartamento[censo.departamento] = porcentajeCensadosPorDepartamento[censo.departamento] +1;
+        }
+        //recorre el objeto y convierte los contadores de censo x departamento y porcentajes
+        for (let j = 1; j <= 19; j++) {
+            porcentajeCensadosPorDepartamento[j]=Math.round((porcentajeCensadosPorDepartamento[j]*100)/cantCensos);
+            //sumatoria=sumatoria+porcentajeCensadosPorDepartamento[j];
+        }
+        //console.log(sumatoria);
+        return porcentajeCensadosPorDepartamento;
+    }
 }
 
 class Censo {
