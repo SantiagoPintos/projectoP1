@@ -686,7 +686,7 @@ class App {
         }
 
         if (cantCensos!=0) {
-            return (mayoresDeEdad*100)/cantCensos;
+            return Math.round((mayoresDeEdad*100)/cantCensos);
         } else {
             return 0;
         }
