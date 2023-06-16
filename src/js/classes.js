@@ -782,7 +782,7 @@ class App {
 
     /* 
         Método que retorna objeto con la cantidad de personas que NO trabajan en cada departamento
-        (Tiene en cuenta censos validados y no validados).    
+        (Tiene en cuenta censos validados).    
     */
     cantPersonasNoTrabajanPorDepartamento(){
         let noTrabajan = {
@@ -809,7 +809,7 @@ class App {
 
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
             const censo = this.baseDeDatosCensos[i];
-            if (censo.ocupacion==4) {
+            if (censo.ocupacion==4 && censo.censado) {
                 noTrabajan[censo.departamento] = noTrabajan[censo.departamento]+1; 
             }
         }
