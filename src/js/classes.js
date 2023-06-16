@@ -705,7 +705,7 @@ class App {
 
     /* 
         Método que retorna objeto con la cantidad de estudiantes por departamento (tiene en cuenta censos
-        validados y sin validar).
+        validados).
     */
     cantEstudiantesPorDepartamento(){
         let estudiantes = {
@@ -732,7 +732,7 @@ class App {
 
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
             const censo = this.baseDeDatosCensos[i];
-            if (censo.ocupacion==3) {
+            if (censo.ocupacion==3 && censo.censado) {
                 estudiantes[censo.departamento] = estudiantes[censo.departamento]+1; 
             }
         }
