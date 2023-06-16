@@ -72,6 +72,8 @@ function capturarClicks(){
 
     document.querySelector("#btnMostrarEstadisticasMenuPersona").addEventListener("click", estadisticasPersona);
 
+    document.querySelector("#btnAtrasEstadisticasPersona").addEventListener("click", volverAtrasEstadisticasPersona);
+
     document.querySelector("#btnSalirAppPersona").addEventListener("click", salirAppPersona);
 
 }
@@ -379,6 +381,11 @@ function estadisticasPersona(){
     ocultarMenuOpcionesPersona();
     mostrarEstadisticasPersona();
     cargarEstadisticasPersona();
+}
+
+function volverAtrasEstadisticasPersona(){
+    ocultarEstadisticasPersona();
+    mostrarMenuOpcionesPersona();
 }
 
 /* 
@@ -882,7 +889,7 @@ function finalizarValidacionDeCenso(){
 function cargarEstadisticasPersona(){
     //se limpia párrafo para evitar conflictos con tablas presentes de ejecuciones anteriores
     document.querySelector("#tablaEstadisticasPersona").innerHTML=``;
-    
+
     let estadisticas=``;
     const listaDepartamentos = app.baseDeDatosDepartamentos;
     const estudiantes = app.cantEstudiantesPorDepartamento();
