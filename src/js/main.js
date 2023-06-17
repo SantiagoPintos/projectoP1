@@ -44,6 +44,8 @@ function capturarClicks(){
 
     document.querySelector("#btnVolverAtrasLoginCensista").addEventListener("click", volverAtrasLoginCensista);
 
+    document.querySelector("#btnMostarInfoMenuCensista").addEventListener("click", estadisticasCensista);
+
 
     document.querySelector("#btnUsuarioPersona").addEventListener("click", iniciarAppPersona);
 
@@ -71,6 +73,9 @@ function capturarClicks(){
     document.querySelector("#btnEliminarCensoPersona").addEventListener("click", eliminarCensoPersona);
 
     document.querySelector("#btnMostrarEstadisticasMenuPersona").addEventListener("click", estadisticasPersona);
+
+    //btn de selección de departamento en sección "estadísticas" de app censista
+    document.querySelector("#btnMostrarPorcentajesMenoresMayoresPorDepartamento").addEventListener("click", cargarPersonasMayoresYMenores);
 
     document.querySelector("#btnAtrasEstadisticasPersona").addEventListener("click", volverAtrasEstadisticasPersona);
 
@@ -177,6 +182,9 @@ function mostrarFormBusquedaValidacionCenso(){
 }
 function mostrarFormValidacionCenso(){
     document.querySelector("#formValidarCenso").style.display = "block";
+}
+function mostrarEstadisticasCensista(){
+    document.querySelector("#visualizarEstadisticasCensista").style.display = "block";
 }
 function mostrarAppUsuario(){
     document.querySelector("#aplicacionPersona").style.display = "block";
@@ -324,6 +332,12 @@ function volverAtrasNuevoCenso(){
     document.querySelector("#departamentoNuevoCenso").selectedIndex = 0;
     document.querySelector("#ocupacionNuevoCenso").selectedIndex = 0;
     mostrarMenuOpcionesCensista();
+}
+
+function estadisticasCensista(){
+    ocultarMenuOpcionesCensista();
+    mostrarEstadisticasCensista();
+    cargarEstadisticasCensista();
 }
 
 function mostrarBusquedaValidacionDeCenso(){
@@ -706,6 +720,57 @@ function reasignarCenso(){
         mensaje = "No hay censos pendientes de validación";
     }
     document.querySelector("#parrafoMsjReasignarCenso").innerHTML = mensaje;
+}
+
+/* 
+    Función que carga la sección de estadísticas en app censista 
+*/
+function cargarEstadisticasCensista(){
+    const totalCensados = app.totalDePersonasCensadas();
+    const censadosPorDepartamento = app.cantPersonasCensadasPorDepartamento();
+    const porcentajePendientesDeValidacion = app.porcentajeCensosPendientesValidacion();
+    const listaDepartamentos = app.baseDeDatosDepartamentos;
+
+    //Genera tabla con cant de censados x departamento
+    let tabla = `<h3>Cantidad de personas censadas por departamento:</h3><table border="1"><tr><th>Departamento</th><th>Cantidad de censados</th></tr>`;
+    //i=1 porque index=0 es posición por defecto "Seleccione..."
+    for (let i = 1; i < listaDepartamentos.length; i++) {
+        const departamento = listaDepartamentos[i];
+        const cantidad = censadosPorDepartamento[i]
+        tabla +=`<tr><td>${departamento}</td><td>${cantidad}</td></tr>`;
+    }
+    tabla +=`</table>`;
+    document.querySelector("#tablaDePersonasCensadasPorDepartamentoAppCensista").innerHTML = tabla;
+    
+    //Inyecta texto con total de censados
+    document.querySelector("#totalPersonasCensadasAppCensista").innerHTML = `<h3>Total de censados:</h3>Hay ${totalCensados} personas censadas`;
+
+    //Inyecta texto con % de censos pendientes de validar
+    document.querySelector("#porcentajePendientesValidacionAppCensista").innerHTML = `<h3>Cantidad de censos pendientes de validación:</h3>El ${porcentajePendientesDeValidacion}% de los censos aún no fue validado`;
+
+    //popula combo con lista de departamentos
+    cargarSelectDeDepartamentos("selectorDepartamentosEstadisticasAppCensista");
+}
+
+/* 
+    Función encargada de mostrar % de personas mayores y menores de edad de departamento seleccionado
+    en combobox
+*/
+function cargarPersonasMayoresYMenores(){
+    document.querySelector("#msjMostrarPorcentajesMenoresMayoresPorDepartamento").innerHTML= "";
+    const listaDepartamentos = app.baseDeDatosDepartamentos;
+    const mayores = app.porcentajePersonasMayoresDeEdad();
+    const menores = app.porcentajePersonasMenoresDeEdad();
+    const seleccionado = Number(document.querySelector("#selectorDepartamentosEstadisticasAppCensista").value);
+
+    let mensaje = ``;
+    if (seleccionado==0) {
+        //opción por defecto
+        mensaje = `Seleccione un departamento`;
+    } else {
+        mensaje = `${listaDepartamentos[seleccionado]}: El ${menores[seleccionado]}% de los censados es menor de edad y el ${mayores[seleccionado]}% es mayor de edad.`;
+    }
+    document.querySelector("#msjMostrarPorcentajesMenoresMayoresPorDepartamento").innerHTML=mensaje;
 }
 
 /* 

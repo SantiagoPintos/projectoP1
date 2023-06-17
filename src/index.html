@@ -155,118 +155,15 @@
             <div id="visualizarEstadisticasCensista">
                 <h2>Información estadística</h2>
                 <p>
-                    <label for="totalPersonasCensadas">Total de personas censadas:</label><br> <!-- inyectar acá? -->
-                    <p id="tablaDePersonasCensadasPorDepartamento">
-                        <label for="personasCensadasPorDepartamento">Personas censadas por departamento</label>
-                        <table border="1">
-                            <tr>
-                                <th>Departamento</th>
-                                <th>Cantidad</th>
-                            </tr>
-                            <tr>
-                                <td>Artigas</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Canelones</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Cerro Largo</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Colonia</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Durazno</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Flores</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Florida</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Lavalleja</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Maldonado</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Montevideo</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Paysandú</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Río Negro</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Rivera</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Rocha</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Salto</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>San José</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Soriano</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Tacuarembó</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>Treinta y trés</td>
-                                <td>0</td>
-                            </tr>
-                        </table>
-                    </p><!-- tablaDePersonasCensadasPorDepartamento -->
+                    <p id="tablaDePersonasCensadasPorDepartamentoAppCensista"></p>
+                    <p id="totalPersonasCensadasAppCensista"></p>
+                    <p id="porcentajePendientesValidacionAppCensista" ></p>
                     <p id="mostrarPorcentajeCensosMenoresMayoresDeEdad">
                         <h3>Personas menores y mayores de edad por departamento</h3>
-                        <label for="selectMenoresMayoresEdad">Seleccionar un departamento</label>
-                        <select id="selectoDepartamentos">
-                            <option value="Artigas">Artigas</option>
-                            <option value="Canelones">Canelones</option>
-                            <option value="Cerro Largo">Cerro Largo</option>
-                            <option value="Colonia">Colonia</option>
-                            <option value="Durazno">Durazno</option>
-                            <option value="Flores">Flores</option>
-                            <option value="Florida">Florida</option>
-                            <option value="Lavalleja">Lavalleja</option>
-                            <option value="Maldonado">Maldonado</option>
-                            <option value="Montevideo">Montevideo</option>
-                            <option value="Paysandú">Paysandú</option>
-                            <option value="Río Negro">Río Negro</option>
-                            <option value="Rivera">Rivera</option>
-                            <option value="Rocha">Rocha</option>
-                            <option value="Salto">Salto</option>
-                            <option value="San José">San José</option>
-                            <option value="Soriano">Soriano</option>
-                            <option value="Tacuarembó">Tacuarembó</option>
-                            <option value="Treinta y Tres">Treinta y Tres</option>
-                        </select><br>
-                        <input type="button" value="Mostrar" id="btnMostrarPorcentajesMenoresMayoresPorDepartamento">
+                        <label for="selectorDepartamentosEstadisticasAppCensista">Seleccionar un departamento</label><br>
+                        <select id="selectorDepartamentosEstadisticasAppCensista"></select><br>
                         <p id="msjMostrarPorcentajesMenoresMayoresPorDepartamento"></p>
+                        <input type="button" value="Mostrar" id="btnMostrarPorcentajesMenoresMayoresPorDepartamento">
                     </p>
                 </p>
             </div>
