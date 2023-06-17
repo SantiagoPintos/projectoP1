@@ -77,6 +77,10 @@ function capturarClicks(){
     //btn de selección de departamento en sección "estadísticas" de app censista
     document.querySelector("#btnMostrarPorcentajesMenoresMayoresPorDepartamento").addEventListener("click", cargarPersonasMayoresYMenores);
 
+    //btn "atrás" de la sección "estadísticas" de app censista
+    document.querySelector("#btnVolverAtrasEstadisticasAppCensista").addEventListener("click", volverAtrasEstadisticasCensista);
+
+    //btn "atrás" de la sección "estadísticas" de app invitado
     document.querySelector("#btnAtrasEstadisticasPersona").addEventListener("click", volverAtrasEstadisticasPersona);
 
     document.querySelector("#btnSalirAppPersona").addEventListener("click", salirAppPersona);
@@ -388,6 +392,11 @@ function volverAtrasReasignarCenso(){
     document.querySelector("#mostrarCensosPendientes").innerHTML = "";
     document.querySelector("#mostrarCensistasDisponibles").innerHTML = "";
     document.querySelector("#parrafoMsjReasignarCenso").innerHTML = "";
+    mostrarMenuOpcionesCensista();
+}
+
+function volverAtrasEstadisticasCensista(){
+    ocultarEstadisticasCensista();
     mostrarMenuOpcionesCensista();
 }
 
