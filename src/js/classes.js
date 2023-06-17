@@ -675,22 +675,53 @@ class App {
         Método que retorna el porcentaje de personas (Censos validados) mayores de edad
     */
     porcentajePersonasMayoresDeEdad(){
-        const cantCensos=this.baseDeDatosCensos.length;
-        let mayoresDeEdad=0;
+        let porcentajes = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+            10: 0,
+            11: 0,
+            12: 0,
+            13: 0,
+            14: 0,
+            15: 0,
+            16: 0,
+            17: 0,
+            18: 0,
+            19: 0,
+        };
 
+        //recorre lista de censos, cuenta y almacena los mayores de edad por cada dpto
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
-            const edad = this.baseDeDatosCensos[i].edad;
-            const censado = this.baseDeDatosCensos[i].censado;
-            if (edad>=18 && censado) {
-                mayoresDeEdad++;
+            const censo = this.baseDeDatosCensos[i];
+            if (censo.edad>=18 && censo.censado) {
+                porcentajes[censo.departamento]=porcentajes[censo.departamento]+1; 
             }
         }
 
-        if (cantCensos!=0) {
-            return Math.round((mayoresDeEdad*100)/cantCensos);
-        } else {
-            return 0;
+        /*  Invoca a método cantPersonasCensadasPorDepartamento, itera sobre la cantidad de propiedades que retorna 
+            (cada una corresponde a un dpto, 1=Artigas), y calcula el % de mayores de edad basado en la diferencia
+            de valores que hay en objeto "porcentaje". 
+            Ejemplo: cantidad de censos en dpto 1:10, cant de mayores en dpto 1:5, => % de mayores de edad en dpto 1:50% 
+        */
+        const total = this.cantPersonasCensadasPorDepartamento();
+        for (let i = 1; i<=19; i++) {
+            const totalEdadesDepartamento = total[i];
+            const mayoresEdadDepartamento = porcentajes[i];
+            if (totalEdadesDepartamento!=0) {
+                //evita posible división entre 0
+                porcentajes[i] = (mayoresEdadDepartamento*100)/totalEdadesDepartamento;
+            } else {
+                porcentajes[i]=0;
+            }
         }
+        return porcentajes;
     }
 
     /* 
