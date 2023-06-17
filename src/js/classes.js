@@ -728,10 +728,55 @@ class App {
         Método que retorna el porcentaje de personas (Censos validados) menores de edad
     */
     porcentajePersonasMenoresDeEdad(){
-        const mayores = this.porcentajePersonasMayoresDeEdad;
-        const menores = Math.round(100-mayores);
+        let porcentajes = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+            10: 0,
+            11: 0,
+            12: 0,
+            13: 0,
+            14: 0,
+            15: 0,
+            16: 0,
+            17: 0,
+            18: 0,
+            19: 0,
+        };
+        const mayores = this.porcentajePersonasMayoresDeEdad();
+        const total = this.cantPersonasCensadasPorDepartamento();
 
-        return menores;
+        /* 
+            Itera sobre propiedades de mayores (objeto retornado de porcentajePersonasMayoresDeEdad), si
+            la propiedad tiene como valor 0 accede a la propiedad de "total" en el mismo índice y verifica 
+            si esta es igual a 0, en caso de ser verdadero setea 0 como valor, en caso contrario resta el
+            valor de la primer propiedad a 100, y esa diferencia es el porcentaje de menores por departamento.
+
+            Esto se hace así para cubrir el siguiente caso: departamento NO tiene personas censadas, el porcentaje
+            de mayores es 0%, por lo tanto este método no puede asumir que el porcentaje de menores es 100-mayores, 
+            ya que esto significaría que el porcentaje de menores es 100%, lo cual es falso. 
+        */
+
+        for (let i=1; i<=19; i++) {
+            const edad = mayores[i];
+            if (edad==0) {
+                if (total[i]==0) {
+                    porcentajes[i]=0;
+                } else {
+                    //No hay mayores de edad, pero el departamento SI tiene personas censadas
+                    porcentajes[i]=100;
+                }
+            } else {
+                porcentajes[i]=100-edad;
+            }
+        }
+        return porcentajes;
     }
 
     /* 
