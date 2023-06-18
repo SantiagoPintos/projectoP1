@@ -726,7 +726,7 @@ class App {
             const mayoresEdadDepartamento = porcentajes[i];
             if (totalEdadesDepartamento!=0) {
                 //evita posible división entre 0
-                porcentajes[i] = (mayoresEdadDepartamento*100)/totalEdadesDepartamento;
+                porcentajes[i] = Math.trunc((mayoresEdadDepartamento*100)/totalEdadesDepartamento);
             } else {
                 porcentajes[i]=0;
             }
