@@ -6,85 +6,70 @@ function main(){
     app.precargarCensistas();
     app.precargarCensos()
 }
+let app = new App();
+
 function capturarClicks(){
+    //carga interfaz de la aplicación para el usuario censista
     document.querySelector("#btnUsuarioCensista").addEventListener("click", iniciarAppCensista);
-
+    //botones para iniciar sesión y/o registrar un nuevo censista
     document.querySelector("#btnIniciarSesionCensista").addEventListener("click", iniciarSesionCensista);
+    //muestra interfaz para registrar un nuevo censista
     document.querySelector("#btnRegistroCensista").addEventListener("click", registroCensista);
-    
-
     //función que extrae datos de formulario, falta forma de invocar la aparición de dicho formulario y ocultar el resto
     document.querySelector("#btnRegistrarCensista").addEventListener("click", iniciarRegistroCensista);
-
     //checkbox "mostrar contraseña" en registro de nuevo censista 
     document.querySelector("#nuevoMostrarConseñaCensista").addEventListener("click", mostrarContraseñaRegistroCensista);
-
+    //botón "cerrar sesión" de usuario censista
     document.querySelector("#btnCerrarSesionCensista").addEventListener("click", cerrarSesionCensista);
-
-    //debe ser una función intermedia que muestra la interfaz del censo, y luego "terminar censo" debe generar el censo
+    //Botón "Realizar nuevo censo" de aplicación para censista
     document.querySelector("#btnRealizarCensoMenuCensista").addEventListener("click", mostrarInterfazCenso);
-
-    //boton "terminar censo" que pushea datos de censo a bdd
+    //boton "terminar censo" de aplicación para censista
     document.querySelector("#btnTerminarCenso").addEventListener("click", terminarCenso);
-
+    //Botón "A´tras" mostrado en sección "nuevo censo" de aplicación para censistas
     document.querySelector("#btnAtrasNuevoCenso").addEventListener("click", volverAtrasNuevoCenso);
-    
+    //botón "Validar censos pendientes" de aplicación para censistas
     document.querySelector("#btnValidarCensoMenuCensista").addEventListener("click", mostrarBusquedaValidacionDeCenso);
-    
-    
     //botón para buscar cédula en sección "validación de censo"
     document.querySelector("#btnBuscarCiValidarCenso").addEventListener("click", iniciarValidacionDeCenso);
-
     //botón "validar" en sección validar censo (app censista), funciones comprueban si hubo cambio en censo y lo validan
     document.querySelector("#btnFormValidarCensoPersona").addEventListener("click", finalizarValidacionDeCenso);
-
+    //botón "Atrás" mostrado en sección de validación de censo en aplicación de censista
     document.querySelector("#btnVolverAtrasValidarCenso").addEventListener("click", volverAtrasValidarCenso);
-
-    document.querySelector("#btnAtrasRegistroCensista").addEventListener("click", volverAtrasRegistroCensista);
-
+    //botón "Atrás" mostrado en sección de login de aplicación de censistas
     document.querySelector("#btnVolverAtrasLoginCensista").addEventListener("click", volverAtrasLoginCensista);
-
+    //botón "Atrás" mostrado en interfaz de registro de censistas
+    document.querySelector("#btnAtrasRegistroCensista").addEventListener("click", volverAtrasRegistroCensista);
+    //función que muestra interfaz de estadísticas en app de censista
     document.querySelector("#btnMostarInfoMenuCensista").addEventListener("click", estadisticasCensista);
-
-
+    //muestra interfaz de la aplicación dedicada al usuario invitado
     document.querySelector("#btnUsuarioPersona").addEventListener("click", iniciarAppPersona);
-
+    //cuadro de búsqueda de ci en aplicación invitado
     document.querySelector("#btnRealizarCensoMenuPersona").addEventListener("click", cuadroBusquedaCIPersona);
-
-
     document.querySelector("#btnBuscarCIPersona").addEventListener("click", buscarCiPersona);
-
-    //btn para modificar datos de censo (app persona)
+    //btn para modificar datos de censo (app invitado)
     document.querySelector("#btnEditarCensoPersona").addEventListener("click", usuarioModificoCenso);
-    
-    //btn para finalizar censo (app persona)
+    //btn para finalizar censo (app invitado)
     document.querySelector("#btnFinalizarCensoPersona").addEventListener("click", usuariofinalizaCenso);
-
     //btn para volver atrás (app persona, formulario censo)
     document.querySelector("#btnVolverAtrasCensoPersona").addEventListener("click", volverAtrasPersonaNuevoCenso);
-
     //btn "reasignar censo" en app censista
     document.querySelector("#btnReasignarCensoMenuCensista").addEventListener("click", mostrarMenuReasignarCenso);
-
+    //boton que invoca función para validar datos y reasignar censo
     document.querySelector("#btnReasignarCenso").addEventListener("click", reasignarCenso);
-
+    //botón "Atrás" en reasignación de censo, app censista
     document.querySelector("#btnAtrasReasignarCenso").addEventListener("click", volverAtrasReasignarCenso);
-
+    //boton "Eliminar datos" (de censo) en aplicación invitado
     document.querySelector("#btnEliminarCensoPersona").addEventListener("click", eliminarCensoPersona);
-
+    //botón para mostrar interfaz de estadísticas en app invitado
     document.querySelector("#btnMostrarEstadisticasMenuPersona").addEventListener("click", estadisticasPersona);
-
     //btn de selección de departamento en sección "estadísticas" de app censista
     document.querySelector("#btnMostrarPorcentajesMenoresMayoresPorDepartamento").addEventListener("click", cargarPersonasMayoresYMenores);
-
     //btn "atrás" de la sección "estadísticas" de app censista
     document.querySelector("#btnVolverAtrasEstadisticasAppCensista").addEventListener("click", volverAtrasEstadisticasCensista);
-
     //btn "atrás" de la sección "estadísticas" de app invitado
     document.querySelector("#btnAtrasEstadisticasPersona").addEventListener("click", volverAtrasEstadisticasPersona);
-
+    //cierra interfaz de aplicación invitado
     document.querySelector("#btnSalirAppPersona").addEventListener("click", salirAppPersona);
-
 }
 
 /* 
@@ -132,9 +117,6 @@ function ocultarMenuOpcionesPersona(){
 function ocultarEstadisticasPersona(){
     document.querySelector("#mostrarEstadisticasPersona").style.display = "none";
 }
-function ocultarCensoPersona(){
-    document.querySelector("#realizarCensoPersona").style.display = "none";
-}
 function ocultarCuadroBusquedaCiPersona(){
     document.querySelector("#cuadroBusquedaCIPersona").style.display = "none";
 }
@@ -150,7 +132,6 @@ function ocultarBtnEditarCensoPersona(){
 function ocultarReasignarCenso(){
     document.querySelector("#reasignarCenso").style.display = "none";
 }
-
 function mostrarAppCensista(){
     ocultarSeleccionUsuario();
     document.querySelector("#aplicacionCensista").style.display = "block";
@@ -199,9 +180,6 @@ function mostrarMenuOpcionesPersona(){
 function mostrarEstadisticasPersona(){
     document.querySelector("#mostrarEstadisticasPersona").style.display = "block";
 }
-function mostrarCensoPersona(){
-    document.querySelector("#realizarCensoPersona").style.display = "block";
-}
 function mostrarCuadroBusquedaCiPersona(){
     document.querySelector("#cuadroBusquedaCIPersona").style.display = "block";
 }
@@ -219,37 +197,13 @@ function mostrarReasignarCenso(){
 }
 
 
-//aplicacion tiene dos arrays ("baseDeDatosCensos" y "baseDeDatosCensistas") y métodos para operar sobre estos 
-let app = new App();
+
 
 
 /* Interfaz */
-
-
-//función que controla el inicio de sesión del censista
-function iniciarSesionCensista(){
-    //usuario se pasa a minúscula porque en bddcensistas de guardan en minúscula
-    const usuario = document.querySelector("#usuarioCensista").value.toLowerCase();
-    const clave = document.querySelector("#contraseñaCensista").value;
-    /* 
-        Perfil puede almacenar true o false
-    */
-    const perfil = app.verificarCredenciales(usuario, clave);
-    if (perfil) {
-        //Mostrar menú censista
-        ocultarLoginCensista();
-        mostrarMenuOpcionesCensista();
-        document.querySelector("#parrafoNombreCensista").innerHTML = `Bienvenido ${app.censistaLogueado.nombre}`;
-    } else {
-        document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
-    }
-    /* 
-        Limpiar campos de texto incluso después de iniciar sesión 
-        en caso de que usuario intente ir hacia atrás
-     */
-
-    document.querySelector("#usuarioCensista").value = "";
-    document.querySelector("#contraseñaCensista").value = "";
+function iniciarAppCensista(){
+    ocultarAppUsuario();
+    mostrarAppCensista();
 }
 
 function cerrarSesionCensista(){
@@ -259,10 +213,6 @@ function cerrarSesionCensista(){
     mostrarSeleccionUsuario();
 }
 
-function iniciarAppCensista(){
-    ocultarAppUsuario();
-    mostrarAppCensista();
-}
 
 function registroCensista(){
     ocultarLoginCensista();
@@ -302,6 +252,7 @@ function volverAtrasLoginCensista(){
     */
     document.querySelector("#msjLoginCensista").innerHTML = "";
 }
+
 /* 
     Función que controla el checkbox "Mostrar contraseña" de registro de nuevo censista
 */
@@ -338,12 +289,19 @@ function volverAtrasNuevoCenso(){
     mostrarMenuOpcionesCensista();
 }
 
+/* 
+    Función que muestra la sección "estadísticas" al usuario censista
+*/
 function estadisticasCensista(){
     ocultarMenuOpcionesCensista();
     mostrarEstadisticasCensista();
     cargarEstadisticasCensista();
 }
 
+/* 
+    Función que muestra sección de validación de censos e invoca a función que popula combobox
+    con censos pendientes.
+*/
 function mostrarBusquedaValidacionDeCenso(){
     ocultarMenuOpcionesCensista();
     cargarSelectorCensosPendientes("ciValidarCenso");
@@ -352,6 +310,9 @@ function mostrarBusquedaValidacionDeCenso(){
     ocultarFormValidacionCenso();
 }
 
+/* 
+    Función que inicia la sección de la aplicación para el usuario inivitado
+*/
 function iniciarAppPersona(){
     ocultarAppCensista();
     ocultarSeleccionUsuario();
@@ -362,6 +323,9 @@ function iniciarAppPersona(){
     ocultarEstadisticasPersona();
 }
 
+/* 
+    Función encargada de mostrar el cuadro de búsqueda previo a realizar un censo en la aplicación invitado
+*/
 function cuadroBusquedaCIPersona(){
     ocultarMenuOpcionesPersona();
     mostrarCuadroBusquedaCiPersona();
@@ -411,16 +375,64 @@ function volverAtrasEstadisticasPersona(){
     mostrarMenuOpcionesPersona();
 }
 
+function salirAppPersona(){
+    ocultarAppUsuario();
+    mostrarSeleccionUsuario();
+}
+
+/* 
+    Función invocada desde buscarCiPersona().
+    Usuario ingresa ci, no hay censo asociado a ella y esta se encarga de mostrar formulario
+    popular campo de ci y mostrar funciones (botones) disponibles  
+*/
+function usuarioIniciaNuevoCenso(ci){
+    mostrarFormCensoPersona();
+    ocultarCuadroBusquedaCiPersona();
+    ocultarBtnEditarCensoPersona();
+    //popula selectores de departamento y ocupacion
+    cargarSelectDeDepartamentos("departamentoPersonaCenso");
+    cargarSelectDeOcupacion("ocupacionPersonaCenso");
+    //popular cuadro de ci y deshabilitar edición
+    document.querySelector("#ciPersonaCenso").value = ci;
+    document.querySelector("#ciPersonaCenso").readOnly = "true";
+}
+
+//función que controla el inicio de sesión del censista
+function iniciarSesionCensista(){
+    //usuario se pasa a minúscula porque en bddcensistas de guardan en minúscula
+    const usuario = document.querySelector("#usuarioCensista").value.toLowerCase();
+    const clave = document.querySelector("#contraseñaCensista").value;
+    /* 
+        Perfil puede almacenar true o false
+    */
+    const perfil = app.verificarCredenciales(usuario, clave);
+    if (perfil) {
+        //Mostrar menú censista
+        ocultarLoginCensista();
+        mostrarMenuOpcionesCensista();
+        document.querySelector("#parrafoNombreCensista").innerHTML = `Bienvenido ${app.censistaLogueado.nombre}`;
+    } else {
+        document.querySelector("#msjLoginCensista").innerHTML = "Nombre de usuario y/o contraseña incorrectas";
+    }
+    /* 
+        Limpiar campos de texto incluso después de iniciar sesión 
+        en caso de que usuario intente ir hacia atrás
+     */
+
+    document.querySelector("#usuarioCensista").value = "";
+    document.querySelector("#contraseñaCensista").value = "";
+}
+
+
 /* 
     buscarCiPersona: función que verifica si la CI ingresada por el usuario tiene un censo asociado,
     si lo tiene (y aún no fue validado) muestra los datos para ser modificados, en caso contrario,
     muestra la interfaz para que el usuario genere un nuevo censo y se le adjudique a los censistas
     registrados.
 
-
-    indiceDeCenso puede almacenar el índice de un censo que aún no esté validado,
-    es usado por usuarioModificoCenso() para invocar a método censoFueModifcado y verificar
-    si hubo cambios en el mismo
+    ciCenso almacena una copia "limpiada" de la ci del usuario, es utilizada en función usuarioModificoCenso.
+    Es usada para precargar el campo "Cédula de indentidad" cuando el usuario invitado quiere modificar/eliminar sus
+    datos de censo. 
 */
 let ciCenso = -1;
 function buscarCiPersona(){
@@ -483,28 +495,6 @@ function buscarCiPersona(){
     document.querySelector("#mensajesCuadroBusquedaCIPersona").innerHTML = mensaje;
 }
 
-/* 
-    Función invocada desde buscarCiPersona().
-    Usuario ingresa ci, no hay censo asociado a ella y esta se encarga de mostrar formulario
-    popular campo de ci y mostrar funciones (botones) disponibles  
-*/
-function usuarioIniciaNuevoCenso(ci){
-    mostrarFormCensoPersona();
-    ocultarCuadroBusquedaCiPersona();
-    ocultarBtnEditarCensoPersona();
-    //popula selectores de departamento y ocupacion
-    cargarSelectDeDepartamentos("departamentoPersonaCenso");
-    cargarSelectDeOcupacion("ocupacionPersonaCenso");
-    //popular cuadro de ci y deshabilitar edición
-    document.querySelector("#ciPersonaCenso").value = ci;
-    document.querySelector("#ciPersonaCenso").readOnly = "true";
-}
-
-function salirAppPersona(){
-    ocultarAppUsuario();
-    mostrarSeleccionUsuario();
-}
-
 function usuariofinalizaCenso(){
     const nombre = document.querySelector("#nombrePersonaCenso").value;
     const edad = Number(document.querySelector("#edadPersonaCenso").value);
@@ -559,15 +549,10 @@ function usuariofinalizaCenso(){
 */
 
 function usuarioModificoCenso(){
-    /* 
-        extraigo datos de campo 
-        valido datos
-        comparo con bdd
-        hay cambios? s: pusheo, n: dejo como está
-    */
     const nombre = document.querySelector("#nombrePersonaCenso").value;
     const edad = Number(document.querySelector("#edadPersonaCenso").value);
-    //se pasa ci como variable global porque no puede ni debe ser modificada
+    //No se extrae CI desde input ya que esta es el único dato de un censo que no puede ser modificado, de lo contrario
+    //se convertiría en un nuevo censo
     const ci = ciCenso;
     const departamento = Number(document.querySelector("#departamentoPersonaCenso").value);
     const ocupacion = Number(document.querySelector("#ocupacionPersonaCenso").value);
