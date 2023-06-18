@@ -22,9 +22,9 @@ class App {
         Método que precarga censistas al inicar la aplicación
     */
     precargarCensistas(){
-        this.crearCensista("Pedro Rodríguez", "pedror", "123aA");
-        this.crearCensista("Enzo Hernández", "hernandeze", "Hernandez21");
-        this.crearCensista("Julián Pérez", "juliancitop", "Hola45");
+        this.registrarCensista("Pedro Rodríguez", "pedror", "123aA");
+        this.registrarCensista("Enzo Hernández", "hernandeze", "Hernandez21");
+        this.registrarCensista("Julián Pérez", "juliancitop", "Hola45");
     }
     /* 
         Números de ci válidos generados aleatoriamente usando: 
@@ -81,14 +81,22 @@ class App {
     /* 
         Método para crear un nuevo censista y agregaro a su array correspondiente
     */
-    crearCensista(nombre, usuario, contraseña){
-        let nuevoCensista = new Censista();
-        nuevoCensista.nombre = nombre;
-        nuevoCensista.usuario = usuario;
-        nuevoCensista.contraseña = contraseña;
-        nuevoCensista.id = this.generarIdCensista();
+    registrarCensista(nombre, usuario, contraseña){
+        let registrado = false;
+        if (this.validarNombreUsuario(usuario)) {
+            if (this.validarContraseña(contraseña)) {
+                let nuevoCensista = new Censista();
+                nuevoCensista.nombre = nombre;
+                nuevoCensista.usuario = usuario;
+                nuevoCensista.contraseña = contraseña;
+                nuevoCensista.id = this.generarIdCensista();
 
-        this.baseDeDatosCensistas.push(nuevoCensista)
+                this.baseDeDatosCensistas.push(nuevoCensista)
+                registrado = true;
+            }
+        }
+
+        return true;
     }
     
     /* 
