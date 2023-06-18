@@ -958,7 +958,7 @@ function cargarEstadisticasPersona(){
     const trabajadores = app.cantTrabajadoresPorDepartamento();
     const porcentaje = app.porcentajePersonasCensadasPorDepartamentoConRespectoAlTotal();
 
-    estadisticas=`<table border="1"><tr><th>Departamento</th><th>Estudian</th><th>No trabajan</th><th>Trabajan</th><th>Porcentaje del total de censados</th></tr>`;
+    estadisticas=`<table border="1"><tr><th>Departamento</th><th>Estudian</th><th>No trabajan</th><th>Dependientes o independientes</th><th>Porcentaje del total de censados</th></tr>`;
 
     //Itera "listaDepartamentos" ya que esta contiene un array con los 19 departamentos ordenados alfabéticamente.
     //Comienza en 1 porque index=0 es opción por defecto ("Seleccione...").
