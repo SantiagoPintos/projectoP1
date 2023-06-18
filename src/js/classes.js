@@ -328,8 +328,7 @@ class App {
         
         return esValida;
     }
-
-    
+  
     /* 
         Método que hace todas las verificaciones llamando a otros métodos específicos para cada 
         cada elemento, crea el nuevo censo y luego lo confirma. 
@@ -352,7 +351,7 @@ class App {
                         if (departamento!=0) {
                             if (ocupacion!=0) {
                                 //invoca a método que crea censo
-                                this.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion, this.censistaLogueado.id);
+                                this.nuevoCenso(nombre, edad, nroCiLimpio, departamento, ocupacion);
                                 //valida censo cambiando la propiedad "censado" a "true"
                                 if (this.confirmarCenso(nroCiLimpio)) {
                                     censado = true;
@@ -365,24 +364,6 @@ class App {
         }
         
         return censado;
-    }
-    
-    /* 
-        Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
-        "censado" a "true" y da por finalizado el mismo.
-        Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado con métodos anteriores).
-    */ 
-    confirmarCenso(ci){
-        let confirmado = false;
-        for (let i = 0; i < this.baseDeDatosCensos.length && !confirmado; i++) {
-            const ciAcomparar = this.baseDeDatosCensos[i].ci;
-            if (ci == ciAcomparar) {
-                this.baseDeDatosCensos[i].censado = true;
-                confirmado = true;
-            }            
-        }
-    
-        return confirmado;
     }
 
     /* 
@@ -410,7 +391,7 @@ class App {
             generarCenso.idCensista = this.asignarCensista();
         }
         this.baseDeDatosCensos.push(generarCenso);
-
+ 
         /* 
             Si usuario está haciendo censo se retorna nombre de censista asignado
         */
@@ -418,6 +399,25 @@ class App {
             return this.baseDeDatosCensistas[generarCenso.idCensista].nombre;
         }
     }
+    
+    /* 
+        Método que se llama una vez que un censo fue confirmado por un censista, este cambia la propiedad
+        "censado" a "true" y da por finalizado el mismo.
+        Recibe como parámetro la ci de la persona (asume que el num ya fue "limpiado" y validado con métodos anteriores).
+    */ 
+    confirmarCenso(ci){
+        let confirmado = false;
+        for (let i = 0; i < this.baseDeDatosCensos.length && !confirmado; i++) {
+            const ciAcomparar = this.baseDeDatosCensos[i].ci;
+            if (ci == ciAcomparar) {
+                this.baseDeDatosCensos[i].censado = true;
+                confirmado = true;
+            }            
+        }
+    
+        return confirmado;
+    }
+
 
     /* 
         Método que comprueba si existe censo y retorna true(existe) o false(no existe)
