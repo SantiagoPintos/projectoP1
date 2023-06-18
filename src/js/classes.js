@@ -96,7 +96,7 @@ class App {
             }
         }
 
-        return true;
+        return registrado;
     }
     
     /* 
