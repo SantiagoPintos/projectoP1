@@ -276,7 +276,10 @@ class App {
     */
     limpiarNroCI(cedula){
         let nroCedulaEnLimpio = "";
-        cedula=cedula.trim();
+        //trim solo funciona con strings 
+        if (isNaN(cedula)) {
+            cedula=cedula.trim();
+        }
         if (cedula.length<7) {
             return -1;
         } else {
