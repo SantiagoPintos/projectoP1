@@ -481,11 +481,13 @@ class App {
     obtenerIndiceCenso(ci){
         let indice = -1;
         let encontrado = false;
-        for (let i = 0; i < this.baseDeDatosCensos.length && !encontrado; i++) {
-            const elemento = this.baseDeDatosCensos[i].ci;
-            if (elemento==ci) {
-                indice=i;
-                encontrado=true;
+        if (this.validarDigitoVerificadorCI(this.limpiarNroCI(ci))) {
+            for (let i = 0; i < this.baseDeDatosCensos.length && !encontrado; i++) {
+                const elemento = this.baseDeDatosCensos[i].ci;
+                if (elemento==ci) {
+                    indice=i;
+                    encontrado=true;
+                }
             }
         }
         return indice;
