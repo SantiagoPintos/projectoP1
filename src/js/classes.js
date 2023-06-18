@@ -71,7 +71,7 @@ class App {
         this.nuevoCenso("Pedro Barboza", 80, 14931326, 17, 4);
         this.nuevoCenso("Ignacio Romero", 30, 52392978, 12, 2);
         this.nuevoCenso("Gimena Castro", 29, 4503686, 14, 1);
-        this.nuevoCenso("Yolanda Pérez", 70, 967270, 1, 4);
+        this.nuevoCenso("Yolanda Pérez", 70, 2075984, 1, 4);
         this.nuevoCenso("Diego Pereira", 1, 27136650, 17, 4);
         this.nuevoCenso("Rita Castelli", 40, 27469378, 9, 1);
         this.nuevoCenso("Fernando Mauricio", 22, 55723314, 14, 2);
