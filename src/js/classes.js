@@ -111,7 +111,7 @@ class App {
         if (max>0) {
             /* 
                 ej: Math.random retorna 0,2, min=0 y max=10
-                0,2*(10-0+1) + 0 = 2,2 => num: 2
+                0,2*(10-0+1) + 0 = 1,8 => num: 1
             */
             return Math.floor(Math.random() * (max - min + 1) + min);
         }
@@ -920,7 +920,6 @@ class App {
             19: 0,
         };
         const cantCensos = this.baseDeDatosCensos.length;
-        //let sumatoria = 0;
 
         //recorre lista de censos, los cuenta y almacena en el objeto
         for (let i = 0; i < this.baseDeDatosCensos.length; i++) {
@@ -930,9 +929,7 @@ class App {
         //recorre el objeto y convierte los contadores de censo x departamento y porcentajes
         for (let j = 1; j <= 19; j++) {
             porcentajeCensadosPorDepartamento[j]=Math.round((porcentajeCensadosPorDepartamento[j]*100)/cantCensos);
-            //sumatoria=sumatoria+porcentajeCensadosPorDepartamento[j];
         }
-        //console.log(sumatoria);
         return porcentajeCensadosPorDepartamento;
     }
 }
