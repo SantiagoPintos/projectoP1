@@ -497,7 +497,7 @@ function buscarCiPersona(){
 
 function usuariofinalizaCenso(){
     const nombre = document.querySelector("#nombrePersonaCenso").value;
-    const edad = Number(document.querySelector("#edadPersonaCenso").value);
+    const edad = document.querySelector("#edadPersonaCenso").value;
     const ci = document.querySelector("#ciPersonaCenso").value;
     const departamento = Number(document.querySelector("#departamentoPersonaCenso").value);
     const ocupacion = Number(document.querySelector("#ocupacionPersonaCenso").value);
@@ -511,7 +511,7 @@ function usuariofinalizaCenso(){
     if(!app.existeCenso(ciLimpia)){
         if(nombre!=""){
             //nombre no es string vacío
-            if (edad>=0 && edad <=130) {
+            if (edad>=0 && edad <=130 && edad!="") {
                 if (app.validarDigitoVerificadorCI(ciLimpia)) {
                     //ci es válida
                     if (departamento != 0) {
