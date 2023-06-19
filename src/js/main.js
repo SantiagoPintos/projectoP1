@@ -464,18 +464,12 @@ function buscarCiPersona(){
                 document.querySelector("#departamentoPersonaCenso").selectedIndex = censo.departamento;
                 cargarSelectDeOcupacion("ocupacionPersonaCenso");
                 document.querySelector("#ocupacionPersonaCenso").selectedIndex = censo.ocupacion;
-                //se habilitan botones para editar/eliminar censo
-                document.querySelector("#btnFinalizarCensoPersona").disabled = false;
-                document.querySelector("#btnEliminarCensoPersona").disabled = false;
                 ciCenso = ciLimpia;
 
                 //El número de cédula de un censo no puede ser modificado
                 document.getElementById("ciPersonaCenso").readOnly = true;
             } else {
                 mensaje = "El censo asociado a esa cédula de indentidad ya fue validado por un censista";
-                // si está validado se deshabilitan botones para modificar y eliminar datos
-                document.querySelector("#btnFinalizarCensoPersona").disabled = true;
-                document.querySelector("#btnEliminarCensoPersona").disabled = true;
             }
         }
     } else {
