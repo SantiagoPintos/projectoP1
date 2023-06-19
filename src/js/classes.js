@@ -939,12 +939,9 @@ class App {
             const censo = this.baseDeDatosCensos[i];
             porcentajeCensadosPorDepartamento[censo.departamento] = porcentajeCensadosPorDepartamento[censo.departamento] +1;
         }
-        let sumatoria= 0;
         //recorre el objeto y convierte los contadores de censo x departamento y porcentajes
         for (let j = 1; j <= 19; j++) {
             porcentajeCensadosPorDepartamento[j]=(porcentajeCensadosPorDepartamento[j]*100)/cantCensos;
-            sumatoria=sumatoria+porcentajeCensadosPorDepartamento[j];
-            console.log(`porcentaje: ${sumatoria}`);
         }
         return porcentajeCensadosPorDepartamento;
     }
