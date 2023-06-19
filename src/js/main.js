@@ -380,23 +380,6 @@ function salirAppPersona(){
     mostrarSeleccionUsuario();
 }
 
-/* 
-    Función invocada desde buscarCiPersona().
-    Usuario ingresa ci, no hay censo asociado a ella y esta se encarga de mostrar formulario
-    popular campo de ci y mostrar funciones (botones) disponibles  
-*/
-function usuarioIniciaNuevoCenso(ci){
-    mostrarFormCensoPersona();
-    ocultarCuadroBusquedaCiPersona();
-    ocultarBtnEditarCensoPersona();
-    //popula selectores de departamento y ocupacion
-    cargarSelectDeDepartamentos("departamentoPersonaCenso");
-    cargarSelectDeOcupacion("ocupacionPersonaCenso");
-    //popular cuadro de ci y deshabilitar edición
-    document.querySelector("#ciPersonaCenso").value = ci;
-    document.querySelector("#ciPersonaCenso").readOnly = "true";
-}
-
 //función que controla el inicio de sesión del censista
 function iniciarSesionCensista(){
     //usuario se pasa a minúscula porque en bddcensistas de guardan en minúscula
@@ -442,6 +425,10 @@ function buscarCiPersona(){
     const ci=document.querySelector("#busquedaNroCIPersona").value;
     const ciLimpia = app.limpiarNroCI(ci);
     let mensaje = "";
+    /* 
+        Se asegura de que nombre de persona no queda en título si esta elimina sus datos y luego ingresa a censarse nuevamente
+    */
+    document.querySelector("#tituloCuadroCensoPersona").innerHTML = "Nuevo censo:";
 
     //Validación de ci
     if (app.validarDigitoVerificadorCI(ciLimpia)) {
@@ -459,7 +446,7 @@ function buscarCiPersona(){
             const censo = app.baseDeDatosCensos[indice];
 
             //se muestra nombre de la persona en títutlo
-            document.querySelector("#tituloCuadroCensoPersona").innerHTML = censo.nombre;
+            document.querySelector("#tituloCuadroCensoPersona").innerHTML = `Nuevo censo, bienvenido/a: ${censo.nombre}`;
             
             //está validado?
             if (!app.censoEstaValidado(ciLimpia)) {
@@ -497,6 +484,25 @@ function buscarCiPersona(){
     }
     document.querySelector("#mensajesCuadroBusquedaCIPersona").innerHTML = mensaje;
 }
+
+/* 
+    Función invocada desde buscarCiPersona().
+    Usuario ingresa ci, no hay censo asociado a ella y esta se encarga de mostrar formulario
+    popular campo de ci y mostrar funciones (botones) disponibles  
+*/
+function usuarioIniciaNuevoCenso(ci){
+    mostrarBtnFinalizarCensoPersona();
+    mostrarFormCensoPersona();
+    ocultarCuadroBusquedaCiPersona();
+    ocultarBtnEditarCensoPersona();
+    //popula selectores de departamento y ocupacion
+    cargarSelectDeDepartamentos("departamentoPersonaCenso");
+    cargarSelectDeOcupacion("ocupacionPersonaCenso");
+    //popular cuadro de ci y deshabilitar edición
+    document.querySelector("#ciPersonaCenso").value = ci;
+    document.querySelector("#ciPersonaCenso").readOnly = "true";
+}
+
 
 function usuariofinalizaCenso(){
     const nombre = document.querySelector("#nombrePersonaCenso").value;
