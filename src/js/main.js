@@ -477,6 +477,9 @@ function buscarCiPersona(){
                 document.querySelector("#departamentoPersonaCenso").selectedIndex = censo.departamento;
                 cargarSelectDeOcupacion("ocupacionPersonaCenso");
                 document.querySelector("#ocupacionPersonaCenso").selectedIndex = censo.ocupacion;
+                //se habilitan botones para editar/eliminar censo
+                document.querySelector("#btnFinalizarCensoPersona").disabled = false;
+                document.querySelector("#btnEliminarCensoPersona").disabled = false;
                 ciCenso = ciLimpia;
 
                 //El número de cédula de un censo no puede ser modificado
