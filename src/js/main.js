@@ -967,7 +967,11 @@ function cargarEstadisticasPersona(){
     //Comienza en 1 porque index=0 es opción por defecto ("Seleccione...").
     for (let i = 1; i < listaDepartamentos.length; i++) {
         const depto = listaDepartamentos[i];
-        estadisticas+=`<tr><td>${depto}</td><td>${estudiantes[i]}</td><td>${noTrabajan[i]}</td><td>${trabajadores[i]}</td><td>${porcentaje[i]}</td></tr>`
+        //muestra decimales SOLO si número los tiene
+        if (porcentaje[i]%1!=0) {
+            porcentaje[i]=porcentaje[i].toFixed(1);
+        }
+        estadisticas+=`<tr><td>${depto}</td><td>${estudiantes[i]}</td><td>${noTrabajan[i]}</td><td>${trabajadores[i]}</td><td>${porcentaje[i]}%</td></tr>`
     }
     estadisticas+=`</table>`;
     document.querySelector("#tablaEstadisticasPersona").innerHTML=estadisticas;
