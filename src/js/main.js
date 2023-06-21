@@ -469,7 +469,7 @@ function buscarCiPersona(){
                 //El número de cédula de un censo no puede ser modificado
                 document.getElementById("ciPersonaCenso").readOnly = true;
             } else {
-                mensaje = "El censo asociado a esa cédula de indentidad ya fue validado por un censista";
+                mensaje = "El censo asociado a esa cédula de identidad ya fue validado por un censista";
             }
         }
     } else {
